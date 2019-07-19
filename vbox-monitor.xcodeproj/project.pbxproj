@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		054DD8DE22E0B7A900C5B225 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD8DD22E0B7A900C5B225 /* main.cpp */; };
+		054DD91A22E0B9A800C5B225 /* Arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD91822E0B9A800C5B225 /* Arguments.cpp */; };
+		054DD91F22E0C23B00C5B225 /* Screen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD91D22E0C23B00C5B225 /* Screen.cpp */; };
+		054DD92222E0C2B400C5B225 /* libncurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 054DD92122E0C2B400C5B225 /* libncurses.tbd */; };
+		054DD92522E0D01400C5B225 /* Process.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD92322E0D01400C5B225 /* Process.cpp */; };
+		054DD92822E0F0EC00C5B225 /* Monitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD92622E0F0EC00C5B225 /* Monitor.cpp */; };
+		054DD92C22E0F33B00C5B225 /* Registers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD92A22E0F33B00C5B225 /* Registers.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -66,6 +72,17 @@
 		054DD91322E0B90600C5B225 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		054DD91522E0B90600C5B225 /* ccache-config.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "ccache-config.sh"; sourceTree = "<group>"; };
 		054DD91622E0B90600C5B225 /* ccache.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ccache.sh; sourceTree = "<group>"; };
+		054DD91822E0B9A800C5B225 /* Arguments.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Arguments.cpp; sourceTree = "<group>"; };
+		054DD91922E0B9A800C5B225 /* Arguments.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Arguments.hpp; sourceTree = "<group>"; };
+		054DD91D22E0C23B00C5B225 /* Screen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Screen.cpp; sourceTree = "<group>"; };
+		054DD91E22E0C23B00C5B225 /* Screen.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Screen.hpp; sourceTree = "<group>"; };
+		054DD92122E0C2B400C5B225 /* libncurses.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.tbd; path = usr/lib/libncurses.tbd; sourceTree = SDKROOT; };
+		054DD92322E0D01400C5B225 /* Process.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Process.cpp; sourceTree = "<group>"; };
+		054DD92422E0D01400C5B225 /* Process.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Process.hpp; sourceTree = "<group>"; };
+		054DD92622E0F0EC00C5B225 /* Monitor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Monitor.cpp; sourceTree = "<group>"; };
+		054DD92722E0F0EC00C5B225 /* Monitor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Monitor.hpp; sourceTree = "<group>"; };
+		054DD92A22E0F33B00C5B225 /* Registers.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Registers.cpp; sourceTree = "<group>"; };
+		054DD92B22E0F33B00C5B225 /* Registers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Registers.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				054DD92222E0C2B400C5B225 /* libncurses.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +103,7 @@
 				054DD8E522E0B90600C5B225 /* xcconfig */,
 				054DD8DC22E0B7A900C5B225 /* vbox-monitor */,
 				054DD8DB22E0B7A900C5B225 /* Products */,
+				054DD92022E0C2B400C5B225 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,6 +118,7 @@
 		054DD8DC22E0B7A900C5B225 /* vbox-monitor */ = {
 			isa = PBXGroup;
 			children = (
+				054DD91722E0B99400C5B225 /* Classes */,
 				054DD8DD22E0B7A900C5B225 /* main.cpp */,
 			);
 			path = "vbox-monitor";
@@ -217,6 +237,39 @@
 			path = Scripts;
 			sourceTree = "<group>";
 		};
+		054DD91722E0B99400C5B225 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				054DD92922E0F32F00C5B225 /* VM */,
+				054DD91D22E0C23B00C5B225 /* Screen.cpp */,
+				054DD91E22E0C23B00C5B225 /* Screen.hpp */,
+				054DD91822E0B9A800C5B225 /* Arguments.cpp */,
+				054DD91922E0B9A800C5B225 /* Arguments.hpp */,
+				054DD92322E0D01400C5B225 /* Process.cpp */,
+				054DD92422E0D01400C5B225 /* Process.hpp */,
+				054DD92622E0F0EC00C5B225 /* Monitor.cpp */,
+				054DD92722E0F0EC00C5B225 /* Monitor.hpp */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		054DD92022E0C2B400C5B225 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				054DD92122E0C2B400C5B225 /* libncurses.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		054DD92922E0F32F00C5B225 /* VM */ = {
+			isa = PBXGroup;
+			children = (
+				054DD92A22E0F33B00C5B225 /* Registers.cpp */,
+				054DD92B22E0F33B00C5B225 /* Registers.hpp */,
+			);
+			path = VM;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -274,7 +327,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				054DD92C22E0F33B00C5B225 /* Registers.cpp in Sources */,
+				054DD91A22E0B9A800C5B225 /* Arguments.cpp in Sources */,
 				054DD8DE22E0B7A900C5B225 /* main.cpp in Sources */,
+				054DD91F22E0C23B00C5B225 /* Screen.cpp in Sources */,
+				054DD92522E0D01400C5B225 /* Process.cpp in Sources */,
+				054DD92822E0F0EC00C5B225 /* Monitor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
