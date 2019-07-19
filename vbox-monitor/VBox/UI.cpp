@@ -192,6 +192,13 @@ namespace VBox
             ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 32 );
         }
         
+        {
+            for( const auto & stack: this->_monitor.stack() )
+            {
+                ( void )stack;
+            }
+        }
+        
         this->_screen.refresh();
         ::wrefresh( win );
         ::delwin( win );

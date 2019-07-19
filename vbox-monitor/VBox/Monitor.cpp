@@ -39,11 +39,12 @@ namespace VBox
             
             void _update( void );
             
-            std::string                  _vmName;
-            std::chrono::milliseconds    _updateInterval;
-            VM::Registers                _registers;
-            mutable std::recursive_mutex _rmtx;
-            bool                         _stop;
+            std::string                   _vmName;
+            std::chrono::milliseconds     _updateInterval;
+            VM::Registers                 _registers;
+            std::vector< VM::StackEntry > _stack;
+            mutable std::recursive_mutex  _rmtx;
+            bool                          _stop;
     };
     
     Monitor::Monitor( const std::string & vmName, std::chrono::milliseconds updateInterval ):
@@ -85,6 +86,13 @@ namespace VBox
         return this->impl->_registers;
     }
     
+    std::vector< VM::StackEntry > Monitor::stack( void )const
+    {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
+        return this->impl->_stack;
+    }
+    
     void Monitor::start( void )
     {
         std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
@@ -114,8 +122,9 @@ namespace VBox
     }
     
     Monitor::IMPL::IMPL( const std::string & vmName, std::chrono::milliseconds updateInterval ):
-        _vmName( vmName ),
-        _updateInterval( updateInterval )
+        _vmName(         vmName ),
+        _updateInterval( updateInterval ),
+        _stop(           false )
     {}
     
     Monitor::IMPL::IMPL( const IMPL & o ):
@@ -125,7 +134,9 @@ namespace VBox
     Monitor::IMPL::IMPL( const IMPL & o, const std::lock_guard< std::recursive_mutex > & l ):
         _vmName(         o._vmName ),
         _updateInterval( o._updateInterval ),
-        _registers(      o._registers )
+        _registers(      o._registers ),
+        _stack(          o._stack ),
+        _stop(           false )
     {
         ( void )l;
     }

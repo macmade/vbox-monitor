@@ -22,43 +22,63 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#ifndef VBOX_MONITOR_HPP
-#define VBOX_MONITOR_HPP
-
-#include <string>
-#include <memory>
-#include <algorithm>
-#include <chrono>
-#include <vector>
-#include "Registers.hpp"
 #include "StackEntry.hpp"
+#include "String.hpp"
 
 namespace VBox
 {
-    class Monitor
+    namespace VM
     {
-        public:
+        class StackEntry::IMPL
+        {
+            public:
+                
+                IMPL( void );
+                IMPL( const IMPL & o );
+        };
+        
+        StackEntry::StackEntry( void ):
+            impl( std::make_unique< IMPL >() )
+        {}
+        
+        StackEntry::StackEntry( const StackEntry & o ):
+            impl( std::make_unique< IMPL >( *( o.impl ) ) )
+        {}
+        
+        StackEntry::StackEntry( StackEntry && o ):
+            impl( std::move( o.impl ) )
+        {}
+        
+        StackEntry::~StackEntry( void )
+        {}
+        
+        StackEntry & StackEntry::operator =( StackEntry o )
+        {
+            swap( *( this ), o );
             
-            Monitor( const std::string & vmName, std::chrono::milliseconds updateInterval );
-            Monitor( const Monitor & o );
-            Monitor( Monitor && o );
-            ~Monitor( void );
+            return *( this );
+        }
+        
+        void swap( StackEntry & o1, StackEntry & o2 )
+        {
+            using std::swap;
             
-            Monitor & operator =( Monitor o );
+            swap( o1.impl, o2.impl );
+        }
+        
+        std::ostream & operator <<( std::ostream & os, const StackEntry & o )
+        {
+            ( void )o;
             
-            VM::Registers                 registers( void ) const;
-            std::vector< VM::StackEntry > stack( void )     const;
-            
-            void start( void );
-            void stop( void );
-            
-            friend void swap( Monitor & o1, Monitor & o2 );
-            
-        private:
-            
-            class IMPL;
-            std::unique_ptr< IMPL > impl;
-    };
+            return os;
+        }
+        
+        StackEntry::IMPL::IMPL( void )
+        {}
+        
+        StackEntry::IMPL::IMPL( const IMPL & o )
+        {
+            ( void )o;
+        }
+    }
 }
-
-#endif /* VBOX_MONITOR_HPP */

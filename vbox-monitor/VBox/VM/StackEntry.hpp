@@ -22,43 +22,40 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#ifndef VBOX_MONITOR_HPP
-#define VBOX_MONITOR_HPP
+#ifndef VBOX_VM_STACK_ENTRY_HPP
+#define VBOX_VM_STACK_ENTRY_HPP
 
-#include <string>
+#include <cstdint>
 #include <memory>
 #include <algorithm>
-#include <chrono>
+#include <ostream>
 #include <vector>
-#include "Registers.hpp"
-#include "StackEntry.hpp"
 
 namespace VBox
 {
-    class Monitor
+    namespace VM
     {
-        public:
-            
-            Monitor( const std::string & vmName, std::chrono::milliseconds updateInterval );
-            Monitor( const Monitor & o );
-            Monitor( Monitor && o );
-            ~Monitor( void );
-            
-            Monitor & operator =( Monitor o );
-            
-            VM::Registers                 registers( void ) const;
-            std::vector< VM::StackEntry > stack( void )     const;
-            
-            void start( void );
-            void stop( void );
-            
-            friend void swap( Monitor & o1, Monitor & o2 );
-            
-        private:
-            
-            class IMPL;
-            std::unique_ptr< IMPL > impl;
-    };
+        class StackEntry
+        {
+            public:
+                
+                StackEntry( void );
+                StackEntry( const StackEntry & o );
+                StackEntry( StackEntry && o );
+                ~StackEntry( void );
+                
+                StackEntry & operator =( StackEntry o );
+                
+                friend void swap( StackEntry & o1, StackEntry & o2 );
+                
+                friend std::ostream & operator <<( std::ostream & os, const StackEntry & o );
+                
+            private:
+                
+                class IMPL;
+                std::unique_ptr< IMPL > impl;
+        };
+    }
 }
 
-#endif /* VBOX_MONITOR_HPP */
+#endif /* VBOX_VM_STACK_ENTRY_HPP */

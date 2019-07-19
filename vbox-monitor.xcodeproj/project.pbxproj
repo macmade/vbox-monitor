@@ -17,6 +17,7 @@
 		054DD93522E21C7000C5B225 /* Manage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93322E21C7000C5B225 /* Manage.cpp */; };
 		054DD93822E2242800C5B225 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93622E2242800C5B225 /* String.cpp */; };
 		054DD93B22E22F9A00C5B225 /* UI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93922E22F9A00C5B225 /* UI.cpp */; };
+		054DD93E22E2596F00C5B225 /* StackEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93C22E2596F00C5B225 /* StackEntry.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -92,6 +93,8 @@
 		054DD93722E2242800C5B225 /* String.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = String.hpp; sourceTree = "<group>"; };
 		054DD93922E22F9A00C5B225 /* UI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UI.cpp; sourceTree = "<group>"; };
 		054DD93A22E22F9A00C5B225 /* UI.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UI.hpp; sourceTree = "<group>"; };
+		054DD93C22E2596F00C5B225 /* StackEntry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StackEntry.cpp; sourceTree = "<group>"; };
+		054DD93D22E2596F00C5B225 /* StackEntry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StackEntry.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +284,8 @@
 			children = (
 				054DD92A22E0F33B00C5B225 /* Registers.cpp */,
 				054DD92B22E0F33B00C5B225 /* Registers.hpp */,
+				054DD93C22E2596F00C5B225 /* StackEntry.cpp */,
+				054DD93D22E2596F00C5B225 /* StackEntry.hpp */,
 			);
 			path = VM;
 			sourceTree = "<group>";
@@ -343,6 +348,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				054DD92C22E0F33B00C5B225 /* Registers.cpp in Sources */,
+				054DD93E22E2596F00C5B225 /* StackEntry.cpp in Sources */,
 				054DD91A22E0B9A800C5B225 /* Arguments.cpp in Sources */,
 				054DD93822E2242800C5B225 /* String.cpp in Sources */,
 				054DD93522E21C7000C5B225 /* Manage.cpp in Sources */,

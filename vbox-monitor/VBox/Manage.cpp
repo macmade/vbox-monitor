@@ -96,5 +96,31 @@ namespace VBox
             
             return reg;
         }
+        
+        std::vector< VM::StackEntry > stack( const std::string & vmName )
+        {
+            std::vector< VM::StackEntry > entries;
+            Process                       proc( "/usr/local/bin/VBoxManage" );
+            std::optional< std::string >  out;
+            
+            proc.arguments
+            (
+                {
+                    "debugvm", vmName, "stack",
+                }
+            );
+            
+            proc.start();
+            proc.waitUntilExit();
+            
+            out = proc.output();
+            
+            if( out.has_value() == false )
+            {
+                return entries;
+            }
+            
+            return entries;
+        }
     }
 }

@@ -26,13 +26,16 @@
 #define VBOX_MANAGE_HPP
 
 #include "Registers.hpp"
+#include "StackEntry.hpp"
 #include <string>
+#include <vector>
 
 namespace VBox
 {
     namespace Manage
     {
-        VM::Registers registers( const std::string & vmName );
+        VM::Registers                 registers( const std::string & vmName );
+        std::vector< VM::StackEntry > stack( const std::string & vmName );
     };
 }
 
