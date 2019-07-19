@@ -16,6 +16,7 @@
 		054DD92C22E0F33B00C5B225 /* Registers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD92A22E0F33B00C5B225 /* Registers.cpp */; };
 		054DD93522E21C7000C5B225 /* Manage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93322E21C7000C5B225 /* Manage.cpp */; };
 		054DD93822E2242800C5B225 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93622E2242800C5B225 /* String.cpp */; };
+		054DD93B22E22F9A00C5B225 /* UI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93922E22F9A00C5B225 /* UI.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -89,6 +90,8 @@
 		054DD93422E21C7000C5B225 /* Manage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Manage.hpp; sourceTree = "<group>"; };
 		054DD93622E2242800C5B225 /* String.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = String.cpp; sourceTree = "<group>"; };
 		054DD93722E2242800C5B225 /* String.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = String.hpp; sourceTree = "<group>"; };
+		054DD93922E22F9A00C5B225 /* UI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UI.cpp; sourceTree = "<group>"; };
+		054DD93A22E22F9A00C5B225 /* UI.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UI.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -258,6 +261,8 @@
 				054DD91E22E0C23B00C5B225 /* Screen.hpp */,
 				054DD93622E2242800C5B225 /* String.cpp */,
 				054DD93722E2242800C5B225 /* String.hpp */,
+				054DD93922E22F9A00C5B225 /* UI.cpp */,
+				054DD93A22E22F9A00C5B225 /* UI.hpp */,
 				054DD92922E0F32F00C5B225 /* VM */,
 			);
 			path = VBox;
@@ -344,6 +349,7 @@
 				054DD8DE22E0B7A900C5B225 /* main.cpp in Sources */,
 				054DD91F22E0C23B00C5B225 /* Screen.cpp in Sources */,
 				054DD92522E0D01400C5B225 /* Process.cpp in Sources */,
+				054DD93B22E22F9A00C5B225 /* UI.cpp in Sources */,
 				054DD92822E0F0EC00C5B225 /* Monitor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

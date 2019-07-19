@@ -22,30 +22,35 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "Arguments.hpp"
-#include "UI.hpp"
-#include <iostream>
-#include <cstdlib>
+#ifndef VBOX_UI_HPP
+#define VBOX_UI_HPP
 
-void ShowHelp( void );
+#include <string>
+#include <memory>
+#include <algorithm>
 
-int main( int argc, const char * argv[] )
+namespace VBox
 {
-    VBox::Arguments args( argc, argv );
-    
-    if( args.showHelp() || args.vmName().length() == 0 )
+    class UI
     {
-        ShowHelp();
-        
-        return EXIT_SUCCESS;
-    }
-    
-    VBox::UI( args.vmName() ).run();
-    
-    return EXIT_SUCCESS;
+        public:
+            
+            UI( const std::string & vmName );
+            UI( const UI & o );
+            UI( UI && o );
+            ~UI( void );
+            
+            UI & operator =( UI o );
+            
+            void run( void );
+            
+            friend void swap( UI & o1, UI & o2 );
+            
+        private:
+            
+            class IMPL;
+            std::unique_ptr< IMPL > impl;
+    };
 }
 
-void ShowHelp( void )
-{
-    std::cout << "Usage: vbox-monitor [OPTIONS] VM_NAME" << std::endl;
-}
+#endif /* VBOX_UI_HPP */
