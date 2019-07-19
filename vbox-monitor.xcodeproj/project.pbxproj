@@ -124,7 +124,7 @@
 		054DD8DC22E0B7A900C5B225 /* vbox-monitor */ = {
 			isa = PBXGroup;
 			children = (
-				054DD91722E0B99400C5B225 /* Classes */,
+				054DD91722E0B99400C5B225 /* VBox */,
 				054DD8DD22E0B7A900C5B225 /* main.cpp */,
 			);
 			path = "vbox-monitor";
@@ -243,7 +243,7 @@
 			path = Scripts;
 			sourceTree = "<group>";
 		};
-		054DD91722E0B99400C5B225 /* Classes */ = {
+		054DD91722E0B99400C5B225 /* VBox */ = {
 			isa = PBXGroup;
 			children = (
 				054DD91822E0B9A800C5B225 /* Arguments.cpp */,
@@ -260,7 +260,7 @@
 				054DD93722E2242800C5B225 /* String.hpp */,
 				054DD92922E0F32F00C5B225 /* VM */,
 			);
-			path = Classes;
+			path = VBox;
 			sourceTree = "<group>";
 		};
 		054DD92022E0C2B400C5B225 /* Frameworks */ = {
