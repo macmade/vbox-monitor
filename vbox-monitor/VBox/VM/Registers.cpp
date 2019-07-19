@@ -247,7 +247,7 @@ namespace VBox
             this->impl->_rip = value;
         }
         
-        std::map< std::string, uint64_t > Registers::all( void ) const
+        std::vector< std::pair< std::string, uint64_t > > Registers::all( void ) const
         {
             return
             {

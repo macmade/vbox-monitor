@@ -30,7 +30,7 @@
 #include <algorithm>
 #include <chrono>
 #include <ostream>
-#include <map>
+#include <vector>
 
 namespace VBox
 {
@@ -83,7 +83,7 @@ namespace VBox
                 void rsp( uint64_t value );
                 void rip( uint64_t value );
                 
-                std::map< std::string, uint64_t > all( void ) const;
+                std::vector< std::pair< std::string, uint64_t > > all( void ) const;
                 
                 friend void swap( Registers & o1, Registers & o2 );
                 

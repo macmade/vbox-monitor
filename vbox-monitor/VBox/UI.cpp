@@ -24,7 +24,9 @@
 
 #include "UI.hpp"
 #include "Screen.hpp"
+#include "String.hpp"
 #include "Monitor.hpp"
+#include <ncurses.h>
 
 namespace VBox
 {
@@ -36,6 +38,8 @@ namespace VBox
             IMPL( const IMPL & o );
             
             void _setup( void );
+            void _drawTitle( void );
+            void _drawRegisters( void );
             
             bool        _running;
             std::string _vmName;
@@ -73,6 +77,7 @@ namespace VBox
         }
         
         this->impl->_screen.start();
+        this->impl->_monitor.start();
     }
     
     void swap( UI & o1, UI & o2 )
@@ -105,7 +110,8 @@ namespace VBox
         (
             [ & ]( void )
             {
-                
+                this->_drawTitle();
+                this->_drawRegisters();
             }
         );
         
@@ -119,5 +125,54 @@ namespace VBox
                 }
             }
         );
+    }
+    
+    void UI::IMPL::_drawTitle( void )
+    {
+        ::move( 0, 0 );
+        ::hline( 0, static_cast< int >( this->_screen.width() ) );
+        ::move( 1, 0 );
+        ::printw( "VirtualBox: %s", this->_vmName.c_str() );
+        ::move( 2, 0 );
+        ::hline( 0, static_cast< int >( this->_screen.width() ) );
+    }
+    
+    void UI::IMPL::_drawRegisters( void )
+    {
+        ::WINDOW * win( ::newwin( 21, 27, 3, 0 ) );
+        
+        {
+            ::box( win, 0, 0 );
+            ::wmove( win, 1, 2 );
+            ::wprintw( win, "CPU Registers:" );
+            ::wmove( win, 2, 1 );
+            ::whline( win, 0, 25 );
+        }
+        
+        {
+            int y( 3 );
+            
+            for( const auto & p: this->_monitor.registers().all() )
+            {
+                std::string reg( String::toUpper( p.first ) );
+                
+                if( reg.length() == 2 )
+                {
+                    reg = " " + reg;
+                }
+                
+                reg += ": ";
+                reg += String::toHex( p.second );
+                
+                ::wmove( win, y, 2 );
+                ::wprintw( win, reg.c_str() );
+                
+                y++;
+            }
+        }
+        
+        this->_screen.refresh();
+        ::wrefresh( win );
+        ::delwin( win );
     }
 }
