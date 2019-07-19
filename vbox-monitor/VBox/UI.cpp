@@ -40,6 +40,8 @@ namespace VBox
             void _setup( void );
             void _drawTitle( void );
             void _drawRegisters( void );
+            void _drawStack( void );
+            void _drawMemory( void );
             
             bool        _running;
             std::string _vmName;
@@ -112,6 +114,8 @@ namespace VBox
             {
                 this->_drawTitle();
                 this->_drawRegisters();
+                this->_drawStack();
+                this->_drawMemory();
             }
         );
         
@@ -139,14 +143,14 @@ namespace VBox
     
     void UI::IMPL::_drawRegisters( void )
     {
-        ::WINDOW * win( ::newwin( 21, 27, 3, 0 ) );
+        ::WINDOW * win( ::newwin( 23, 30, 3, 0 ) );
         
         {
             ::box( win, 0, 0 );
             ::wmove( win, 1, 2 );
             ::wprintw( win, "CPU Registers:" );
             ::wmove( win, 2, 1 );
-            ::whline( win, 0, 25 );
+            ::whline( win, 0, 28 );
         }
         
         {
@@ -156,7 +160,7 @@ namespace VBox
             {
                 std::string reg( String::toUpper( p.first ) );
                 
-                if( reg.length() == 2 )
+                for( size_t i = reg.size(); i < 6; i++ )
                 {
                     reg = " " + reg;
                 }
@@ -169,6 +173,40 @@ namespace VBox
                 
                 y++;
             }
+        }
+        
+        this->_screen.refresh();
+        ::wrefresh( win );
+        ::delwin( win );
+    }
+    
+    void UI::IMPL::_drawStack( void )
+    {
+        ::WINDOW * win( ::newwin( 23, static_cast< int >( this->_screen.width() ) - 30, 3, 30 ) );
+        
+        {
+            ::box( win, 0, 0 );
+            ::wmove( win, 1, 2 );
+            ::wprintw( win, "Stack:" );
+            ::wmove( win, 2, 1 );
+            ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 32 );
+        }
+        
+        this->_screen.refresh();
+        ::wrefresh( win );
+        ::delwin( win );
+    }
+    
+    void UI::IMPL::_drawMemory( void )
+    {
+        ::WINDOW * win( ::newwin( static_cast< int >( this->_screen.height() ) - 26, static_cast< int >( this->_screen.width() ), 26, 0 ) );
+        
+        {
+            ::box( win, 0, 0 );
+            ::wmove( win, 1, 2 );
+            ::wprintw( win, "Memory:" );
+            ::wmove( win, 2, 1 );
+            ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 2 );
         }
         
         this->_screen.refresh();
