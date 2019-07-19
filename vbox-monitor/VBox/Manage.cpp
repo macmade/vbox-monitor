@@ -120,6 +120,49 @@ namespace VBox
                 return entries;
             }
             
+            {
+                std::vector< std::string > lines( String::lines( out.value() ) );
+                std::regex                 regex( "([0-9a-f]+):([0-9a-f]+) ([0-9a-f]+):([0-9a-f]+) ([0-9a-f]+):([0-9a-f]+) ([0-9a-f]+) ([0-9a-f]+) ([0-9a-f]+) ([0-9a-f]+) ([0-9a-f]+):([0-9a-f]+)" );
+                std::smatch                match;
+                
+                if( lines.size() < 2 )
+                {
+                    return entries;
+                }
+                
+                lines.erase( lines.begin() );
+                
+                for( const auto & line: lines )
+                {
+                    if( std::regex_match( line, match, regex ) )
+                    {
+                        uint32_t       u1(  String::fromHex< uint32_t >( match[  1 ] ) );
+                        uint32_t       u2(  String::fromHex< uint32_t >( match[  2 ] ) );
+                        uint32_t       u3(  String::fromHex< uint32_t >( match[  3 ] ) );
+                        uint32_t       u4(  String::fromHex< uint32_t >( match[  4 ] ) );
+                        uint32_t       u5(  String::fromHex< uint32_t >( match[  5 ] ) );
+                        uint32_t       u6(  String::fromHex< uint32_t >( match[  6 ] ) );
+                        uint32_t       u7(  String::fromHex< uint32_t >( match[  7 ] ) );
+                        uint32_t       u8(  String::fromHex< uint32_t >( match[  8 ] ) );
+                        uint32_t       u9(  String::fromHex< uint32_t >( match[  9 ] ) );
+                        uint32_t       u10( String::fromHex< uint32_t >( match[ 10 ] ) );
+                        uint32_t       u11( String::fromHex< uint32_t >( match[ 11 ] ) );
+                        uint32_t       u12( String::fromHex< uint32_t >( match[ 12 ] ) );
+                        VM::StackEntry entry;
+                        
+                        entry.bp(    { u1, u2 } );
+                        entry.retBP( { u3, u4 } );
+                        entry.retIP( { u5, u6 } );
+                        entry.arg0(  u7 );
+                        entry.arg1(  u8 );
+                        entry.arg2(  u9 );
+                        entry.arg3(  u10 );
+                        entry.ip(   { u11, u12 } );
+                        
+                        entries.push_back( entry );
+                    }
+                }
+            }
             return entries;
         }
     }

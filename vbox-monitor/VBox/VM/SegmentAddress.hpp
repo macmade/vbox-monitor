@@ -38,20 +38,22 @@ namespace VBox
             public:
                 
                 SegmentAddress( void );
-                SegmentAddress( uint64_t segment, uint64_t address );
+                SegmentAddress( uint32_t segment, uint32_t address );
                 SegmentAddress( const SegmentAddress & o );
                 SegmentAddress( SegmentAddress && o );
                 ~SegmentAddress( void );
                 
                 SegmentAddress & operator =( SegmentAddress o );
                 
-                uint64_t segment( void ) const;
-                uint64_t address( void ) const;
+                uint32_t segment( void ) const;
+                uint32_t address( void ) const;
                 
-                void segment( uint64_t value );
-                void address( uint64_t value );
+                void segment( uint32_t value );
+                void address( uint32_t value );
                 
                 friend void swap( SegmentAddress & o1, SegmentAddress & o2 );
+                
+                friend std::ostream & operator <<( std::ostream & os, const SegmentAddress & o );
                 
             private:
                 

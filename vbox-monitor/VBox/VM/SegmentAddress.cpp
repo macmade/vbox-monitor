@@ -23,6 +23,7 @@
  ******************************************************************************/
 
 #include "SegmentAddress.hpp"
+#include "String.hpp"
 
 namespace VBox
 {
@@ -32,18 +33,18 @@ namespace VBox
         {
             public:
                 
-                IMPL( uint64_t segment, uint64_t address );
+                IMPL( uint32_t segment, uint32_t address );
                 IMPL( const IMPL & o );
                 
-                uint64_t _segment;
-                uint64_t _address;
+                uint32_t _segment;
+                uint32_t _address;
         };
         
         SegmentAddress::SegmentAddress( void ):
             SegmentAddress( 0, 0 )
         {}
         
-        SegmentAddress::SegmentAddress( uint64_t segment, uint64_t address ):
+        SegmentAddress::SegmentAddress( uint32_t segment, uint32_t address ):
             impl( std::make_unique< IMPL >( segment, address ) )
         {}
         
@@ -65,22 +66,22 @@ namespace VBox
             return *( this );
         }
         
-        uint64_t SegmentAddress::segment( void ) const
+        uint32_t SegmentAddress::segment( void ) const
         {
             return this->impl->_segment;
         }
         
-        uint64_t SegmentAddress::address( void ) const
+        uint32_t SegmentAddress::address( void ) const
         {
             return this->impl->_address;
         }
         
-        void SegmentAddress::segment( uint64_t value )
+        void SegmentAddress::segment( uint32_t value )
         {
             this->impl->_segment = value;
         }
         
-        void SegmentAddress::address( uint64_t value )
+        void SegmentAddress::address( uint32_t value )
         {
             this->impl->_address = value;
         }
@@ -92,7 +93,16 @@ namespace VBox
             swap( o1.impl, o2.impl );
         }
         
-        SegmentAddress::IMPL::IMPL( uint64_t segment, uint64_t address ):
+        std::ostream & operator <<( std::ostream & os, const SegmentAddress & o )
+        {
+            os << String::toHex< uint32_t >( o.impl->_segment )
+               << ":"
+               << String::toHex< uint32_t >( o.impl->_address );
+            
+            return os;
+        }
+        
+        SegmentAddress::IMPL::IMPL( uint32_t segment, uint32_t address ):
             _segment( segment ),
             _address( address )
         {}

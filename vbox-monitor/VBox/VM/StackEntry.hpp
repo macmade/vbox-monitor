@@ -50,19 +50,19 @@ namespace VBox
                 SegmentAddress bp( void )    const;
                 SegmentAddress retBP( void ) const;
                 SegmentAddress retIP( void ) const;
-                uint64_t       arg0( void )  const;
-                uint64_t       arg1( void )  const;
-                uint64_t       arg2( void )  const;
-                uint64_t       arg3( void )  const;
+                uint32_t       arg0( void )  const;
+                uint32_t       arg1( void )  const;
+                uint32_t       arg2( void )  const;
+                uint32_t       arg3( void )  const;
                 SegmentAddress ip( void )    const;
                 
                 void bp(    const SegmentAddress & value );
                 void retBP( const SegmentAddress & value );
                 void retIP( const SegmentAddress & value );
-                void arg0(  uint64_t value );
-                void arg1(  uint64_t value );
-                void arg2(  uint64_t value );
-                void arg3(  uint64_t value );
+                void arg0(  uint32_t value );
+                void arg1(  uint32_t value );
+                void arg2(  uint32_t value );
+                void arg3(  uint32_t value );
                 void ip(    const SegmentAddress & value );
                 
                 friend void swap( StackEntry & o1, StackEntry & o2 );

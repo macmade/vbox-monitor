@@ -39,10 +39,10 @@ namespace VBox
                 SegmentAddress _bp;
                 SegmentAddress _retBP;
                 SegmentAddress _retIP;
-                uint64_t       _arg0;
-                uint64_t       _arg1;
-                uint64_t       _arg2;
-                uint64_t       _arg3;
+                uint32_t       _arg0;
+                uint32_t       _arg1;
+                uint32_t       _arg2;
+                uint32_t       _arg3;
                 SegmentAddress _ip;
         };
         
@@ -83,22 +83,22 @@ namespace VBox
             return this->impl->_retIP;
         }
         
-        uint64_t StackEntry::arg0( void ) const
+        uint32_t StackEntry::arg0( void ) const
         {
             return this->impl->_arg0;
         }
         
-        uint64_t StackEntry::arg1( void ) const
+        uint32_t StackEntry::arg1( void ) const
         {
             return this->impl->_arg1;
         }
         
-        uint64_t StackEntry::arg2( void ) const
+        uint32_t StackEntry::arg2( void ) const
         {
             return this->impl->_arg2;
         }
         
-        uint64_t StackEntry::arg3( void ) const
+        uint32_t StackEntry::arg3( void ) const
         {
             return this->impl->_arg3;
         }
@@ -123,22 +123,22 @@ namespace VBox
             this->impl->_retIP = value;
         }
         
-        void StackEntry::arg0( uint64_t value )
+        void StackEntry::arg0( uint32_t value )
         {
             this->impl->_arg0 = value;
         }
         
-        void StackEntry::arg1( uint64_t value )
+        void StackEntry::arg1( uint32_t value )
         {
             this->impl->_arg1 = value;
         }
         
-        void StackEntry::arg2( uint64_t value )
+        void StackEntry::arg2( uint32_t value )
         {
             this->impl->_arg2 = value;
         }
         
-        void StackEntry::arg3( uint64_t value )
+        void StackEntry::arg3( uint32_t value )
         {
             this->impl->_arg3 = value;
         }
@@ -157,7 +157,18 @@ namespace VBox
         
         std::ostream & operator <<( std::ostream & os, const StackEntry & o )
         {
-            ( void )o;
+            os << "{" << std::endl
+               << "    SS:BP:      " << o.impl->_bp                    << std::endl
+               << "    Ret SS:BP:  " << o.impl->_retBP                 << std::endl
+               << "    Ret CS:EIP: " << o.impl->_retIP                 << std::endl
+               << "    Arg 0:      " << String::toHex( o.impl->_arg0 ) << std::endl
+               << "    Arg 1:      " << String::toHex( o.impl->_arg1 ) << std::endl
+               << "    Arg 2:      " << String::toHex( o.impl->_arg2 ) << std::endl
+               << "    Arg 3:      " << String::toHex( o.impl->_arg3 ) << std::endl
+               << "    CS:EIP:     " << o.impl->_ip                    << std::endl
+               << "}";
+            
+            /* SS:BP     Ret SS:BP Ret CS:EIP    Arg0     Arg1     Arg2     Arg3     CS:EIP / Symbol [line] */
             
             return os;
         }
