@@ -47,23 +47,24 @@ namespace VBox
                 
                 Registers & operator =( Registers o );
                 
-                uint64_t rax( void ) const;
-                uint64_t rbx( void ) const;
-                uint64_t rcx( void ) const;
-                uint64_t rdx( void ) const;
-                uint64_t rdi( void ) const;
-                uint64_t rsi( void ) const;
-                uint64_t r8( void )  const;
-                uint64_t r9( void )  const;
-                uint64_t r10( void ) const;
-                uint64_t r11( void ) const;
-                uint64_t r12( void ) const;
-                uint64_t r13( void ) const;
-                uint64_t r14( void ) const;
-                uint64_t r15( void ) const;
-                uint64_t rbp( void ) const;
-                uint64_t rsp( void ) const;
-                uint64_t rip( void ) const;
+                uint64_t rax( void )    const;
+                uint64_t rbx( void )    const;
+                uint64_t rcx( void )    const;
+                uint64_t rdx( void )    const;
+                uint64_t rdi( void )    const;
+                uint64_t rsi( void )    const;
+                uint64_t r8( void )     const;
+                uint64_t r9( void )     const;
+                uint64_t r10( void )    const;
+                uint64_t r11( void )    const;
+                uint64_t r12( void )    const;
+                uint64_t r13( void )    const;
+                uint64_t r14( void )    const;
+                uint64_t r15( void )    const;
+                uint64_t rbp( void )    const;
+                uint64_t rsp( void )    const;
+                uint64_t rip( void )    const;
+                uint64_t eflags( void ) const;
                 
                 void rax( uint64_t value );
                 void rbx( uint64_t value );
@@ -82,6 +83,7 @@ namespace VBox
                 void rbp( uint64_t value );
                 void rsp( uint64_t value );
                 void rip( uint64_t value );
+                void eflags( uint64_t value );
                 
                 std::vector< std::pair< std::string, uint64_t > > all( void ) const;
                 

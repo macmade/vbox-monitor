@@ -53,6 +53,7 @@ namespace VBox
                 uint64_t _rbp;
                 uint64_t _rsp;
                 uint64_t _rip;
+                uint64_t _eflags;
         };
         
         Registers::Registers( void ):
@@ -162,6 +163,11 @@ namespace VBox
             return this->impl->_rip;
         }
         
+        uint64_t Registers::eflags( void ) const
+        {
+            return this->impl->_eflags;
+        }
+        
         void Registers::rax( uint64_t value )
         {
             this->impl->_rax = value;
@@ -247,27 +253,34 @@ namespace VBox
             this->impl->_rip = value;
         }
         
+        void Registers::eflags( uint64_t value )
+        {
+            this->impl->_eflags = value;
+        }
+        
         std::vector< std::pair< std::string, uint64_t > > Registers::all( void ) const
         {
             return
             {
-                { "rax", this->impl->_rax },
-                { "rbx", this->impl->_rbx },
-                { "rcx", this->impl->_rcx },
-                { "rdx", this->impl->_rdx },
-                { "rdi", this->impl->_rdi },
-                { "rsi", this->impl->_rsi },
-                { "r8",  this->impl->_r8 },
-                { "r9",  this->impl->_r9 },
-                { "r10", this->impl->_r10 },
-                { "r11", this->impl->_r11 },
-                { "r12", this->impl->_r12 },
-                { "r13", this->impl->_r13 },
-                { "r14", this->impl->_r14 },
-                { "r15", this->impl->_r15 },
-                { "rbp", this->impl->_rbp },
-                { "rsp", this->impl->_rsp },
-                { "rip", this->impl->_rip }
+                { "rax",    this->impl->_rax },
+                { "rbx",    this->impl->_rbx },
+                { "rcx",    this->impl->_rcx },
+                { "rdx",    this->impl->_rdx },
+                { "rdi",    this->impl->_rdi },
+                { "rsi",    this->impl->_rsi },
+                { "r8",     this->impl->_r8 },
+                { "r9",     this->impl->_r9 },
+                { "r10",    this->impl->_r10 },
+                { "r11",    this->impl->_r11 },
+                { "r12",    this->impl->_r12 },
+                { "r13",    this->impl->_r13 },
+                { "r14",    this->impl->_r14 },
+                { "r15",    this->impl->_r15 },
+                { "rbp",    this->impl->_rbp },
+                { "rsp",    this->impl->_rsp },
+                { "rip",    this->impl->_rip },
+                { "rip",    this->impl->_rip },
+                { "eflags", this->impl->_eflags }
             };
         }
         
@@ -282,50 +295,52 @@ namespace VBox
         {
             for( const auto & p: o.all() )
             {
-                os << p.first << ": " << String::toHex( p.second ) << std::endl;
+                os << String::toUpper( p.first ) << ": " << String::toHex( p.second ) << std::endl;
             }
             
             return os;
         }
         
         Registers::IMPL::IMPL( void ):
-            _rax( 0 ),
-            _rbx( 0 ),
-            _rcx( 0 ),
-            _rdx( 0 ),
-            _rdi( 0 ),
-            _rsi( 0 ),
-            _r8(  0 ),
-            _r9(  0 ),
-            _r10( 0 ),
-            _r11( 0 ),
-            _r12( 0 ),
-            _r13( 0 ),
-            _r14( 0 ),
-            _r15( 0 ),
-            _rbp( 0 ),
-            _rsp( 0 ),
-            _rip( 0 )
+            _rax(    0 ),
+            _rbx(    0 ),
+            _rcx(    0 ),
+            _rdx(    0 ),
+            _rdi(    0 ),
+            _rsi(    0 ),
+            _r8(     0 ),
+            _r9(     0 ),
+            _r10(    0 ),
+            _r11(    0 ),
+            _r12(    0 ),
+            _r13(    0 ),
+            _r14(    0 ),
+            _r15(    0 ),
+            _rbp(    0 ),
+            _rsp(    0 ),
+            _rip(    0 ),
+            _eflags( 0 )
         {}
         
         Registers::IMPL::IMPL( const IMPL & o ):
-            _rax( o._rax ),
-            _rbx( o._rbx ),
-            _rcx( o._rcx ),
-            _rdx( o._rdx ),
-            _rdi( o._rdi ),
-            _rsi( o._rsi ),
-            _r8(  o._r8 ),
-            _r9(  o._r9 ),
-            _r10( o._r10 ),
-            _r11( o._r11 ),
-            _r12( o._r12 ),
-            _r13( o._r13 ),
-            _r14( o._r14 ),
-            _r15( o._r15 ),
-            _rbp( o._rbp ),
-            _rsp( o._rsp ),
-            _rip( o._rip )
+            _rax(    o._rax ),
+            _rbx(    o._rbx ),
+            _rcx(    o._rcx ),
+            _rdx(    o._rdx ),
+            _rdi(    o._rdi ),
+            _rsi(    o._rsi ),
+            _r8(     o._r8 ),
+            _r9(     o._r9 ),
+            _r10(    o._r10 ),
+            _r11(    o._r11 ),
+            _r12(    o._r12 ),
+            _r13(    o._r13 ),
+            _r14(    o._r14 ),
+            _r15(    o._r15 ),
+            _rbp(    o._rbp ),
+            _rsp(    o._rsp ),
+            _rip(    o._rip ),
+            _eflags( o._eflags )
         {}
     }
 }

@@ -45,7 +45,7 @@ namespace VBox
                     "debugvm", vmName, "getregisters",
                     "rax", "rbx", "rcx", "rdx", "rdi", "rsi",
                     "r8",  "r9",  "r10", "r11", "r12", "r13",
-                    "r14", "r15", "rbp", "rsp", "rip"
+                    "r14", "r15", "rbp", "rsp", "rip", "eflags"
                 }
             );
             
@@ -71,23 +71,24 @@ namespace VBox
                             std::string name(  match[ 1 ] );
                             std::string value( match[ 2 ] );
                             
-                            if( name == "rax" ) { reg.rax( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rbx" ) { reg.rbx( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rcx" ) { reg.rcx( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rdx" ) { reg.rdx( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rdi" ) { reg.rdi( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rsi" ) { reg.rsi( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r8"  ) { reg.r8(  String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r9"  ) { reg.r9(  String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r10" ) { reg.r10( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r11" ) { reg.r11( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r12" ) { reg.r12( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r13" ) { reg.r13( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r14" ) { reg.r14( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r15" ) { reg.r15( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rbp" ) { reg.rbp( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rsp" ) { reg.rsp( String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rip" ) { reg.rip( String::fromHex< uint64_t >( value ) ); };
+                            if( name == "rax"    ) { reg.rax(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "rbx"    ) { reg.rbx(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "rcx"    ) { reg.rcx(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "rdx"    ) { reg.rdx(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "rdi"    ) { reg.rdi(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "rsi"    ) { reg.rsi(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "r8"     ) { reg.r8(     String::fromHex< uint64_t >( value ) ); };
+                            if( name == "r9"     ) { reg.r9(     String::fromHex< uint64_t >( value ) ); };
+                            if( name == "r10"    ) { reg.r10(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "r11"    ) { reg.r11(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "r12"    ) { reg.r12(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "r13"    ) { reg.r13(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "r14"    ) { reg.r14(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "r15"    ) { reg.r15(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "rbp"    ) { reg.rbp(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "rsp"    ) { reg.rsp(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "rip"    ) { reg.rip(    String::fromHex< uint64_t >( value ) ); };
+                            if( name == "eflags" ) { reg.eflags( String::fromHex< uint64_t >( value ) ); };
                         }
                     }
                 }
