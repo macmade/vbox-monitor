@@ -48,6 +48,21 @@ namespace VBox
             
             return v;
         }
+        
+        template< typename _T_ >
+        std::string toHex( _T_ v, typename std::enable_if< std::is_integral< _T_ >::value >::type * = 0 )
+        {
+            std::stringstream ss;
+            
+            ss << "0x"
+               << std::hex
+               << std::uppercase
+               << std::setfill( '0' )
+               << std::setw( sizeof( _T_ ) * 2 )
+               << v;
+            
+            return ss.str();
+        }
     }
 }
 
