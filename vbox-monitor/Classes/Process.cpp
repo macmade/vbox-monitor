@@ -25,9 +25,6 @@
 #include "Process.hpp"
 #include <unistd.h>
 
-
-    #include <iostream>
-    
 namespace VBox
 {
     class Process::IMPL
