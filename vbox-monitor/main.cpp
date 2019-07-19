@@ -22,10 +22,55 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
+#include "Arguments.hpp"
+#include "Screen.hpp"
+#include "Process.hpp"
+#include <iostream>
+#include <cstdlib>
+#include <ncurses.h>
+
+void ShowHelp( void );
+
 int main( int argc, const char * argv[] )
 {
-    ( void )argc;
-    ( void )argv;
+    VBox::Arguments args( argc, argv );
     
-    return 0;
+    if( args.showHelp() || args.vmName().length() == 0 )
+    {
+        ShowHelp();
+        
+        return EXIT_SUCCESS;
+    }
+    
+    {
+        VBox::Screen screen;
+        
+        screen.onUpdate
+        (
+            [ & ]( void )
+            {
+                
+            }
+        );
+        
+        screen.onKeyPress
+        (
+            [ & ]( int key )
+            {
+                if( key == 'q' )
+                {
+                    screen.stop();
+                }
+            }
+        );
+        
+        screen.start();
+    }
+    
+    return EXIT_SUCCESS;
+}
+
+void ShowHelp( void )
+{
+    std::cout << "Usage: vbox-monitor [OPTIONS] VM_NAME" << std::endl;
 }
