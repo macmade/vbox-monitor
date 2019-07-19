@@ -29,6 +29,8 @@
 #include <memory>
 #include <algorithm>
 #include <chrono>
+#include <ostream>
+#include <map>
 
 namespace VBox
 {
@@ -81,7 +83,11 @@ namespace VBox
                 void rsp( uint64_t value );
                 void rip( uint64_t value );
                 
+                std::map< std::string, uint64_t > all( void ) const;
+                
                 friend void swap( Registers & o1, Registers & o2 );
+                
+                friend std::ostream & operator <<( std::ostream & os, const Registers & o );
                 
             private:
                 

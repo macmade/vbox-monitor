@@ -23,6 +23,7 @@
  ******************************************************************************/
 
 #include "Registers.hpp"
+#include "String.hpp"
 
 namespace VBox
 {
@@ -246,11 +247,45 @@ namespace VBox
             this->impl->_rip = value;
         }
         
+        std::map< std::string, uint64_t > Registers::all( void ) const
+        {
+            return
+            {
+                { "rax", this->impl->_rax },
+                { "rbx", this->impl->_rbx },
+                { "rcx", this->impl->_rcx },
+                { "rdx", this->impl->_rdx },
+                { "rdi", this->impl->_rdi },
+                { "rsi", this->impl->_rsi },
+                { "r8",  this->impl->_r8 },
+                { "r9",  this->impl->_r9 },
+                { "r10", this->impl->_r10 },
+                { "r11", this->impl->_r11 },
+                { "r12", this->impl->_r12 },
+                { "r13", this->impl->_r13 },
+                { "r14", this->impl->_r14 },
+                { "r15", this->impl->_r15 },
+                { "rbp", this->impl->_rbp },
+                { "rsp", this->impl->_rsp },
+                { "rip", this->impl->_rip }
+            };
+        }
+        
         void swap( Registers & o1, Registers & o2 )
         {
             using std::swap;
             
             swap( o1.impl, o2.impl );
+        }
+        
+        std::ostream & operator <<( std::ostream & os, const Registers & o )
+        {
+            for( const auto & p: o.all() )
+            {
+                os << p.first << ": " << String::toHex( p.second ) << std::endl;
+            }
+            
+            return os;
         }
         
         Registers::IMPL::IMPL( void ):
