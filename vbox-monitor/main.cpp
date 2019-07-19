@@ -24,10 +24,8 @@
 
 #include "Arguments.hpp"
 #include "Screen.hpp"
-#include "Process.hpp"
 #include <iostream>
 #include <cstdlib>
-#include <ncurses.h>
 
 void ShowHelp( void );
 
