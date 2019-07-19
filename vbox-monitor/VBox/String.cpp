@@ -41,5 +41,23 @@ namespace VBox
             
             return v;
         }
+        
+        std::string toUpper( const std::string & s )
+        {
+            std::string upper( s );
+            
+            std::transform( upper.begin(), upper.end(), upper.begin(), ::toupper );
+            
+            return upper;
+        }
+        
+        std::string toLower( const std::string & s )
+        {
+            std::string lower( s );
+            
+            std::transform( lower.begin(), lower.end(), lower.begin(), ::tolower );
+            
+            return lower;
+        }
     }
 }

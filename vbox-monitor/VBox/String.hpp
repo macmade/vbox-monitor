@@ -37,6 +37,9 @@ namespace VBox
     {
         std::vector< std::string > lines( const std::string & s );
         
+        std::string toUpper( const std::string & s );
+        std::string toLower( const std::string & s );
+        
         template< typename _T_ >
         _T_ fromHex( const std::string & s, typename std::enable_if< std::is_integral< _T_ >::value >::type * = 0 )
         {
