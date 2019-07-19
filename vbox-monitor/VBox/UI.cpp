@@ -193,9 +193,14 @@ namespace VBox
         }
         
         {
-            for( const auto & stack: this->_monitor.stack() )
+            std::vector< VM::StackEntry > stack;
+            int                           y( 3 );
+            
+            for( size_t i = 0; i < stack.size(); i++ )
             {
-                ( void )stack;
+                ::wmove( win, y, 2 );
+                
+                y++;
             }
         }
         
