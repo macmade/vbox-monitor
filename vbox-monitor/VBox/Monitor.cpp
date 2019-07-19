@@ -43,7 +43,6 @@ namespace VBox
             std::chrono::milliseconds    _updateInterval;
             VM::Registers                _registers;
             mutable std::recursive_mutex _rmtx;
-            std::optional< std::thread > _thread;
             bool                         _stop;
     };
     
@@ -89,21 +88,6 @@ namespace VBox
     void Monitor::start( void )
     {
         std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
-        
-        if( this->impl->_thread.has_value() )
-        {
-            throw std::runtime_error( "Already started" );
-        }
-        
-        this->impl->_stop = false;
-        
-        this->impl->_thread = std::thread
-        (
-            [ this ]
-            {
-                this->impl->_update();
-            }
-        );
     }
     
     void Monitor::stop( void )
@@ -113,8 +97,6 @@ namespace VBox
             
             this->impl->_stop = true;
         }
-        
-        this->impl->_thread.value().join();
     }
     
     void swap( Monitor & o1, Monitor & o2 )
