@@ -18,6 +18,7 @@
 		054DD93822E2242800C5B225 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93622E2242800C5B225 /* String.cpp */; };
 		054DD93B22E22F9A00C5B225 /* UI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93922E22F9A00C5B225 /* UI.cpp */; };
 		054DD93E22E2596F00C5B225 /* StackEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93C22E2596F00C5B225 /* StackEntry.cpp */; };
+		054DD94122E25C3700C5B225 /* SegmentAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93F22E25C3700C5B225 /* SegmentAddress.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -95,6 +96,8 @@
 		054DD93A22E22F9A00C5B225 /* UI.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UI.hpp; sourceTree = "<group>"; };
 		054DD93C22E2596F00C5B225 /* StackEntry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StackEntry.cpp; sourceTree = "<group>"; };
 		054DD93D22E2596F00C5B225 /* StackEntry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StackEntry.hpp; sourceTree = "<group>"; };
+		054DD93F22E25C3700C5B225 /* SegmentAddress.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SegmentAddress.cpp; sourceTree = "<group>"; };
+		054DD94022E25C3700C5B225 /* SegmentAddress.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SegmentAddress.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,6 +289,8 @@
 				054DD92B22E0F33B00C5B225 /* Registers.hpp */,
 				054DD93C22E2596F00C5B225 /* StackEntry.cpp */,
 				054DD93D22E2596F00C5B225 /* StackEntry.hpp */,
+				054DD93F22E25C3700C5B225 /* SegmentAddress.cpp */,
+				054DD94022E25C3700C5B225 /* SegmentAddress.hpp */,
 			);
 			path = VM;
 			sourceTree = "<group>";
@@ -356,6 +361,7 @@
 				054DD91F22E0C23B00C5B225 /* Screen.cpp in Sources */,
 				054DD92522E0D01400C5B225 /* Process.cpp in Sources */,
 				054DD93B22E22F9A00C5B225 /* UI.cpp in Sources */,
+				054DD94122E25C3700C5B225 /* SegmentAddress.cpp in Sources */,
 				054DD92822E0F0EC00C5B225 /* Monitor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
