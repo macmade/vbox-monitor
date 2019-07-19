@@ -14,6 +14,8 @@
 		054DD92522E0D01400C5B225 /* Process.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD92322E0D01400C5B225 /* Process.cpp */; };
 		054DD92822E0F0EC00C5B225 /* Monitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD92622E0F0EC00C5B225 /* Monitor.cpp */; };
 		054DD92C22E0F33B00C5B225 /* Registers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD92A22E0F33B00C5B225 /* Registers.cpp */; };
+		054DD93522E21C7000C5B225 /* Manage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93322E21C7000C5B225 /* Manage.cpp */; };
+		054DD93822E2242800C5B225 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93622E2242800C5B225 /* String.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -83,6 +85,10 @@
 		054DD92722E0F0EC00C5B225 /* Monitor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Monitor.hpp; sourceTree = "<group>"; };
 		054DD92A22E0F33B00C5B225 /* Registers.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Registers.cpp; sourceTree = "<group>"; };
 		054DD92B22E0F33B00C5B225 /* Registers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Registers.hpp; sourceTree = "<group>"; };
+		054DD93322E21C7000C5B225 /* Manage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Manage.cpp; sourceTree = "<group>"; };
+		054DD93422E21C7000C5B225 /* Manage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Manage.hpp; sourceTree = "<group>"; };
+		054DD93622E2242800C5B225 /* String.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = String.cpp; sourceTree = "<group>"; };
+		054DD93722E2242800C5B225 /* String.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = String.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,15 +246,19 @@
 		054DD91722E0B99400C5B225 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				054DD92922E0F32F00C5B225 /* VM */,
-				054DD91D22E0C23B00C5B225 /* Screen.cpp */,
-				054DD91E22E0C23B00C5B225 /* Screen.hpp */,
 				054DD91822E0B9A800C5B225 /* Arguments.cpp */,
 				054DD91922E0B9A800C5B225 /* Arguments.hpp */,
-				054DD92322E0D01400C5B225 /* Process.cpp */,
-				054DD92422E0D01400C5B225 /* Process.hpp */,
+				054DD93322E21C7000C5B225 /* Manage.cpp */,
+				054DD93422E21C7000C5B225 /* Manage.hpp */,
 				054DD92622E0F0EC00C5B225 /* Monitor.cpp */,
 				054DD92722E0F0EC00C5B225 /* Monitor.hpp */,
+				054DD92322E0D01400C5B225 /* Process.cpp */,
+				054DD92422E0D01400C5B225 /* Process.hpp */,
+				054DD91D22E0C23B00C5B225 /* Screen.cpp */,
+				054DD91E22E0C23B00C5B225 /* Screen.hpp */,
+				054DD93622E2242800C5B225 /* String.cpp */,
+				054DD93722E2242800C5B225 /* String.hpp */,
+				054DD92922E0F32F00C5B225 /* VM */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -329,6 +339,8 @@
 			files = (
 				054DD92C22E0F33B00C5B225 /* Registers.cpp in Sources */,
 				054DD91A22E0B9A800C5B225 /* Arguments.cpp in Sources */,
+				054DD93822E2242800C5B225 /* String.cpp in Sources */,
+				054DD93522E21C7000C5B225 /* Manage.cpp in Sources */,
 				054DD8DE22E0B7A900C5B225 /* main.cpp in Sources */,
 				054DD91F22E0C23B00C5B225 /* Screen.cpp in Sources */,
 				054DD92522E0D01400C5B225 /* Process.cpp in Sources */,
