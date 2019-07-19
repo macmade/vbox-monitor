@@ -32,7 +32,7 @@ namespace VBox
         {
             public:
                 
-                IMPL( void );
+                IMPL( uint64_t segment, uint64_t address );
                 IMPL( const IMPL & o );
                 
                 uint64_t _segment;
@@ -40,7 +40,11 @@ namespace VBox
         };
         
         SegmentAddress::SegmentAddress( void ):
-            impl( std::make_unique< IMPL >() )
+            SegmentAddress( 0, 0 )
+        {}
+        
+        SegmentAddress::SegmentAddress( uint64_t segment, uint64_t address ):
+            impl( std::make_unique< IMPL >( segment, address ) )
         {}
         
         SegmentAddress::SegmentAddress( const SegmentAddress & o ):
@@ -88,9 +92,9 @@ namespace VBox
             swap( o1.impl, o2.impl );
         }
         
-        SegmentAddress::IMPL::IMPL( void ):
-            _segment( 0 ),
-            _address( 0 )
+        SegmentAddress::IMPL::IMPL( uint64_t segment, uint64_t address ):
+            _segment( segment ),
+            _address( address )
         {}
         
         SegmentAddress::IMPL::IMPL( const IMPL & o ):

@@ -25,6 +25,7 @@
 #ifndef VBOX_VM_STACK_ENTRY_HPP
 #define VBOX_VM_STACK_ENTRY_HPP
 
+#include "SegmentAddress.hpp"
 #include <cstdint>
 #include <memory>
 #include <algorithm>
@@ -45,6 +46,24 @@ namespace VBox
                 ~StackEntry( void );
                 
                 StackEntry & operator =( StackEntry o );
+                
+                SegmentAddress bp( void )    const;
+                SegmentAddress retBP( void ) const;
+                SegmentAddress retIP( void ) const;
+                uint64_t       arg0( void )  const;
+                uint64_t       arg1( void )  const;
+                uint64_t       arg2( void )  const;
+                uint64_t       arg3( void )  const;
+                SegmentAddress ip( void )    const;
+                
+                void bp(    const SegmentAddress & value );
+                void retBP( const SegmentAddress & value );
+                void retIP( const SegmentAddress & value );
+                void arg0(  uint64_t value );
+                void arg1(  uint64_t value );
+                void arg2(  uint64_t value );
+                void arg3(  uint64_t value );
+                void ip(    const SegmentAddress & value );
                 
                 friend void swap( StackEntry & o1, StackEntry & o2 );
                 

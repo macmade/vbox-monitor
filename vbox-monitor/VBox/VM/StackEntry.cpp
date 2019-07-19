@@ -35,6 +35,15 @@ namespace VBox
                 
                 IMPL( void );
                 IMPL( const IMPL & o );
+                
+                SegmentAddress _bp;
+                SegmentAddress _retBP;
+                SegmentAddress _retIP;
+                uint64_t       _arg0;
+                uint64_t       _arg1;
+                uint64_t       _arg2;
+                uint64_t       _arg3;
+                SegmentAddress _ip;
         };
         
         StackEntry::StackEntry( void ):
@@ -57,6 +66,86 @@ namespace VBox
             swap( *( this ), o );
             
             return *( this );
+        }
+        
+        SegmentAddress StackEntry::bp( void ) const
+        {
+            return this->impl->_bp;
+        }
+        
+        SegmentAddress StackEntry::retBP( void ) const
+        {
+            return this->impl->_retBP;
+        }
+        
+        SegmentAddress StackEntry::retIP( void ) const
+        {
+            return this->impl->_retIP;
+        }
+        
+        uint64_t StackEntry::arg0( void ) const
+        {
+            return this->impl->_arg0;
+        }
+        
+        uint64_t StackEntry::arg1( void ) const
+        {
+            return this->impl->_arg1;
+        }
+        
+        uint64_t StackEntry::arg2( void ) const
+        {
+            return this->impl->_arg2;
+        }
+        
+        uint64_t StackEntry::arg3( void ) const
+        {
+            return this->impl->_arg3;
+        }
+        
+        SegmentAddress StackEntry::ip( void ) const
+        {
+            return this->impl->_ip;
+        }
+        
+        void StackEntry::bp( const SegmentAddress & value )
+        {
+            this->impl->_bp = value;
+        }
+        
+        void StackEntry::retBP( const SegmentAddress & value )
+        {
+            this->impl->_retBP = value;
+        }
+        
+        void StackEntry::retIP( const SegmentAddress & value )
+        {
+            this->impl->_retIP = value;
+        }
+        
+        void StackEntry::arg0( uint64_t value )
+        {
+            this->impl->_arg0 = value;
+        }
+        
+        void StackEntry::arg1( uint64_t value )
+        {
+            this->impl->_arg1 = value;
+        }
+        
+        void StackEntry::arg2( uint64_t value )
+        {
+            this->impl->_arg2 = value;
+        }
+        
+        void StackEntry::arg3( uint64_t value )
+        {
+            this->impl->_arg3 = value;
+        }
+        
+        void StackEntry::ip( const SegmentAddress & value )
+        {
+            this->impl->_ip = value;
         }
         
         void swap( StackEntry & o1, StackEntry & o2 )

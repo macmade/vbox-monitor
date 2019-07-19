@@ -38,6 +38,7 @@ namespace VBox
             public:
                 
                 SegmentAddress( void );
+                SegmentAddress( uint64_t segment, uint64_t address );
                 SegmentAddress( const SegmentAddress & o );
                 SegmentAddress( SegmentAddress && o );
                 ~SegmentAddress( void );
