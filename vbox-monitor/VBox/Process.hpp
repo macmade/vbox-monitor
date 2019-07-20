@@ -51,9 +51,10 @@ namespace VBox
             void arguments( const std::vector< std::string > & args );
             void environment( const std::vector< std::string > & env );
             
-            std::optional< pid_t >      pid( void )                const;
+            std::optional< pid_t >       pid( void )               const;
             std::optional< int >         terminationStatus( void ) const;
             std::optional< std::string > output( void )            const;
+            std::optional< std::string > error( void )             const;
             
             void start( void );
             void waitUntilExit( void );

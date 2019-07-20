@@ -39,46 +39,54 @@ namespace VBox
             std::optional< pid_t >       _pid;
             std::optional< int >         _terminationStatus;
             std::optional< std::string > _output;
-            int                          _fd[ 2 ];
+            std::optional< std::string > _error;
+            int                          _fdOut[ 2 ];
+            int                          _fdErr[ 2 ];
     };
-    
+
     Process::Process( const std::string & path, const std::vector< std::string > & args, const std::vector< std::string > & env ):
         impl( std::make_unique< IMPL >( path, args, env ) )
     {}
-    
+
     Process::~Process( void )
-    {}
-    
+    {
+        if( this->impl->_terminationStatus.has_value() )
+        {
+            close( this->impl->_fdOut[ 0 ] );
+            close( this->impl->_fdErr[ 0 ] );
+        }
+    }
+
     std::vector< std::string > Process::arguments( void ) const
     {
         return this->impl->_args;
     }
-    
+
     std::vector< std::string > Process::environment( void ) const
     {
         return this->impl->_env;
     }
-    
+
     void Process::arguments( const std::vector< std::string > & args )
     {
         this->impl->_args = args;
     }
-    
+
     void Process::environment( const std::vector< std::string > & env )
     {
         this->impl->_env = env;
     }
-    
+
     std::optional< pid_t > Process::pid( void ) const
     {
         return this->impl->_pid;
     }
-    
+
     std::optional< int > Process::terminationStatus( void ) const
     {
         return this->impl->_terminationStatus;
     }
-    
+
     void Process::start( void )
     {
         if( this->impl->_pid.has_value() )
@@ -86,7 +94,7 @@ namespace VBox
             throw std::runtime_error( "Process has already been started" );
         }
         
-        if( pipe( this->impl->_fd ) == -1 )
+        if( pipe( this->impl->_fdOut ) == -1 || pipe( this->impl->_fdErr ) == -1 )
         {
             throw std::runtime_error( "Cannot create pipe" );
         }
@@ -99,16 +107,21 @@ namespace VBox
         }
         else if( this->impl->_pid.value() > 0 )
         {
-            close( this->impl->_fd[ 1 ] );
+            close( this->impl->_fdOut[ 1 ] );
+            close( this->impl->_fdErr[ 1 ] );
         }
         else if( this->impl->_pid.value() == 0 )
         {
             std::vector< char * > args;
             std::vector< char * > env;
             
-            dup2(  this->impl->_fd[ 1 ], STDOUT_FILENO );
-            close( this->impl->_fd[ 0 ] );
-            close( this->impl->_fd[ 1 ] );
+            dup2(  this->impl->_fdOut[ 1 ], STDOUT_FILENO );
+            close( this->impl->_fdOut[ 0 ] );
+            close( this->impl->_fdOut[ 1 ] );
+            
+            dup2(  this->impl->_fdErr[ 1 ], STDERR_FILENO );
+            close( this->impl->_fdErr[ 0 ] );
+            close( this->impl->_fdErr[ 1 ] );
             
             args.push_back( strdup( this->impl->_path.c_str() ) );
             
@@ -138,7 +151,7 @@ namespace VBox
             }
         }
     }
-    
+
     void Process::waitUntilExit( void )
     {
         int status;
@@ -152,7 +165,7 @@ namespace VBox
         
         this->impl->_terminationStatus = status;
     }
-    
+
     std::optional< std::string > Process::output( void ) const
     {
         if( this->impl->_terminationStatus.has_value() == false )
@@ -169,18 +182,42 @@ namespace VBox
         char        buf[ 1024 ];
         ssize_t     n;
         
-        while( ( n = read( this->impl->_fd[ 0 ], buf, sizeof( buf ) ) ) > 0 )
+        while( ( n = read( this->impl->_fdOut[ 0 ], buf, sizeof( buf ) ) ) > 0 )
         {
             out += buf;
         }
-        
-        close( this->impl->_fd[ 0 ] );
         
         this->impl->_output = out;
         
         return out;
     }
-    
+
+    std::optional< std::string > Process::error( void ) const
+    {
+        if( this->impl->_terminationStatus.has_value() == false )
+        {
+            return {};
+        }
+        
+        if( this->impl->_error.has_value() )
+        {
+            return this->impl->_error.value();
+        }
+        
+        std::string out;
+        char        buf[ 1024 ];
+        ssize_t     n;
+        
+        while( ( n = read( this->impl->_fdErr[ 0 ], buf, sizeof( buf ) ) ) > 0 )
+        {
+            out += buf;
+        }
+        
+        this->impl->_error = out;
+        
+        return out;
+    }
+
     Process::IMPL::IMPL( const std::string & path, const std::vector< std::string > & args, const std::vector< std::string > & env ):
         _path( path ),
         _args( args ),
