@@ -78,8 +78,8 @@ namespace VBox
             return;
         }
         
-        this->impl->_screen.start();
         this->impl->_monitor.start();
+        this->impl->_screen.start();
     }
     
     void swap( UI & o1, UI & o2 )
@@ -92,7 +92,7 @@ namespace VBox
     UI::IMPL::IMPL( const std::string & vmName ):
         _running( false ),
         _vmName( vmName ),
-        _monitor( vmName, std::chrono::milliseconds( 100 ) )
+        _monitor( vmName )
     {
         this->_setup();
     }
@@ -125,6 +125,7 @@ namespace VBox
             {
                 if( key == 'q' )
                 {
+                    this->_monitor.stop();
                     this->_screen.stop();
                 }
             }
@@ -143,13 +144,13 @@ namespace VBox
     
     void UI::IMPL::_drawRegisters( void )
     {
-        if( this->_screen.width() < 30 || this->_screen.height() < 26 )
+        if( this->_screen.width() < 30 || this->_screen.height() < 25 )
         {
             return;
         }
         
         {
-            ::WINDOW * win( ::newwin( 23, 30, 3, 0 ) );
+            ::WINDOW * win( ::newwin( 22, 30, 3, 0 ) );
             
             {
                 ::box( win, 0, 0 );
@@ -189,13 +190,13 @@ namespace VBox
     
     void UI::IMPL::_drawStack( void )
     {
-        if( this->_screen.width() < 190 || this->_screen.height() < 26 )
+        if( this->_screen.width() < 190 || this->_screen.height() < 25 )
         {
             return;
         }
         
         {
-            ::WINDOW * win( ::newwin( 23, static_cast< int >( this->_screen.width() ) - 30, 3, 30 ) );
+            ::WINDOW * win( ::newwin( 22, static_cast< int >( this->_screen.width() ) - 30, 3, 30 ) );
             
             {
                 ::box( win, 0, 0 );
@@ -218,7 +219,7 @@ namespace VBox
                 
                 for( size_t i = 0; i < stack.size(); i++ )
                 {
-                    if( i == 17 )
+                    if( i == 16 )
                     {
                         break;
                     }
@@ -256,7 +257,7 @@ namespace VBox
         }
         
         {
-            ::WINDOW * win( ::newwin( static_cast< int >( this->_screen.height() ) - 26, static_cast< int >( this->_screen.width() ), 26, 0 ) );
+            ::WINDOW * win( ::newwin( static_cast< int >( this->_screen.height() ) - 25, static_cast< int >( this->_screen.width() ), 25, 0 ) );
             
             {
                 ::box( win, 0, 0 );

@@ -279,7 +279,6 @@ namespace VBox
                 { "rbp",    this->impl->_rbp },
                 { "rsp",    this->impl->_rsp },
                 { "rip",    this->impl->_rip },
-                { "rip",    this->impl->_rip },
                 { "eflags", this->impl->_eflags }
             };
         }

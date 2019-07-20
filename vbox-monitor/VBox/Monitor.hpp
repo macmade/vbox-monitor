@@ -39,7 +39,7 @@ namespace VBox
     {
         public:
             
-            Monitor( const std::string & vmName, std::chrono::milliseconds updateInterval );
+            Monitor( const std::string & vmName );
             Monitor( const Monitor & o );
             Monitor( Monitor && o );
             ~Monitor( void );
