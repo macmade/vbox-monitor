@@ -48,6 +48,9 @@ namespace VBox
             std::string _vmName;
             Screen      _screen;
             Monitor     _monitor;
+            size_t      _memoryOffset;
+            size_t      _memoryBytesPerLine;
+            size_t      _totalMemory;
     };
     
     UI::UI( const std::string & vmName ):
@@ -91,18 +94,24 @@ namespace VBox
     }
     
     UI::IMPL::IMPL( const std::string & vmName ):
-        _running( false ),
-        _vmName( vmName ),
-        _monitor( vmName )
+        _running(            false ),
+        _vmName(             vmName ),
+        _monitor(            vmName ),
+        _memoryOffset(       0 ),
+        _memoryBytesPerLine( 0 ),
+        _totalMemory(        0 )
     {
         this->_setup();
     }
     
     UI::IMPL::IMPL( const IMPL & o ):
-        _running( false ),
-        _vmName( o._vmName ),
-        _screen( o._screen ),
-        _monitor( o._monitor )
+        _running(            false ),
+        _vmName(             o._vmName ),
+        _screen(             o._screen ),
+        _monitor(            o._monitor ),
+        _memoryOffset(       o._memoryOffset ),
+        _memoryBytesPerLine( o._memoryBytesPerLine ),
+        _totalMemory(        o._totalMemory )
     {
         this->_setup();
     }
@@ -128,6 +137,24 @@ namespace VBox
                 {
                     this->_monitor.stop();
                     this->_screen.stop();
+                }
+                else if( key == KEY_DOWN )
+                {
+                    if( ( this->_memoryOffset + this->_memoryBytesPerLine ) < this->_totalMemory )
+                    {
+                        this->_memoryOffset += this->_memoryBytesPerLine;
+                    }
+                }
+                else if( key == KEY_UP )
+                {
+                    if( this->_memoryOffset > this->_memoryBytesPerLine )
+                    {
+                        this->_memoryOffset -= this->_memoryBytesPerLine;
+                    }
+                    else
+                    {
+                        this->_memoryOffset = 0;
+                    }
                 }
             }
         );
@@ -281,23 +308,23 @@ namespace VBox
                     int    y( 2 );
                     size_t cols(  this->_screen.width()  - 4 );
                     size_t lines( this->_screen.height() - 29 );
-                    size_t bytesPerLine( 0 );
                     
-                    bytesPerLine = ( cols / 4 ) - 5;
+                    this->_totalMemory        = dump->memorySize();
+                    this->_memoryBytesPerLine = ( cols / 4 ) - 5;
                     
                     {
-                        size_t                 size(  bytesPerLine * lines );
-                        size_t                 offset( 0 );
+                        size_t                 size(  this->_memoryBytesPerLine * lines );
+                        size_t                 offset( this->_memoryOffset );
                         std::vector< uint8_t > mem(   dump->readMemory( offset, size ) );
                         
                         for( size_t i = 0; i < mem.size(); i++ )
                         {
-                            if( i % bytesPerLine == 0 )
+                            if( i % this->_memoryBytesPerLine == 0 )
                             {
                                 ::wmove( win, ++y, 2 );
                                 ::wprintw( win, "%016X: ", offset );
                                 
-                                offset += bytesPerLine;
+                                offset += this->_memoryBytesPerLine;
                             }
                             
                             ::wprintw( win, "%02X ", numeric_cast< int >( mem[ i ] ) );
@@ -305,16 +332,16 @@ namespace VBox
                         
                         y = 2;
                         
-                        ::wmove( win, y + 1, numeric_cast< int >( bytesPerLine * 3 ) + 4 + 16 );
+                        ::wmove( win, y + 1, numeric_cast< int >( this->_memoryBytesPerLine * 3 ) + 4 + 16 );
                         ::wvline( win, 0, numeric_cast< int >( lines ) );
                         
                         for( size_t i = 0; i < mem.size(); i++ )
                         {
                             char c = static_cast< char >( mem[ i ] );
                             
-                            if( i % bytesPerLine == 0 )
+                            if( i % this->_memoryBytesPerLine == 0 )
                             {
-                                ::wmove( win, ++y, numeric_cast< int >( bytesPerLine * 3 ) + 4 + 18 );
+                                ::wmove( win, ++y, numeric_cast< int >( this->_memoryBytesPerLine * 3 ) + 4 + 18 );
                             }
                             
                             if( isprint( c ) == false || isspace( c ) )
