@@ -30,6 +30,7 @@
 #include <algorithm>
 #include <chrono>
 #include <vector>
+#include <optional>
 #include "Registers.hpp"
 #include "StackEntry.hpp"
 
@@ -46,8 +47,8 @@ namespace VBox
             
             Monitor & operator =( Monitor o );
             
-            VM::Registers                 registers( void ) const;
-            std::vector< VM::StackEntry > stack( void )     const;
+            std::optional< VM::Registers > registers( void ) const;
+            std::vector< VM::StackEntry >  stack( void )     const;
             
             void start( void );
             void stop( void );

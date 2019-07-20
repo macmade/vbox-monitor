@@ -42,13 +42,13 @@ namespace VBox
             void _updateStack( void );
             void _updateMemory( void );
             
-            std::string                   _vmName;
-            VM::Registers                 _registers;
-            std::vector< VM::StackEntry > _stack;
-            mutable std::recursive_mutex  _rmtx;
-            bool                          _running;
-            bool                          _stop;
-            std::vector< std::thread >    _threads;
+            std::string                    _vmName;
+            std::optional< VM::Registers > _registers;
+            std::vector< VM::StackEntry >  _stack;
+            mutable std::recursive_mutex   _rmtx;
+            bool                           _running;
+            bool                           _stop;
+            std::vector< std::thread >     _threads;
     };
     
     Monitor::Monitor( const std::string & vmName ):
@@ -83,7 +83,7 @@ namespace VBox
         }
     }
     
-    VM::Registers Monitor::registers( void ) const
+    std::optional< VM::Registers > Monitor::registers( void ) const
     {
         std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
         
@@ -191,7 +191,7 @@ namespace VBox
             }
             
             {
-                VM::Registers regs( Manage::registers( this->_vmName ) );
+                std::optional< VM::Registers > regs( Manage::registers( this->_vmName ) );
                 
                 {
                     std::lock_guard< std::recursive_mutex > l( this->_rmtx );

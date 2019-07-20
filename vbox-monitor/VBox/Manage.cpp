@@ -33,7 +33,7 @@ namespace VBox
 {
     namespace Manage
     {
-        VM::Registers registers( const std::string & vmName )
+        std::optional< VM::Registers > registers( const std::string & vmName )
         {
             VM::Registers                reg;
             Process                      proc( "/usr/local/bin/VBoxManage" );
@@ -56,17 +56,20 @@ namespace VBox
             
             if( out.has_value() == false )
             {
-                return reg;
+                return {};
             }
             
             {
                 std::regex  regex( "([^ ]+) = (0x[0-9a-f]+)" );
                 std::smatch match;
+                bool        matched( false );
                 
                 for( const auto & line: String::lines( out.value() ) )
                 {
                     if( std::regex_match( line, match, regex ) )
                     {
+                        matched = true;
+                        
                         {
                             std::string name(  match[ 1 ] );
                             std::string value( match[ 2 ] );
@@ -91,6 +94,11 @@ namespace VBox
                             if( name == "eflags" ) { reg.eflags( String::fromHex< uint64_t >( value ) ); };
                         }
                     }
+                }
+                
+                if( matched == false )
+                {
+                    return {};
                 }
             }
             

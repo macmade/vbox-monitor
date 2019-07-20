@@ -145,6 +145,8 @@ namespace VBox
     
     void UI::IMPL::_drawRegisters( void )
     {
+        std::optional< VM::Registers > regs( this->_monitor.registers() );
+        
         if( this->_screen.width() < 30 || this->_screen.height() < 25 )
         {
             return;
@@ -161,10 +163,11 @@ namespace VBox
                 ::whline( win, 0, 28 );
             }
             
+            if( regs.has_value() )
             {
                 int y( 3 );
                 
-                for( const auto & p: this->_monitor.registers().all() )
+                for( const auto & p: regs.value().all() )
                 {
                     std::string reg( String::toUpper( p.first ) );
                     
