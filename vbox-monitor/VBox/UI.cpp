@@ -317,7 +317,7 @@ namespace VBox
                                 ::wmove( win, ++y, numeric_cast< int >( bytesPerLine * 3 ) + 4 + 18 );
                             }
                             
-                            if( isprint( c ) == false )
+                            if( isprint( c ) == false || isspace( c ) )
                             {
                                 c = '.';
                             }
