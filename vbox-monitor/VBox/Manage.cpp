@@ -175,13 +175,24 @@ namespace VBox
             return entries;
         }
         
-        std::optional< VM::CoreDump > memory( const std::string & vmName )
+        std::shared_ptr< VM::CoreDump > dump( const std::string & vmName, const std::string & path )
         {
             try
             {
-                ( void )vmName;
+                Process proc( "/usr/local/bin/VBoxManage" );
                 
-                return {};
+                proc.arguments
+                (
+                    {
+                        "debugvm", vmName, "dumpvmcore",
+                        "--filename=" + path,
+                    }
+                );
+                
+                proc.start();
+                proc.waitUntilExit();
+                
+                return std::make_shared< VM::CoreDump >( path );
             }
             catch( ... )
             {

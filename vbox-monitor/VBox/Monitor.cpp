@@ -42,13 +42,14 @@ namespace VBox
             void _updateStack( void );
             void _updateMemory( void );
             
-            std::string                    _vmName;
-            std::optional< VM::Registers > _registers;
-            std::vector< VM::StackEntry >  _stack;
-            mutable std::recursive_mutex   _rmtx;
-            bool                           _running;
-            bool                           _stop;
-            std::vector< std::thread >     _threads;
+            std::string                     _vmName;
+            std::optional< VM::Registers >  _registers;
+            std::vector< VM::StackEntry >   _stack;
+            std::shared_ptr< VM::CoreDump > _dump;
+            mutable std::recursive_mutex    _rmtx;
+            bool                            _running;
+            bool                            _stop;
+            std::vector< std::thread >      _threads;
     };
     
     Monitor::Monitor( const std::string & vmName ):
@@ -95,6 +96,13 @@ namespace VBox
         std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
         
         return this->impl->_stack;
+    }
+    
+    std::shared_ptr< VM::CoreDump > Monitor::dump( void ) const
+    {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
+        return this->impl->_dump;
     }
     
     void Monitor::start( void )
@@ -171,6 +179,7 @@ namespace VBox
         _vmName(         o._vmName ),
         _registers(      o._registers ),
         _stack(          o._stack ),
+        _dump(           o._dump ),
         _running(        false ),
         _stop(           false )
     {
@@ -229,6 +238,15 @@ namespace VBox
     
     void Monitor::IMPL::_updateMemory( void )
     {
+        #ifdef __clang__
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        #endif
+        std::string tmp( std::tmpnam( nullptr ) );
+        #ifdef __clang__
+        #pragma clang diagnostic pop
+        #endif
+        
         while( 1 )
         {
             {
@@ -237,6 +255,16 @@ namespace VBox
                 if( this->_stop )
                 {
                     return;
+                }
+            }
+            
+            {
+                std::shared_ptr< VM::CoreDump > dump( Manage::dump( this->_vmName, tmp ) );
+                
+                {
+                    std::lock_guard< std::recursive_mutex > l( this->_rmtx );
+                    
+                    this->_dump = dump;
                 }
             }
         }

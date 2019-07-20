@@ -145,8 +145,6 @@ namespace VBox
     
     void UI::IMPL::_drawRegisters( void )
     {
-        std::optional< VM::Registers > regs( this->_monitor.registers() );
-        
         if( this->_screen.width() < 30 || this->_screen.height() < 25 )
         {
             return;
@@ -163,26 +161,30 @@ namespace VBox
                 ::whline( win, 0, 28 );
             }
             
-            if( regs.has_value() )
             {
-                int y( 3 );
+                std::optional< VM::Registers > regs( this->_monitor.registers() );
                 
-                for( const auto & p: regs.value().all() )
+                if( regs.has_value() )
                 {
-                    std::string reg( String::toUpper( p.first ) );
+                    int y( 3 );
                     
-                    for( size_t i = reg.size(); i < 6; i++ )
+                    for( const auto & p: regs.value().all() )
                     {
-                        reg = " " + reg;
+                        std::string reg( String::toUpper( p.first ) );
+                        
+                        for( size_t i = reg.size(); i < 6; i++ )
+                        {
+                            reg = " " + reg;
+                        }
+                        
+                        reg += ": ";
+                        reg += String::toHex( p.second );
+                        
+                        ::wmove( win, y, 2 );
+                        ::wprintw( win, reg.c_str() );
+                        
+                        y++;
                     }
-                    
-                    reg += ": ";
-                    reg += String::toHex( p.second );
-                    
-                    ::wmove( win, y, 2 );
-                    ::wprintw( win, reg.c_str() );
-                    
-                    y++;
                 }
             }
             
@@ -269,6 +271,18 @@ namespace VBox
                 ::wprintw( win, "Memory:" );
                 ::wmove( win, 2, 1 );
                 ::whline( win, 0, numeric_cast< int >( this->_screen.width() ) - 2 );
+            }
+            
+            {
+                std::shared_ptr< VM::CoreDump > dump( this->_monitor.dump() );
+                
+                if( dump != nullptr )
+                {
+                    int y( 3 );
+                    
+                    ::wmove( win, y, 2 );
+                    ::wprintw( win, "Core dump is available..." );
+                }
             }
             
             this->_screen.refresh();

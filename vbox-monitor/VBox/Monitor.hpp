@@ -33,6 +33,7 @@
 #include <optional>
 #include "Registers.hpp"
 #include "StackEntry.hpp"
+#include "CoreDump.hpp"
 
 namespace VBox
 {
@@ -47,8 +48,9 @@ namespace VBox
             
             Monitor & operator =( Monitor o );
             
-            std::optional< VM::Registers > registers( void ) const;
-            std::vector< VM::StackEntry >  stack( void )     const;
+            std::optional< VM::Registers >  registers( void ) const;
+            std::vector< VM::StackEntry >   stack( void )     const;
+            std::shared_ptr< VM::CoreDump > dump( void )      const;
             
             void start( void );
             void stop( void );

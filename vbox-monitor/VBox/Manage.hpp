@@ -36,9 +36,9 @@ namespace VBox
 {
     namespace Manage
     {
-        std::optional< VM::Registers > registers( const std::string & vmName );
-        std::vector< VM::StackEntry >  stack( const std::string & vmName );
-        std::optional< VM::CoreDump >  memory( const std::string & vmName );
+        std::optional< VM::Registers >  registers( const std::string & vmName );
+        std::vector< VM::StackEntry >   stack( const std::string & vmName );
+        std::shared_ptr< VM::CoreDump > dump( const std::string & vmName, const std::string & path );
     };
 }
 
