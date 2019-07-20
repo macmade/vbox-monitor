@@ -143,111 +143,132 @@ namespace VBox
     
     void UI::IMPL::_drawRegisters( void )
     {
-        ::WINDOW * win( ::newwin( 23, 30, 3, 0 ) );
-        
+        if( this->_screen.width() < 30 || this->_screen.height() < 26 )
         {
-            ::box( win, 0, 0 );
-            ::wmove( win, 1, 2 );
-            ::wprintw( win, "CPU Registers:" );
-            ::wmove( win, 2, 1 );
-            ::whline( win, 0, 28 );
+            return;
         }
         
         {
-            int y( 3 );
+            ::WINDOW * win( ::newwin( 23, 30, 3, 0 ) );
             
-            for( const auto & p: this->_monitor.registers().all() )
             {
-                std::string reg( String::toUpper( p.first ) );
-                
-                for( size_t i = reg.size(); i < 6; i++ )
-                {
-                    reg = " " + reg;
-                }
-                
-                reg += ": ";
-                reg += String::toHex( p.second );
-                
-                ::wmove( win, y, 2 );
-                ::wprintw( win, reg.c_str() );
-                
-                y++;
+                ::box( win, 0, 0 );
+                ::wmove( win, 1, 2 );
+                ::wprintw( win, "CPU Registers:" );
+                ::wmove( win, 2, 1 );
+                ::whline( win, 0, 28 );
             }
+            
+            {
+                int y( 3 );
+                
+                for( const auto & p: this->_monitor.registers().all() )
+                {
+                    std::string reg( String::toUpper( p.first ) );
+                    
+                    for( size_t i = reg.size(); i < 6; i++ )
+                    {
+                        reg = " " + reg;
+                    }
+                    
+                    reg += ": ";
+                    reg += String::toHex( p.second );
+                    
+                    ::wmove( win, y, 2 );
+                    ::wprintw( win, reg.c_str() );
+                    
+                    y++;
+                }
+            }
+            
+            this->_screen.refresh();
+            ::wrefresh( win );
+            ::delwin( win );
         }
-        
-        this->_screen.refresh();
-        ::wrefresh( win );
-        ::delwin( win );
     }
     
     void UI::IMPL::_drawStack( void )
     {
-        ::WINDOW * win( ::newwin( 23, static_cast< int >( this->_screen.width() ) - 30, 3, 30 ) );
-        
+        if( this->_screen.width() < 190 || this->_screen.height() < 26 )
         {
-            ::box( win, 0, 0 );
-            ::wmove( win, 1, 2 );
-            ::wprintw( win, "Stack:" );
-            ::wmove( win, 2, 1 );
-            ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 32 );
+            return;
         }
         
         {
-            ::wmove( win, 3, 2 );
-            ::wprintw( win, "SS:BP:                | Ret SS:BP:            | Ret CS:EIP:           | Arg 0:     | Arg 1:     | Arg 2:     | Arg 3:     | CS:EIP:" );
-            ::wmove( win, 4, 1 );
-            ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 32 );
-        }
-        
-        {
-            std::vector< VM::StackEntry > stack( this->_monitor.stack() );
-            int                           y( 5 );
+            ::WINDOW * win( ::newwin( 23, static_cast< int >( this->_screen.width() ) - 30, 3, 30 ) );
             
-            for( size_t i = 0; i < stack.size(); i++ )
             {
-                if( i == 17 )
-                {
-                    break;
-                }
-                
-                ::wmove( win, y, 2 );
-                ::wprintw
-                (
-                    win,
-                    "%s | %s | %s | %s | %s | %s | %s | %s",
-                    stack[ i ].bp().string().c_str(),
-                    stack[ i ].retBP().string().c_str(),
-                    stack[ i ].retIP().string().c_str(),
-                    String::toHex( stack[ i ].arg0() ).c_str(),
-                    String::toHex( stack[ i ].arg1() ).c_str(),
-                    String::toHex( stack[ i ].arg2() ).c_str(),
-                    String::toHex( stack[ i ].arg3() ).c_str(),
-                    stack[ i ].ip().string().c_str()
-                );
-                
-                y++;
+                ::box( win, 0, 0 );
+                ::wmove( win, 1, 2 );
+                ::wprintw( win, "Stack:" );
+                ::wmove( win, 2, 1 );
+                ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 32 );
             }
+            
+            {
+                ::wmove( win, 3, 2 );
+                ::wprintw( win, "SS:BP:                | Ret SS:BP:            | Ret CS:EIP:           | Arg 0:     | Arg 1:     | Arg 2:     | Arg 3:     | CS:EIP:" );
+                ::wmove( win, 4, 1 );
+                ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 32 );
+            }
+            
+            {
+                std::vector< VM::StackEntry > stack( this->_monitor.stack() );
+                int                           y( 5 );
+                
+                for( size_t i = 0; i < stack.size(); i++ )
+                {
+                    if( i == 17 )
+                    {
+                        break;
+                    }
+                    
+                    ::wmove( win, y, 2 );
+                    ::wprintw
+                    (
+                        win,
+                        "%s | %s | %s | %s | %s | %s | %s | %s",
+                        stack[ i ].bp().string().c_str(),
+                        stack[ i ].retBP().string().c_str(),
+                        stack[ i ].retIP().string().c_str(),
+                        String::toHex( stack[ i ].arg0() ).c_str(),
+                        String::toHex( stack[ i ].arg1() ).c_str(),
+                        String::toHex( stack[ i ].arg2() ).c_str(),
+                        String::toHex( stack[ i ].arg3() ).c_str(),
+                        stack[ i ].ip().string().c_str()
+                    );
+                    
+                    y++;
+                }
+            }
+            
+            this->_screen.refresh();
+            ::wrefresh( win );
+            ::delwin( win );
         }
-        
-        this->_screen.refresh();
-        ::wrefresh( win );
-        ::delwin( win );
     }
     
     void UI::IMPL::_drawMemory( void )
     {
-        ::WINDOW * win( ::newwin( static_cast< int >( this->_screen.height() ) - 26, static_cast< int >( this->_screen.width() ), 26, 0 ) );
-        
+        if( this->_screen.height() < 35 )
         {
-            ::box( win, 0, 0 );
-            ::wmove( win, 1, 2 );
-            ::wprintw( win, "Memory:" );
-            ::wmove( win, 2, 1 );
-            ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 2 );
+            return;
         }
         
-        this->_screen.refresh();
-        ::wrefresh( win );
-        ::delwin( win );
+        {
+            ::WINDOW * win( ::newwin( static_cast< int >( this->_screen.height() ) - 26, static_cast< int >( this->_screen.width() ), 26, 0 ) );
+            
+            {
+                ::box( win, 0, 0 );
+                ::wmove( win, 1, 2 );
+                ::wprintw( win, "Memory:" );
+                ::wmove( win, 2, 1 );
+                ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 2 );
+            }
+            
+            this->_screen.refresh();
+            ::wrefresh( win );
+            ::delwin( win );
+        }
     }
 }
