@@ -257,7 +257,7 @@ namespace VBox
     
     void UI::IMPL::_drawMemory( void )
     {
-        if( this->_screen.height() < 35 )
+        if( this->_screen.width() < 30 || this->_screen.height() < 35 )
         {
             return;
         }
@@ -276,12 +276,55 @@ namespace VBox
             {
                 std::shared_ptr< VM::CoreDump > dump( this->_monitor.dump() );
                 
-                if( dump != nullptr )
+                if( dump != nullptr && dump->memorySize() > 0 )
                 {
-                    int y( 3 );
+                    int    y( 2 );
+                    size_t cols(  this->_screen.width()  - 4 );
+                    size_t lines( this->_screen.height() - 29 );
+                    size_t bytesPerLine( 0 );
                     
-                    ::wmove( win, y, 2 );
-                    ::wprintw( win, "Core dump is available..." );
+                    bytesPerLine = ( cols / 4 ) - 5;
+                    
+                    {
+                        size_t                 size(  bytesPerLine * lines );
+                        size_t                 offset( 0 );
+                        std::vector< uint8_t > mem(   dump->readMemory( offset, size ) );
+                        
+                        for( size_t i = 0; i < mem.size(); i++ )
+                        {
+                            if( i % bytesPerLine == 0 )
+                            {
+                                ::wmove( win, ++y, 2 );
+                                ::wprintw( win, "%016X: ", offset );
+                                
+                                offset += bytesPerLine;
+                            }
+                            
+                            ::wprintw( win, "%02X ", numeric_cast< int >( mem[ i ] ) );
+                        }
+                        
+                        y = 2;
+                        
+                        ::wmove( win, y + 1, numeric_cast< int >( bytesPerLine * 3 ) + 4 + 16 );
+                        ::wvline( win, 0, numeric_cast< int >( lines ) );
+                        
+                        for( size_t i = 0; i < mem.size(); i++ )
+                        {
+                            char c = static_cast< char >( mem[ i ] );
+                            
+                            if( i % bytesPerLine == 0 )
+                            {
+                                ::wmove( win, ++y, numeric_cast< int >( bytesPerLine * 3 ) + 4 + 18 );
+                            }
+                            
+                            if( isprint( c ) == false )
+                            {
+                                c = '.';
+                            }
+                            
+                            ::wprintw( win, "%c", c );
+                        }
+                    }
                 }
             }
             
