@@ -86,6 +86,11 @@ namespace VBox
             this->impl->_address = value;
         }
         
+        std::string SegmentAddress::string( void ) const
+        {
+            return String::toHex( this->impl->_segment ) + ":" + String::toHex( this->impl->_address );
+        }
+        
         void swap( SegmentAddress & o1, SegmentAddress & o2 )
         {
             using std::swap;

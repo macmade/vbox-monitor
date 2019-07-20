@@ -168,17 +168,25 @@ namespace VBox
                << "    CS:EIP:     " << o.impl->_ip                    << std::endl
                << "}";
             
-            /* SS:BP     Ret SS:BP Ret CS:EIP    Arg0     Arg1     Arg2     Arg3     CS:EIP / Symbol [line] */
-            
             return os;
         }
         
-        StackEntry::IMPL::IMPL( void )
+        StackEntry::IMPL::IMPL( void ):
+            _arg0( 0 ),
+            _arg1( 0 ),
+            _arg2( 0 ),
+            _arg3( 0 )
         {}
         
-        StackEntry::IMPL::IMPL( const IMPL & o )
-        {
-            ( void )o;
-        }
+        StackEntry::IMPL::IMPL( const IMPL & o ):
+            _bp(    o._bp ),
+            _retBP( o._retBP ),
+            _retIP( o._retIP ),
+            _arg0(  o._arg0 ),
+            _arg1(  o._arg1 ),
+            _arg2(  o._arg2 ),
+            _arg3(  o._arg3 ),
+            _ip(    o._ip )
+        {}
     }
 }

@@ -193,12 +193,37 @@ namespace VBox
         }
         
         {
-            std::vector< VM::StackEntry > stack;
-            int                           y( 3 );
+            ::wmove( win, 3, 2 );
+            ::wprintw( win, "SS:BP:                | Ret SS:BP:            | Ret CS:EIP:           | Arg 0:     | Arg 1:     | Arg 2:     | Arg 3:     | CS:EIP:" );
+            ::wmove( win, 4, 1 );
+            ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 32 );
+        }
+        
+        {
+            std::vector< VM::StackEntry > stack( this->_monitor.stack() );
+            int                           y( 5 );
             
             for( size_t i = 0; i < stack.size(); i++ )
             {
+                if( i == 17 )
+                {
+                    break;
+                }
+                
                 ::wmove( win, y, 2 );
+                ::wprintw
+                (
+                    win,
+                    "%s | %s | %s | %s | %s | %s | %s | %s",
+                    stack[ i ].bp().string().c_str(),
+                    stack[ i ].retBP().string().c_str(),
+                    stack[ i ].retIP().string().c_str(),
+                    String::toHex( stack[ i ].arg0() ).c_str(),
+                    String::toHex( stack[ i ].arg1() ).c_str(),
+                    String::toHex( stack[ i ].arg2() ).c_str(),
+                    String::toHex( stack[ i ].arg3() ).c_str(),
+                    stack[ i ].ip().string().c_str()
+                );
                 
                 y++;
             }
