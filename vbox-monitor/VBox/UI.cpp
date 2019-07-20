@@ -44,12 +44,18 @@ namespace VBox
             void _drawStack( void );
             void _drawMemory( void );
             
+            void _memoryScrollUp( size_t n = 1 );
+            void _memoryScrollDown( size_t n = 1 );
+            void _memoryPageUp( void );
+            void _memoryPageDown( void );
+            
             bool        _running;
             std::string _vmName;
             Screen      _screen;
             Monitor     _monitor;
             size_t      _memoryOffset;
             size_t      _memoryBytesPerLine;
+            size_t      _memoryLines;
             size_t      _totalMemory;
     };
     
@@ -99,6 +105,7 @@ namespace VBox
         _monitor(            vmName ),
         _memoryOffset(       0 ),
         _memoryBytesPerLine( 0 ),
+        _memoryLines(        0 ),
         _totalMemory(        0 )
     {
         this->_setup();
@@ -111,6 +118,7 @@ namespace VBox
         _monitor(            o._monitor ),
         _memoryOffset(       o._memoryOffset ),
         _memoryBytesPerLine( o._memoryBytesPerLine ),
+        _memoryLines(        o._memoryLines ),
         _totalMemory(        o._totalMemory )
     {
         this->_setup();
@@ -138,23 +146,25 @@ namespace VBox
                     this->_monitor.stop();
                     this->_screen.stop();
                 }
-                else if( key == KEY_DOWN )
+                else if( key == 'a' )
                 {
-                    if( ( this->_memoryOffset + this->_memoryBytesPerLine ) < this->_totalMemory )
-                    {
-                        this->_memoryOffset += this->_memoryBytesPerLine;
-                    }
+                    this->_memoryScrollUp();
                 }
-                else if( key == KEY_UP )
+                else if( key == 's' )
                 {
-                    if( this->_memoryOffset > this->_memoryBytesPerLine )
-                    {
-                        this->_memoryOffset -= this->_memoryBytesPerLine;
-                    }
-                    else
-                    {
-                        this->_memoryOffset = 0;
-                    }
+                    this->_memoryScrollDown();
+                }
+                else if( key == 'd' )
+                {
+                    this->_memoryPageUp();
+                }
+                else if( key == 'f' )
+                {
+                    this->_memoryPageDown();
+                }
+                else if( key == 'g' )
+                {
+                    this->_memoryOffset = 0;
                 }
             }
         );
@@ -311,6 +321,7 @@ namespace VBox
                     
                     this->_totalMemory        = dump->memorySize();
                     this->_memoryBytesPerLine = ( cols / 4 ) - 5;
+                    this->_memoryLines        = lines;
                     
                     {
                         size_t                 size(  this->_memoryBytesPerLine * lines );
@@ -359,5 +370,35 @@ namespace VBox
             ::wrefresh( win );
             ::delwin( win );
         }
+    }
+    
+    void UI::IMPL::_memoryScrollUp( size_t n )
+    {
+        if( this->_memoryOffset > ( this->_memoryBytesPerLine * n ) )
+        {
+            this->_memoryOffset -= ( this->_memoryBytesPerLine * n );
+        }
+        else
+        {
+            this->_memoryOffset = 0;
+        }
+    }
+    
+    void UI::IMPL::_memoryScrollDown( size_t n )
+    {
+        if( ( this->_memoryOffset + ( this->_memoryBytesPerLine * n ) ) < this->_totalMemory )
+        {
+            this->_memoryOffset += ( this->_memoryBytesPerLine * n );
+        }
+    }
+    
+    void UI::IMPL::_memoryPageUp( void )
+    {
+        this->_memoryScrollUp( this->_memoryLines );
+    }
+    
+    void UI::IMPL::_memoryPageDown( void )
+    {
+        this->_memoryScrollDown( this->_memoryLines );
     }
 }
