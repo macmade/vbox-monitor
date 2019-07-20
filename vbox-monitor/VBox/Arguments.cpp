@@ -23,6 +23,7 @@
  ******************************************************************************/
 
 #include "Arguments.hpp"
+#include "Casts.hpp"
 #include <vector>
 
 namespace VBox
@@ -86,7 +87,7 @@ namespace VBox
             return;
         }
         
-        this->_args.reserve( static_cast< size_t >( argc ) );
+        this->_args.reserve( numeric_cast< size_t >( argc ) );
         
         for( int i = 1; i < argc; i++ )
         {

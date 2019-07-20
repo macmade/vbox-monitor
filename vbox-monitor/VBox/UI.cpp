@@ -26,6 +26,7 @@
 #include "Screen.hpp"
 #include "String.hpp"
 #include "Monitor.hpp"
+#include "Casts.hpp"
 #include <ncurses.h>
 
 namespace VBox
@@ -135,11 +136,11 @@ namespace VBox
     void UI::IMPL::_drawTitle( void )
     {
         ::move( 0, 0 );
-        ::hline( 0, static_cast< int >( this->_screen.width() ) );
+        ::hline( 0, numeric_cast< int >( this->_screen.width() ) );
         ::move( 1, 0 );
         ::printw( "VirtualBox: %s", this->_vmName.c_str() );
         ::move( 2, 0 );
-        ::hline( 0, static_cast< int >( this->_screen.width() ) );
+        ::hline( 0, numeric_cast< int >( this->_screen.width() ) );
     }
     
     void UI::IMPL::_drawRegisters( void )
@@ -196,21 +197,21 @@ namespace VBox
         }
         
         {
-            ::WINDOW * win( ::newwin( 22, static_cast< int >( this->_screen.width() ) - 30, 3, 30 ) );
+            ::WINDOW * win( ::newwin( 22, numeric_cast< int >( this->_screen.width() ) - 30, 3, 30 ) );
             
             {
                 ::box( win, 0, 0 );
                 ::wmove( win, 1, 2 );
                 ::wprintw( win, "Stack:" );
                 ::wmove( win, 2, 1 );
-                ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 32 );
+                ::whline( win, 0, numeric_cast< int >( this->_screen.width() ) - 32 );
             }
             
             {
                 ::wmove( win, 3, 2 );
                 ::wprintw( win, "SS:BP:                | Ret SS:BP:            | Ret CS:EIP:           | Arg 0:     | Arg 1:     | Arg 2:     | Arg 3:     | CS:EIP:" );
                 ::wmove( win, 4, 1 );
-                ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 32 );
+                ::whline( win, 0, numeric_cast< int >( this->_screen.width() ) - 32 );
             }
             
             {
@@ -257,14 +258,14 @@ namespace VBox
         }
         
         {
-            ::WINDOW * win( ::newwin( static_cast< int >( this->_screen.height() ) - 25, static_cast< int >( this->_screen.width() ), 25, 0 ) );
+            ::WINDOW * win( ::newwin( numeric_cast< int >( this->_screen.height() ) - 25, numeric_cast< int >( this->_screen.width() ), 25, 0 ) );
             
             {
                 ::box( win, 0, 0 );
                 ::wmove( win, 1, 2 );
                 ::wprintw( win, "Memory:" );
                 ::wmove( win, 2, 1 );
-                ::whline( win, 0, static_cast< int >( this->_screen.width() ) - 2 );
+                ::whline( win, 0, numeric_cast< int >( this->_screen.width() ) - 2 );
             }
             
             this->_screen.refresh();
