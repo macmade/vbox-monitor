@@ -19,6 +19,7 @@
 		054DD93B22E22F9A00C5B225 /* UI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93922E22F9A00C5B225 /* UI.cpp */; };
 		054DD93E22E2596F00C5B225 /* StackEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93C22E2596F00C5B225 /* StackEntry.cpp */; };
 		054DD94122E25C3700C5B225 /* SegmentAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD93F22E25C3700C5B225 /* SegmentAddress.cpp */; };
+		054DD96522E338D800C5B225 /* CoreDump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD96322E338D800C5B225 /* CoreDump.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -98,6 +99,8 @@
 		054DD93D22E2596F00C5B225 /* StackEntry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StackEntry.hpp; sourceTree = "<group>"; };
 		054DD93F22E25C3700C5B225 /* SegmentAddress.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SegmentAddress.cpp; sourceTree = "<group>"; };
 		054DD94022E25C3700C5B225 /* SegmentAddress.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SegmentAddress.hpp; sourceTree = "<group>"; };
+		054DD96322E338D800C5B225 /* CoreDump.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CoreDump.cpp; sourceTree = "<group>"; };
+		054DD96422E338D800C5B225 /* CoreDump.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CoreDump.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -291,6 +294,8 @@
 				054DD93D22E2596F00C5B225 /* StackEntry.hpp */,
 				054DD93F22E25C3700C5B225 /* SegmentAddress.cpp */,
 				054DD94022E25C3700C5B225 /* SegmentAddress.hpp */,
+				054DD96322E338D800C5B225 /* CoreDump.cpp */,
+				054DD96422E338D800C5B225 /* CoreDump.hpp */,
 			);
 			path = VM;
 			sourceTree = "<group>";
@@ -360,6 +365,7 @@
 				054DD8DE22E0B7A900C5B225 /* main.cpp in Sources */,
 				054DD91F22E0C23B00C5B225 /* Screen.cpp in Sources */,
 				054DD92522E0D01400C5B225 /* Process.cpp in Sources */,
+				054DD96522E338D800C5B225 /* CoreDump.cpp in Sources */,
 				054DD93B22E22F9A00C5B225 /* UI.cpp in Sources */,
 				054DD94122E25C3700C5B225 /* SegmentAddress.cpp in Sources */,
 				054DD92822E0F0EC00C5B225 /* Monitor.cpp in Sources */,

@@ -90,7 +90,7 @@ namespace VBox
         return this->impl->_registers;
     }
     
-    std::vector< VM::StackEntry > Monitor::stack( void )const
+    std::vector< VM::StackEntry > Monitor::stack( void ) const
     {
         std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
         
