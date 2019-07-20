@@ -166,5 +166,19 @@ namespace VBox
             
             return entries;
         }
+        
+        std::optional< VM::CoreDump > memory( const std::string & vmName )
+        {
+            try
+            {
+                ( void )vmName;
+                
+                return {};
+            }
+            catch( ... )
+            {
+                return {};
+            }
+        }
     }
 }

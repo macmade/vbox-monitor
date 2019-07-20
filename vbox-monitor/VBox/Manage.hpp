@@ -27,8 +27,10 @@
 
 #include "Registers.hpp"
 #include "StackEntry.hpp"
+#include "CoreDump.hpp"
 #include <string>
 #include <vector>
+#include <optional>
 
 namespace VBox
 {
@@ -36,6 +38,7 @@ namespace VBox
     {
         VM::Registers                 registers( const std::string & vmName );
         std::vector< VM::StackEntry > stack( const std::string & vmName );
+        std::optional< VM::CoreDump > memory( const std::string & vmName );
     };
 }
 
