@@ -23,6 +23,10 @@
  ******************************************************************************/
 
 #include "CoreDump.hpp"
+#include "BinaryFileStream.hpp"
+#include "BinaryDataStream.hpp"
+#include "File.hpp"
+#include "Casts.hpp"
 
 namespace VBox
 {
@@ -35,7 +39,11 @@ namespace VBox
                 IMPL( const std::string & path );
                 IMPL( const IMPL & o );
                 
-                std::string _path;
+                void _parse( void );
+                
+                std::string      _path;
+                uint64_t         _memorySize;
+                BinaryDataStream _memory;
         };
         
         CoreDump::CoreDump( const std::string & path ):
@@ -65,6 +73,25 @@ namespace VBox
             return this->impl->_path;
         }
         
+        uint64_t CoreDump::memorySize( void ) const
+        {
+            return this->impl->_memorySize;
+        }
+        
+        std::vector< uint8_t > CoreDump::readMemory( size_t offset, size_t size )
+        {
+            try
+            {
+                this->impl->_memory.Seek( numeric_cast< ssize_t >( offset ), BinaryStream::SeekDirection::Begin );
+                
+                return this->impl->_memory.Read( size );
+            }
+            catch( ... )
+            {
+                return {};
+            }
+        }
+        
         void swap( CoreDump & o1, CoreDump & o2 )
         {
             using std::swap;
@@ -73,11 +100,44 @@ namespace VBox
         }
         
         CoreDump::IMPL::IMPL( const std::string & path ):
-            _path( path )
-        {}
+            _path( path ),
+            _memorySize( 0 )
+        {
+            this->_parse();
+        }
         
         CoreDump::IMPL::IMPL( const IMPL & o ):
-            _path( o._path )
-        {}
+            _path(       o._path ),
+            _memorySize( o._memorySize ),
+            _memory(     o._memory )
+        {
+            this->_parse();
+        }
+        
+        void CoreDump::IMPL::_parse( void )
+        {
+            BinaryFileStream                       stream( this->_path );
+            ELF::File                              elf( stream );
+            std::vector< ELF::ProgramHeaderEntry > entries( elf.programHeader() );
+            
+            if( entries.size() < 2 || entries[ 0 ].type() != 0x04 || entries[ 1 ].type() != 0x01 )
+            {
+                throw std::runtime_error( "Invalid core dump" );
+            }
+            
+            {
+                ELF::ProgramHeaderEntry mem( entries[ 1 ] );
+                
+                if( mem.offset() == 0 || mem.fileSize() == 0 || mem.fileSize() != mem.memorySize() )
+                {
+                    throw std::runtime_error( "Invalid core dump" );
+                }
+                
+                stream.Seek( numeric_cast< ssize_t >( mem.offset() ), BinaryStream::SeekDirection::Begin );
+                
+                this->_memorySize = mem.fileSize();
+                this->_memory     = BinaryDataStream( stream.Read( mem.fileSize() ) );
+            }
+        }
     }
 }

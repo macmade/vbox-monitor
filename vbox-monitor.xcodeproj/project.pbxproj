@@ -23,6 +23,9 @@
 		054DD96F22E33C5900C5B225 /* BinaryFileStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD96A22E33C5900C5B225 /* BinaryFileStream.cpp */; };
 		054DD97022E33C5900C5B225 /* BinaryStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD96C22E33C5900C5B225 /* BinaryStream.cpp */; };
 		054DD97122E33C5900C5B225 /* BinaryDataStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD96E22E33C5900C5B225 /* BinaryDataStream.cpp */; };
+		054DD9A322E33FB500C5B225 /* Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD9A122E33FB500C5B225 /* Header.cpp */; };
+		054DD9A622E3468100C5B225 /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD9A422E3468100C5B225 /* File.cpp */; };
+		054DD9A922E348C100C5B225 /* ProgramHeaderEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD9A722E348C100C5B225 /* ProgramHeaderEntry.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -111,6 +114,12 @@
 		054DD96D22E33C5900C5B225 /* BinaryStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BinaryStream.hpp; sourceTree = "<group>"; };
 		054DD96E22E33C5900C5B225 /* BinaryDataStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BinaryDataStream.cpp; sourceTree = "<group>"; };
 		054DD99F22E33CE300C5B225 /* Casts.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Casts.hpp; sourceTree = "<group>"; };
+		054DD9A122E33FB500C5B225 /* Header.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Header.cpp; sourceTree = "<group>"; };
+		054DD9A222E33FB500C5B225 /* Header.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Header.hpp; sourceTree = "<group>"; };
+		054DD9A422E3468100C5B225 /* File.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = File.cpp; sourceTree = "<group>"; };
+		054DD9A522E3468100C5B225 /* File.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = File.hpp; sourceTree = "<group>"; };
+		054DD9A722E348C100C5B225 /* ProgramHeaderEntry.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ProgramHeaderEntry.cpp; sourceTree = "<group>"; };
+		054DD9A822E348C100C5B225 /* ProgramHeaderEntry.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProgramHeaderEntry.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -289,6 +298,7 @@
 				054DD96C22E33C5900C5B225 /* BinaryStream.cpp */,
 				054DD96D22E33C5900C5B225 /* BinaryStream.hpp */,
 				054DD99F22E33CE300C5B225 /* Casts.hpp */,
+				054DD9A022E33FA200C5B225 /* ELF */,
 				054DD92922E0F32F00C5B225 /* VM */,
 			);
 			path = VBox;
@@ -315,6 +325,19 @@
 				054DD96422E338D800C5B225 /* CoreDump.hpp */,
 			);
 			path = VM;
+			sourceTree = "<group>";
+		};
+		054DD9A022E33FA200C5B225 /* ELF */ = {
+			isa = PBXGroup;
+			children = (
+				054DD9A122E33FB500C5B225 /* Header.cpp */,
+				054DD9A222E33FB500C5B225 /* Header.hpp */,
+				054DD9A422E3468100C5B225 /* File.cpp */,
+				054DD9A522E3468100C5B225 /* File.hpp */,
+				054DD9A722E348C100C5B225 /* ProgramHeaderEntry.cpp */,
+				054DD9A822E348C100C5B225 /* ProgramHeaderEntry.hpp */,
+			);
+			path = ELF;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -378,6 +401,7 @@
 				054DD93E22E2596F00C5B225 /* StackEntry.cpp in Sources */,
 				054DD91A22E0B9A800C5B225 /* Arguments.cpp in Sources */,
 				054DD96F22E33C5900C5B225 /* BinaryFileStream.cpp in Sources */,
+				054DD9A322E33FB500C5B225 /* Header.cpp in Sources */,
 				054DD93822E2242800C5B225 /* String.cpp in Sources */,
 				054DD93522E21C7000C5B225 /* Manage.cpp in Sources */,
 				054DD8DE22E0B7A900C5B225 /* main.cpp in Sources */,
@@ -385,10 +409,12 @@
 				054DD97122E33C5900C5B225 /* BinaryDataStream.cpp in Sources */,
 				054DD92522E0D01400C5B225 /* Process.cpp in Sources */,
 				054DD96522E338D800C5B225 /* CoreDump.cpp in Sources */,
+				054DD9A922E348C100C5B225 /* ProgramHeaderEntry.cpp in Sources */,
 				054DD93B22E22F9A00C5B225 /* UI.cpp in Sources */,
 				054DD94122E25C3700C5B225 /* SegmentAddress.cpp in Sources */,
 				054DD97022E33C5900C5B225 /* BinaryStream.cpp in Sources */,
 				054DD92822E0F0EC00C5B225 /* Monitor.cpp in Sources */,
+				054DD9A622E3468100C5B225 /* File.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,34 +22,43 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#ifndef VBOX_VM_CORE_DUMP_HPP
-#define VBOX_VM_CORE_DUMP_HPP
+#ifndef VBOX_ELF_PROGRAM_HEADER_ENTRY_HPP
+#define VBOX_ELF_PROGRAM_HEADER_ENTRY_HPP
 
 #include <algorithm>
 #include <memory>
-#include <string>
+#include <cstdint>
+#include <ostream>
+#include "BinaryStream.hpp"
 
 namespace VBox
 {
-    namespace VM
+    namespace ELF
     {
-        class CoreDump
+        class ProgramHeaderEntry
         {
             public:
                 
-                CoreDump( const std::string & path );
-                CoreDump( const CoreDump & o );
-                CoreDump( CoreDump && o );
-                ~CoreDump( void );
+                ProgramHeaderEntry( void );
+                ProgramHeaderEntry( BinaryStream & stream );
+                ProgramHeaderEntry( const ProgramHeaderEntry & o );
+                ProgramHeaderEntry( ProgramHeaderEntry && o );
+                ~ProgramHeaderEntry( void );
                 
-                CoreDump & operator =( CoreDump o );
+                ProgramHeaderEntry & operator =( ProgramHeaderEntry o );
                 
-                std::string path( void )       const;
-                uint64_t    memorySize( void ) const;
+                uint32_t type( void )       const;
+                uint32_t flags( void )      const;
+                uint64_t offset( void )     const;
+                uint64_t vaddress( void )   const;
+                uint64_t paddress( void )   const;
+                uint64_t fileSize( void )   const;
+                uint64_t memorySize( void ) const;
+                uint64_t alignment( void )  const;
                 
-                std::vector< uint8_t > readMemory( size_t offset, size_t size );
+                friend void swap( ProgramHeaderEntry & o1, ProgramHeaderEntry & o2 );
                 
-                friend void swap( CoreDump & o1, CoreDump & o2 );
+                friend std::ostream & operator <<( std::ostream & os, const ProgramHeaderEntry & o );
                 
             private:
                 
@@ -59,4 +68,4 @@ namespace VBox
     }
 }
 
-#endif /* VBOX_VM_CORE_DUMP_HPP */
+#endif /* VBOX_ELF_PROGRAM_HEADER_ENTRY_HPP */
