@@ -20,7 +20,7 @@ Monitoring/Debug tool for VirtualBox.
 
 ### Usage:
 
-    Usage: vbox-monitor VM_NAME
+    Usage: vbox-monitor VM_NAME VM_PATH
     
     Shortcuts:
         - p: Pause/Resume

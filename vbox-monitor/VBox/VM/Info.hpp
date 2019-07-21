@@ -22,37 +22,43 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#ifndef VBOX_ARGUMENTS_HPP
-#define VBOX_ARGUMENTS_HPP
+#ifndef VBOX_VM_INFO_HPP
+#define VBOX_VM_INFO_HPP
 
-#include <memory>
 #include <algorithm>
+#include <memory>
 #include <string>
 
 namespace VBox
 {
-    class Arguments
+    namespace VM
     {
-        public:
-            
-            Arguments( int argc, const char * argv[] );
-            Arguments( const Arguments & o );
-            Arguments( Arguments && o );
-            ~Arguments( void );
-            
-            Arguments & operator =( Arguments o );
-            
-            bool        showHelp( void ) const;
-            std::string vmName( void )   const;
-            std::string vmPath( void )   const;
-            
-            friend void swap( Arguments & o1, Arguments & o2 );
-            
-        private:
-            
-            class IMPL;
-            std::unique_ptr< IMPL > impl;
-    };
+        class Info
+        {
+            public:
+                
+                Info( void );
+                Info( const std::string & name, const std::string & uid );
+                Info( const Info & o );
+                Info( Info && o );
+                ~Info( void );
+                
+                Info & operator =( Info o );
+                
+                std::string name( void ) const;
+                std::string uid( void ) const;
+                
+                void name( const std::string & value );
+                void uid( const std::string & value );
+                
+                friend void swap( Info & o1, Info & o2 );
+                
+            private:
+                
+                class IMPL;
+                std::unique_ptr< IMPL > impl;
+        };
+    }
 }
 
-#endif /* VBOX_ARGUMENTS_HPP */
+#endif /* VBOX_VM_INFO_HPP */

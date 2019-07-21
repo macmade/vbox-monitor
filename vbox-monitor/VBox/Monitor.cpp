@@ -41,6 +41,7 @@ namespace VBox
             void _updateRegisters( void );
             void _updateStack( void );
             void _updateMemory( void );
+            void _updateLiveStatus( void );
             
             std::string                     _vmName;
             std::optional< VM::Registers >  _registers;
@@ -49,6 +50,7 @@ namespace VBox
             mutable std::recursive_mutex    _rmtx;
             bool                            _running;
             bool                            _stop;
+            bool                            _live;
             std::vector< std::thread >      _threads;
     };
     
@@ -82,6 +84,13 @@ namespace VBox
             
             return *( this );
         }
+    }
+    
+    bool Monitor::live( void ) const
+    {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
+        return this->impl->_live;
     }
     
     std::optional< VM::Registers > Monitor::registers( void ) const
@@ -121,10 +130,12 @@ namespace VBox
             std::thread t1( [ this ] { this->impl->_updateRegisters();  } );
             std::thread t2( [ this ] { this->impl->_updateStack(); } );
             std::thread t3( [ this ] { this->impl->_updateMemory(); } );
+            std::thread t4( [ this ] { this->impl->_updateLiveStatus(); } );
             
             this->impl->_threads.push_back( std::move( t1 ) );
             this->impl->_threads.push_back( std::move( t2 ) );
             this->impl->_threads.push_back( std::move( t3 ) );
+            this->impl->_threads.push_back( std::move( t4 ) );
         }
     }
     
@@ -168,8 +179,17 @@ namespace VBox
     Monitor::IMPL::IMPL( const std::string & vmName ):
         _vmName(         vmName ),
         _running(        false ),
-        _stop(           false )
-    {}
+        _stop(           false ),
+        _live(           false )
+    {
+        for( const auto & info: Manage::runningVMs() )
+        {
+            if( info.name() == vmName )
+            {
+                this->_live = true;
+            }
+        }
+    }
     
     Monitor::IMPL::IMPL( const IMPL & o ):
         IMPL( o, std::lock_guard< std::recursive_mutex >( o._rmtx ) )
@@ -181,7 +201,8 @@ namespace VBox
         _stack(          o._stack ),
         _dump(           o._dump ),
         _running(        false ),
-        _stop(           false )
+        _stop(           false ),
+        _live(           false )
     {
         ( void )l;
     }
@@ -200,7 +221,7 @@ namespace VBox
             }
             
             {
-                std::optional< VM::Registers > regs( Manage::registers( this->_vmName ) );
+                std::optional< VM::Registers > regs( Manage::Debug::registers( this->_vmName ) );
                 
                 {
                     std::lock_guard< std::recursive_mutex > l( this->_rmtx );
@@ -225,7 +246,7 @@ namespace VBox
             }
             
             {
-                std::vector< VM::StackEntry > stack( Manage::stack( this->_vmName ) );
+                std::vector< VM::StackEntry > stack( Manage::Debug::stack( this->_vmName ) );
                 
                 {
                     std::lock_guard< std::recursive_mutex > l( this->_rmtx );
@@ -259,12 +280,45 @@ namespace VBox
             }
             
             {
-                std::shared_ptr< VM::CoreDump > dump( Manage::dump( this->_vmName, tmp ) );
+                std::shared_ptr< VM::CoreDump > dump( Manage::Debug::dump( this->_vmName, tmp ) );
                 
                 {
                     std::lock_guard< std::recursive_mutex > l( this->_rmtx );
                     
                     this->_dump = dump;
+                }
+            }
+        }
+    }
+    
+    void Monitor::IMPL::_updateLiveStatus( void )
+    {
+        while( 1 )
+        {
+            {
+                std::lock_guard< std::recursive_mutex > l( this->_rmtx );
+                
+                if( this->_stop )
+                {
+                    return;
+                }
+            }
+            
+            {
+                bool live( false );
+                
+                for( const auto & info: Manage::runningVMs() )
+                {
+                    if( info.name() == this->_vmName )
+                    {
+                        live = true;
+                    }
+                }
+                
+                {
+                    std::lock_guard< std::recursive_mutex > l( this->_rmtx );
+                    
+                    this->_live = live;
                 }
             }
         }

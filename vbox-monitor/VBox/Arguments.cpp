@@ -38,6 +38,7 @@ namespace VBox
             std::vector< std::string > _args;
             bool                       _showHelp;
             std::string                _vmName;
+            std::string                _vmPath;
     };
     
     Arguments::Arguments( int argc, const char * argv[] ):
@@ -72,6 +73,11 @@ namespace VBox
         return this->impl->_vmName;
     }
     
+    std::string Arguments::vmPath( void ) const
+    {
+        return this->impl->_vmPath;
+    }
+    
     void swap( Arguments & o1, Arguments & o2 )
     {
         using std::swap;
@@ -104,12 +110,17 @@ namespace VBox
             {
                 this->_vmName = arg;
             }
+            else if( this->_vmPath.length() == 0 )
+            {
+                this->_vmPath = arg;
+            }
         }
     }
     
     Arguments::IMPL::IMPL( const IMPL & o ):
         _args(     o._args ),
         _showHelp( o._showHelp ),
-        _vmName(   o._vmName )
+        _vmName(   o._vmName ),
+        _vmPath(   o._vmPath )
     {}
 }

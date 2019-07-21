@@ -24,6 +24,7 @@
 
 #include "VBox/Arguments.hpp"
 #include "VBox/UI.hpp"
+#include "VBox/Manage.hpp"
 #include <iostream>
 #include <cstdlib>
 
@@ -33,21 +34,58 @@ int main( int argc, const char * argv[] )
 {
     VBox::Arguments args( argc, argv );
     
-    if( args.showHelp() || args.vmName().length() == 0 )
+    if( args.showHelp() || args.vmName().length() == 0 || args.vmPath().length() == 0 )
     {
         ShowHelp();
         
         return EXIT_SUCCESS;
     }
     
+    VBox::Manage::unregisterVM( args.vmName() );
+    
+    if( VBox::Manage::registerVM( args.vmPath() ) == false )
+    {
+        std::cerr << "Cannot register virtual machine: " << args.vmPath() << std::endl;
+        
+        return EXIT_FAILURE;
+    }
+    
+    if( VBox::Manage::startVM( args.vmName() ) == false )
+    {
+        std::cerr << "Cannot start virtual machine: " << args.vmPath() << std::endl;
+        
+        return EXIT_FAILURE;
+    }
+    
+    std::cout << "Wating for virtual machine to start..." << std::endl;
+    
+    {
+        bool running( false );
+        
+        while( running == false )
+        {
+            for( const auto & vm: VBox::Manage::runningVMs() )
+            {
+                if( vm.name() == args.vmName() )
+                {
+                    running = true;
+                    
+                    break;
+                }
+            }
+        }
+    }
+    
     VBox::UI( args.vmName() ).run();
+    
+    std::cout << "Virtual machine has powered-off." << std::endl;
     
     return EXIT_SUCCESS;
 }
 
 void ShowHelp( void )
 {
-    std::cout << "Usage: vbox-monitor VM_NAME"
+    std::cout << "Usage: vbox-monitor VM_NAME VM_PATH"
               << std::endl
               << std::endl
               << "Shortcuts:"

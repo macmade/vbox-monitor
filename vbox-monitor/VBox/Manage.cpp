@@ -33,19 +33,67 @@ namespace VBox
 {
     namespace Manage
     {
-        std::optional< VM::Registers > registers( const std::string & vmName )
+        bool registerVM( const std::string & path )
         {
-            VM::Registers                reg;
+            Process proc( "/usr/local/bin/VBoxManage" );
+            
+            proc.arguments
+            (
+                {
+                    "registervm", path
+                }
+            );
+            
+            proc.start();
+            proc.waitUntilExit();
+            
+            return proc.terminationStatus().value_or( -1 ) == 0;
+        }
+        
+        bool unregisterVM( const std::string & vmName )
+        {
+            Process proc( "/usr/local/bin/VBoxManage" );
+            
+            proc.arguments
+            (
+                {
+                    "unregistervm", vmName
+                }
+            );
+            
+            proc.start();
+            proc.waitUntilExit();
+            
+            return proc.terminationStatus().value_or( -1 ) == 0;
+        }
+        
+        bool startVM( const std::string & vmName )
+        {
+            Process proc( "/usr/local/bin/VBoxManage" );
+            
+            proc.arguments
+            (
+                {
+                    "startvm", "--type=separate", vmName
+                }
+            );
+            
+            proc.start();
+            proc.waitUntilExit();
+            
+            return proc.terminationStatus().value_or( -1 ) == 0;
+        }
+        
+        std::vector< VM::Info > runningVMs( void )
+        {
+            std::vector< VM::Info >      running;
             Process                      proc( "/usr/local/bin/VBoxManage" );
             std::optional< std::string > out;
             
             proc.arguments
             (
                 {
-                    "debugvm", vmName, "getregisters",
-                    "rax", "rbx", "rcx", "rdx", "rdi", "rsi",
-                    "r8",  "r9",  "r10", "r11", "r12", "r13",
-                    "r14", "r15", "rbp", "rsp", "rip", "eflags"
+                    "list", "runningvms"
                 }
             );
             
@@ -60,143 +108,188 @@ namespace VBox
             }
             
             {
-                std::regex  regex( "([^ ]+) = (0x[0-9a-f]+)" );
+                std::regex  regex( "\"([^\"]+)\" \\{([^}]+)\\}" );
                 std::smatch match;
-                bool        matched( false );
                 
                 for( const auto & line: String::lines( out.value() ) )
                 {
                     if( std::regex_match( line, match, regex ) )
                     {
-                        matched = true;
-                        
-                        {
-                            std::string name(  match[ 1 ] );
-                            std::string value( match[ 2 ] );
-                            
-                            if( name == "rax"    ) { reg.rax(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rbx"    ) { reg.rbx(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rcx"    ) { reg.rcx(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rdx"    ) { reg.rdx(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rdi"    ) { reg.rdi(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rsi"    ) { reg.rsi(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r8"     ) { reg.r8(     String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r9"     ) { reg.r9(     String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r10"    ) { reg.r10(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r11"    ) { reg.r11(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r12"    ) { reg.r12(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r13"    ) { reg.r13(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r14"    ) { reg.r14(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "r15"    ) { reg.r15(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rbp"    ) { reg.rbp(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rsp"    ) { reg.rsp(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "rip"    ) { reg.rip(    String::fromHex< uint64_t >( value ) ); };
-                            if( name == "eflags" ) { reg.eflags( String::fromHex< uint64_t >( value ) ); };
-                        }
-                    }
-                }
-                
-                if( matched == false )
-                {
-                    return {};
-                }
-            }
-            
-            return reg;
-        }
-        
-        std::vector< VM::StackEntry > stack( const std::string & vmName )
-        {
-            std::vector< VM::StackEntry > entries;
-            Process                       proc( "/usr/local/bin/VBoxManage" );
-            std::optional< std::string >  out;
-            
-            proc.arguments
-            (
-                {
-                    "debugvm", vmName, "stack",
-                }
-            );
-            
-            proc.start();
-            proc.waitUntilExit();
-            
-            out = proc.output();
-            
-            if( out.has_value() == false )
-            {
-                return entries;
-            }
-            
-            {
-                std::vector< std::string > lines( String::lines( out.value() ) );
-                std::regex                 regex( "([0-9a-f]+):([0-9a-f]+) ([0-9a-f]+):([0-9a-f]+) ([0-9a-f]+):([0-9a-f]+) ([0-9a-f]+) ([0-9a-f]+) ([0-9a-f]+) ([0-9a-f]+) ([0-9a-f]+):([0-9a-f]+)" );
-                std::smatch                match;
-                
-                if( lines.size() < 2 )
-                {
-                    return entries;
-                }
-                
-                lines.erase( lines.begin() );
-                
-                for( const auto & line: lines )
-                {
-                    if( std::regex_match( line, match, regex ) )
-                    {
-                        uint32_t       u1(  String::fromHex< uint32_t >( match[  1 ] ) );
-                        uint32_t       u2(  String::fromHex< uint32_t >( match[  2 ] ) );
-                        uint32_t       u3(  String::fromHex< uint32_t >( match[  3 ] ) );
-                        uint32_t       u4(  String::fromHex< uint32_t >( match[  4 ] ) );
-                        uint32_t       u5(  String::fromHex< uint32_t >( match[  5 ] ) );
-                        uint32_t       u6(  String::fromHex< uint32_t >( match[  6 ] ) );
-                        uint32_t       u7(  String::fromHex< uint32_t >( match[  7 ] ) );
-                        uint32_t       u8(  String::fromHex< uint32_t >( match[  8 ] ) );
-                        uint32_t       u9(  String::fromHex< uint32_t >( match[  9 ] ) );
-                        uint32_t       u10( String::fromHex< uint32_t >( match[ 10 ] ) );
-                        uint32_t       u11( String::fromHex< uint32_t >( match[ 11 ] ) );
-                        uint32_t       u12( String::fromHex< uint32_t >( match[ 12 ] ) );
-                        VM::StackEntry entry;
-                        
-                        entry.bp(    { u1, u2 } );
-                        entry.retBP( { u3, u4 } );
-                        entry.retIP( { u5, u6 } );
-                        entry.arg0(  u7 );
-                        entry.arg1(  u8 );
-                        entry.arg2(  u9 );
-                        entry.arg3(  u10 );
-                        entry.ip(   { u11, u12 } );
-                        
-                        entries.push_back( entry );
+                        running.push_back( { match[ 1 ], match[ 2 ] } );
                     }
                 }
             }
             
-            return entries;
+            return running;
         }
         
-        std::shared_ptr< VM::CoreDump > dump( const std::string & vmName, const std::string & path )
+        namespace Debug
         {
-            try
+            std::optional< VM::Registers > registers( const std::string & vmName )
             {
-                Process proc( "/usr/local/bin/VBoxManage" );
+                VM::Registers                reg;
+                Process                      proc( "/usr/local/bin/VBoxManage" );
+                std::optional< std::string > out;
                 
                 proc.arguments
                 (
                     {
-                        "debugvm", vmName, "dumpvmcore",
-                        "--filename=" + path,
+                        "debugvm", vmName, "getregisters",
+                        "rax", "rbx", "rcx", "rdx", "rdi", "rsi",
+                        "r8",  "r9",  "r10", "r11", "r12", "r13",
+                        "r14", "r15", "rbp", "rsp", "rip", "eflags"
                     }
                 );
                 
                 proc.start();
                 proc.waitUntilExit();
                 
-                return std::make_shared< VM::CoreDump >( path );
+                out = proc.output();
+                
+                if( out.has_value() == false )
+                {
+                    return {};
+                }
+                
+                {
+                    std::regex  regex( "([^ ]+) = (0x[0-9a-f]+)" );
+                    std::smatch match;
+                    bool        matched( false );
+                    
+                    for( const auto & line: String::lines( out.value() ) )
+                    {
+                        if( std::regex_match( line, match, regex ) )
+                        {
+                            matched = true;
+                            
+                            {
+                                std::string name(  match[ 1 ] );
+                                std::string value( match[ 2 ] );
+                                
+                                if( name == "rax"    ) { reg.rax(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "rbx"    ) { reg.rbx(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "rcx"    ) { reg.rcx(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "rdx"    ) { reg.rdx(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "rdi"    ) { reg.rdi(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "rsi"    ) { reg.rsi(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "r8"     ) { reg.r8(     String::fromHex< uint64_t >( value ) ); };
+                                if( name == "r9"     ) { reg.r9(     String::fromHex< uint64_t >( value ) ); };
+                                if( name == "r10"    ) { reg.r10(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "r11"    ) { reg.r11(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "r12"    ) { reg.r12(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "r13"    ) { reg.r13(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "r14"    ) { reg.r14(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "r15"    ) { reg.r15(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "rbp"    ) { reg.rbp(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "rsp"    ) { reg.rsp(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "rip"    ) { reg.rip(    String::fromHex< uint64_t >( value ) ); };
+                                if( name == "eflags" ) { reg.eflags( String::fromHex< uint64_t >( value ) ); };
+                            }
+                        }
+                    }
+                    
+                    if( matched == false )
+                    {
+                        return {};
+                    }
+                }
+                
+                return reg;
             }
-            catch( ... )
+            
+            std::vector< VM::StackEntry > stack( const std::string & vmName )
             {
-                return {};
+                std::vector< VM::StackEntry > entries;
+                Process                       proc( "/usr/local/bin/VBoxManage" );
+                std::optional< std::string >  out;
+                
+                proc.arguments
+                (
+                    {
+                        "debugvm", vmName, "stack",
+                    }
+                );
+                
+                proc.start();
+                proc.waitUntilExit();
+                
+                out = proc.output();
+                
+                if( out.has_value() == false )
+                {
+                    return entries;
+                }
+                
+                {
+                    std::vector< std::string > lines( String::lines( out.value() ) );
+                    std::regex                 regex( "([0-9a-f]+):([0-9a-f]+) ([0-9a-f]+):([0-9a-f]+) ([0-9a-f]+):([0-9a-f]+) ([0-9a-f]+) ([0-9a-f]+) ([0-9a-f]+) ([0-9a-f]+) ([0-9a-f]+):([0-9a-f]+)" );
+                    std::smatch                match;
+                    
+                    if( lines.size() < 2 )
+                    {
+                        return entries;
+                    }
+                    
+                    lines.erase( lines.begin() );
+                    
+                    for( const auto & line: lines )
+                    {
+                        if( std::regex_match( line, match, regex ) )
+                        {
+                            uint32_t       u1(  String::fromHex< uint32_t >( match[  1 ] ) );
+                            uint32_t       u2(  String::fromHex< uint32_t >( match[  2 ] ) );
+                            uint32_t       u3(  String::fromHex< uint32_t >( match[  3 ] ) );
+                            uint32_t       u4(  String::fromHex< uint32_t >( match[  4 ] ) );
+                            uint32_t       u5(  String::fromHex< uint32_t >( match[  5 ] ) );
+                            uint32_t       u6(  String::fromHex< uint32_t >( match[  6 ] ) );
+                            uint32_t       u7(  String::fromHex< uint32_t >( match[  7 ] ) );
+                            uint32_t       u8(  String::fromHex< uint32_t >( match[  8 ] ) );
+                            uint32_t       u9(  String::fromHex< uint32_t >( match[  9 ] ) );
+                            uint32_t       u10( String::fromHex< uint32_t >( match[ 10 ] ) );
+                            uint32_t       u11( String::fromHex< uint32_t >( match[ 11 ] ) );
+                            uint32_t       u12( String::fromHex< uint32_t >( match[ 12 ] ) );
+                            VM::StackEntry entry;
+                            
+                            entry.bp(    { u1, u2 } );
+                            entry.retBP( { u3, u4 } );
+                            entry.retIP( { u5, u6 } );
+                            entry.arg0(  u7 );
+                            entry.arg1(  u8 );
+                            entry.arg2(  u9 );
+                            entry.arg3(  u10 );
+                            entry.ip(   { u11, u12 } );
+                            
+                            entries.push_back( entry );
+                        }
+                    }
+                }
+                
+                return entries;
+            }
+            
+            std::shared_ptr< VM::CoreDump > dump( const std::string & vmName, const std::string & path )
+            {
+                try
+                {
+                    Process proc( "/usr/local/bin/VBoxManage" );
+                    
+                    proc.arguments
+                    (
+                        {
+                            "debugvm", vmName, "dumpvmcore",
+                            "--filename=" + path,
+                        }
+                    );
+                    
+                    proc.start();
+                    proc.waitUntilExit();
+                    
+                    return std::make_shared< VM::CoreDump >( path );
+                }
+                catch( ... )
+                {
+                    return {};
+                }
             }
         }
     }

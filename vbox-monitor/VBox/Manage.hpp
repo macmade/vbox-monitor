@@ -28,6 +28,7 @@
 #include "VBox/VM/Registers.hpp"
 #include "VBox/VM/StackEntry.hpp"
 #include "VBox/VM/CoreDump.hpp"
+#include "VBox/VM/Info.hpp"
 #include <string>
 #include <vector>
 #include <optional>
@@ -36,9 +37,18 @@ namespace VBox
 {
     namespace Manage
     {
-        std::optional< VM::Registers >  registers( const std::string & vmName );
-        std::vector< VM::StackEntry >   stack( const std::string & vmName );
-        std::shared_ptr< VM::CoreDump > dump( const std::string & vmName, const std::string & path );
+        bool registerVM( const std::string & path );
+        bool unregisterVM( const std::string & vmName );
+        bool startVM( const std::string & vmName );
+        
+        std::vector< VM::Info > runningVMs( void );
+        
+        namespace Debug
+        {
+            std::optional< VM::Registers >  registers( const std::string & vmName );
+            std::vector< VM::StackEntry >   stack( const std::string & vmName );
+            std::shared_ptr< VM::CoreDump > dump( const std::string & vmName, const std::string & path );
+        }
     };
 }
 

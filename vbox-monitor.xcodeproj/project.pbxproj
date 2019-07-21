@@ -28,6 +28,7 @@
 		054DD9A922E348C100C5B225 /* ProgramHeaderEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD9A722E348C100C5B225 /* ProgramHeaderEntry.cpp */; };
 		054DD9DE22E4B96500C5B225 /* libcapstone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 054DD9BF22E4B94900C5B225 /* libcapstone.a */; };
 		054DD9E122E4BAE500C5B225 /* Capstone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD9DF22E4BAE500C5B225 /* Capstone.cpp */; };
+		054DD9F922E4DDFA00C5B225 /* Info.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD9F722E4DDFA00C5B225 /* Info.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -241,6 +242,8 @@
 		054DD9DF22E4BAE500C5B225 /* Capstone.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Capstone.cpp; sourceTree = "<group>"; };
 		054DD9E022E4BAE500C5B225 /* Capstone.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Capstone.hpp; sourceTree = "<group>"; };
 		054DD9E422E4CEB300C5B225 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		054DD9F722E4DDFA00C5B225 /* Info.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Info.cpp; sourceTree = "<group>"; };
+		054DD9F822E4DDFA00C5B225 /* Info.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Info.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -449,6 +452,8 @@
 				054DD94022E25C3700C5B225 /* SegmentAddress.hpp */,
 				054DD96322E338D800C5B225 /* CoreDump.cpp */,
 				054DD96422E338D800C5B225 /* CoreDump.hpp */,
+				054DD9F722E4DDFA00C5B225 /* Info.cpp */,
+				054DD9F822E4DDFA00C5B225 /* Info.hpp */,
 			);
 			path = VM;
 			sourceTree = "<group>";
@@ -670,6 +675,7 @@
 				054DD93522E21C7000C5B225 /* Manage.cpp in Sources */,
 				054DD8DE22E0B7A900C5B225 /* main.cpp in Sources */,
 				054DD91F22E0C23B00C5B225 /* Screen.cpp in Sources */,
+				054DD9F922E4DDFA00C5B225 /* Info.cpp in Sources */,
 				054DD97122E33C5900C5B225 /* BinaryDataStream.cpp in Sources */,
 				054DD92522E0D01400C5B225 /* Process.cpp in Sources */,
 				054DD96522E338D800C5B225 /* CoreDump.cpp in Sources */,

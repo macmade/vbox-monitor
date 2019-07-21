@@ -153,6 +153,12 @@ namespace VBox
                 this->_drawStack();
                 this->_drawDisassembly();
                 this->_drawMemory();
+                
+                if( this->_monitor.live() == false )
+                {
+                    this->_monitor.stop();
+                    this->_screen.stop();
+                }
             }
         );
         
