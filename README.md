@@ -16,6 +16,20 @@ About
 
 Monitoring/Debug tool for VirtualBox.
 
+![Screenshot](Assets/screen.png "Screenshot")
+
+### Usage:
+
+    Usage: vbox-monitor VM_NAME
+    
+    Shortcuts:
+        - p: Pause/Resume
+        - a: Scroll memory up (one line)
+        - s: Scroll memory down (one line)
+        - d: Scroll memory up (one page)
+        - f: Scroll memory down (one page)
+        - g: Scroll memory top top
+
 License
 -------
 

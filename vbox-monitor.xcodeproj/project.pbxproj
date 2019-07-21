@@ -240,6 +240,7 @@
 		054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Capstone.xcodeproj; path = Submodules/capstone/xcode/Capstone.xcodeproj; sourceTree = "<group>"; };
 		054DD9DF22E4BAE500C5B225 /* Capstone.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Capstone.cpp; sourceTree = "<group>"; };
 		054DD9E022E4BAE500C5B225 /* Capstone.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Capstone.hpp; sourceTree = "<group>"; };
+		054DD9E422E4CEB300C5B225 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -258,6 +259,7 @@
 		054DD8D122E0B7A900C5B225 = {
 			isa = PBXGroup;
 			children = (
+				054DD9E422E4CEB300C5B225 /* README.md */,
 				054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */,
 				054DD8E522E0B90600C5B225 /* xcconfig */,
 				054DD8DC22E0B7A900C5B225 /* vbox-monitor */,
