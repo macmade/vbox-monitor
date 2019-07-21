@@ -30,6 +30,10 @@ Monitoring/Debug tool for VirtualBox.
         - f: Scroll memory down (one page)
         - g: Scroll memory top top
 
+### Installation:
+
+    brew install --HEAD macmade/tap/vbox-monitor
+
 License
 -------
 
