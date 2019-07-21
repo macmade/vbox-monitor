@@ -42,6 +42,7 @@ namespace VBox
             void _drawTitle( void );
             void _drawRegisters( void );
             void _drawStack( void );
+            void _drawDisassembly( void );
             void _drawMemory( void );
             
             void _memoryScrollUp( size_t n = 1 );
@@ -133,6 +134,7 @@ namespace VBox
                 this->_drawTitle();
                 this->_drawRegisters();
                 this->_drawStack();
+                this->_drawDisassembly();
                 this->_drawMemory();
             }
         );
@@ -233,27 +235,27 @@ namespace VBox
     
     void UI::IMPL::_drawStack( void )
     {
-        if( this->_screen.width() < 190 || this->_screen.height() < 25 )
+        if( this->_screen.width() < 180 || this->_screen.height() < 25 )
         {
             return;
         }
         
         {
-            ::WINDOW * win( ::newwin( 22, numeric_cast< int >( this->_screen.width() ) - 30, 3, 30 ) );
+            ::WINDOW * win( ::newwin( 22, 150, 3, 30 ) );
             
             {
                 ::box( win, 0, 0 );
                 ::wmove( win, 1, 2 );
                 ::wprintw( win, "Stack:" );
                 ::wmove( win, 2, 1 );
-                ::whline( win, 0, numeric_cast< int >( this->_screen.width() ) - 32 );
+                ::whline( win, 0, 148 );
             }
             
             {
                 ::wmove( win, 3, 2 );
                 ::wprintw( win, "SS:BP:                | Ret SS:BP:            | Ret CS:EIP:           | Arg 0:     | Arg 1:     | Arg 2:     | Arg 3:     | CS:EIP:" );
                 ::wmove( win, 4, 1 );
-                ::whline( win, 0, numeric_cast< int >( this->_screen.width() ) - 32 );
+                ::whline( win, 0, 148 );
             }
             
             {
@@ -284,6 +286,34 @@ namespace VBox
                     
                     y++;
                 }
+            }
+            
+            this->_screen.refresh();
+            ::wrefresh( win );
+            ::delwin( win );
+        }
+    }
+    
+    void UI::IMPL::_drawDisassembly( void )
+    {
+        if( this->_screen.width() < 250 || this->_screen.height() < 25 )
+        {
+            return;
+        }
+        
+        {
+            ::WINDOW * win( ::newwin( 22, numeric_cast< int >( this->_screen.width() ) - 180, 3, 180 ) );
+            
+            {
+                ::box( win, 0, 0 );
+                ::wmove( win, 1, 2 );
+                ::wprintw( win, "Disassembly:" );
+                ::wmove( win, 2, 1 );
+                ::whline( win, 0, numeric_cast< int >( this->_screen.width() ) - 182 );
+            }
+            
+            {
+                
             }
             
             this->_screen.refresh();

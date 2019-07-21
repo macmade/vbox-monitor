@@ -177,16 +177,12 @@ namespace VBox
                 }
             }
             
-            this->clear();
-            
             for( const auto & f: this->impl->_onUpdate )
             {
                 f();
             }
             
             this->refresh();
-            
-            std::this_thread::sleep_for( std::chrono::milliseconds( 200 ) );
         }
         
         this->clear();
