@@ -63,7 +63,5 @@ void ShowHelp( void )
               << "    - f: Scroll memory down (one page)"
               << std::endl
               << "    - g: Scroll memory top top"
-              << std::endl
-              << "    - m: Enter a memory location"
               << std::endl;
 }

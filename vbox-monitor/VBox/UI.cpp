@@ -127,7 +127,10 @@ namespace VBox
         _memoryOffset(       o._memoryOffset ),
         _memoryBytesPerLine( o._memoryBytesPerLine ),
         _memoryLines(        o._memoryLines ),
-        _totalMemory(        o._totalMemory )
+        _totalMemory(        o._totalMemory ),
+        _registers(          o._registers ),
+        _stack(              o._stack ),
+        _dump(               o._dump )
     {
         this->_setup();
     }
