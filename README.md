@@ -16,7 +16,7 @@ About
 
 Monitoring/Debug tool for VirtualBox.
 
-![Screenshot](Assets/screen.png "Screenshot")
+![Screenshot](Assets/Screen.png "Screenshot")
 
 ### Usage:
 
