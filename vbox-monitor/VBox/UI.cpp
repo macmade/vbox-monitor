@@ -27,6 +27,7 @@
 #include "String.hpp"
 #include "Monitor.hpp"
 #include "Casts.hpp"
+#include "Capstone.hpp"
 #include <ncurses.h>
 
 namespace VBox
@@ -296,7 +297,7 @@ namespace VBox
     
     void UI::IMPL::_drawDisassembly( void )
     {
-        if( this->_screen.width() < 250 || this->_screen.height() < 25 )
+        if( this->_screen.width() < 220 || this->_screen.height() < 25 )
         {
             return;
         }
@@ -313,7 +314,34 @@ namespace VBox
             }
             
             {
+                std::shared_ptr< VM::CoreDump > dump( this->_monitor.dump() );
+                std::optional< VM::Registers >  regs( this->_monitor.registers() );
                 
+                if( dump != nullptr && dump->memorySize() > 0 && regs.has_value() )
+                {
+                    std::vector< uint8_t > code( dump->readMemory( regs.value().rip(), 512 ) );
+                    
+                    if( code.size() > 0 )
+                    {
+                        int y( 2 );
+                        
+                        for( auto s: Capstone::disassemble( code, regs.value().rip() ) )
+                        {
+                            if( y > 19 )
+                            {
+                                break;
+                            }
+                            
+                            if( s.length() > this->_screen.width() - 184 )
+                            {
+                                s = s.substr( 0, this->_screen.width() - 184 );
+                            }
+                            
+                            ::wmove( win, ++y, 2 );
+                            ::wprintw( win, s.c_str() );
+                        }
+                    }
+                }
             }
             
             this->_screen.refresh();
