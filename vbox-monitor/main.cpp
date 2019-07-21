@@ -47,5 +47,23 @@ int main( int argc, const char * argv[] )
 
 void ShowHelp( void )
 {
-    std::cout << "Usage: vbox-monitor [OPTIONS] VM_NAME" << std::endl;
+    std::cout << "Usage: vbox-monitor VM_NAME"
+              << std::endl
+              << std::endl
+              << "Shortcuts:"
+              << std::endl
+              << "    - p: Pause/Resume"
+              << std::endl
+              << "    - a: Scroll memory up (one line)"
+              << std::endl
+              << "    - s: Scroll memory down (one line)"
+              << std::endl
+              << "    - d: Scroll memory up (one page)"
+              << std::endl
+              << "    - f: Scroll memory down (one page)"
+              << std::endl
+              << "    - g: Scroll memory top top"
+              << std::endl
+              << "    - m: Enter a memory location"
+              << std::endl;
 }
