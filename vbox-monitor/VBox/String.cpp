@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "String.hpp"
+#include "VBox/String.hpp"
 
 namespace VBox
 {

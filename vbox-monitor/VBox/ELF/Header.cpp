@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "Header.hpp"
-#include "String.hpp"
+#include "VBox/ELF/Header.hpp"
+#include "VBox/String.hpp"
 
 namespace VBox
 {

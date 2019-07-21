@@ -25,7 +25,7 @@
 #ifndef VBOX_BINARY_FILE_STREAM_HPP
 #define VBOX_BINARY_FILE_STREAM_HPP
 
-#include "BinaryStream.hpp"
+#include "VBox/BinaryStream.hpp"
 #include <string>
 #include <iostream>
 #include <cstdint>

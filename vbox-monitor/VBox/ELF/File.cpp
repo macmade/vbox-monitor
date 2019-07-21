@@ -22,9 +22,9 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "File.hpp"
-#include "Casts.hpp"
-#include "BinaryDataStream.hpp"
+#include "VBox/ELF/File.hpp"
+#include "VBox/Casts.hpp"
+#include "VBox/BinaryDataStream.hpp"
 
 namespace VBox
 {

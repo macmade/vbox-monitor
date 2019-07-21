@@ -25,9 +25,9 @@
 #ifndef VBOX_MANAGE_HPP
 #define VBOX_MANAGE_HPP
 
-#include "Registers.hpp"
-#include "StackEntry.hpp"
-#include "CoreDump.hpp"
+#include "VBox/VM/Registers.hpp"
+#include "VBox/VM/StackEntry.hpp"
+#include "VBox/VM/CoreDump.hpp"
 #include <string>
 #include <vector>
 #include <optional>

@@ -22,9 +22,9 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "Manage.hpp"
-#include "Process.hpp"
-#include "String.hpp"
+#include "VBox/Manage.hpp"
+#include "VBox/Process.hpp"
+#include "VBox/String.hpp"
 #include <optional>
 #include <regex>
 #include <iostream>

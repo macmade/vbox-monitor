@@ -29,9 +29,9 @@
 #include <memory>
 #include <vector>
 #include <ostream>
-#include "Header.hpp"
-#include "ProgramHeaderEntry.hpp"
-#include "BinaryStream.hpp"
+#include "VBox/ELF/Header.hpp"
+#include "VBox/ELF/ProgramHeaderEntry.hpp"
+#include "VBox/BinaryStream.hpp"
 
 namespace VBox
 {

@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "SegmentAddress.hpp"
-#include "String.hpp"
+#include "VBox/VM/SegmentAddress.hpp"
+#include "VBox/String.hpp"
 
 namespace VBox
 {

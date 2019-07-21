@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "StackEntry.hpp"
-#include "String.hpp"
+#include "VBox/VM/StackEntry.hpp"
+#include "VBox/String.hpp"
 
 namespace VBox
 {

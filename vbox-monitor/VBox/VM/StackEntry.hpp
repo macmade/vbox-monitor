@@ -25,7 +25,7 @@
 #ifndef VBOX_VM_STACK_ENTRY_HPP
 #define VBOX_VM_STACK_ENTRY_HPP
 
-#include "SegmentAddress.hpp"
+#include "VBox/VM/SegmentAddress.hpp"
 #include <cstdint>
 #include <memory>
 #include <algorithm>

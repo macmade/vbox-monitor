@@ -25,8 +25,8 @@
 #include <fstream>
 #include <cmath>
 #include <vector>
-#include "BinaryFileStream.hpp"
-#include "Casts.hpp"
+#include "VBox/BinaryFileStream.hpp"
+#include "VBox/Casts.hpp"
 
 namespace VBox
 {

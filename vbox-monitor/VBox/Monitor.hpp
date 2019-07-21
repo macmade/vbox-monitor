@@ -31,9 +31,9 @@
 #include <chrono>
 #include <vector>
 #include <optional>
-#include "Registers.hpp"
-#include "StackEntry.hpp"
-#include "CoreDump.hpp"
+#include "VBox/VM/Registers.hpp"
+#include "VBox/VM/StackEntry.hpp"
+#include "VBox/VM/CoreDump.hpp"
 
 namespace VBox
 {

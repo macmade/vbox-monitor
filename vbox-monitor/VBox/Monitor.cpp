@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "Monitor.hpp"
-#include "Manage.hpp"
+#include "VBox/Monitor.hpp"
+#include "VBox/Manage.hpp"
 #include <mutex>
 #include <thread>
 #include <optional>

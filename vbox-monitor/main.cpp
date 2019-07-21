@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "Arguments.hpp"
-#include "UI.hpp"
+#include "VBox/Arguments.hpp"
+#include "VBox/UI.hpp"
 #include <iostream>
 #include <cstdlib>
 

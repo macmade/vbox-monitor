@@ -22,11 +22,11 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "CoreDump.hpp"
-#include "BinaryFileStream.hpp"
-#include "BinaryDataStream.hpp"
-#include "File.hpp"
-#include "Casts.hpp"
+#include "VBox/VM/CoreDump.hpp"
+#include "VBox/BinaryFileStream.hpp"
+#include "VBox/BinaryDataStream.hpp"
+#include "VBox/ELF/File.hpp"
+#include "VBox/Casts.hpp"
 
 namespace VBox
 {

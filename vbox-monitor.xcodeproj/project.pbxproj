@@ -715,6 +715,7 @@
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				HEADER_SEARCH_PATHS = Submodules/capstone/include;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "vbox-monitor";
 			};
 			name = Debug;
 		};
@@ -725,6 +726,7 @@
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				HEADER_SEARCH_PATHS = Submodules/capstone/include;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "vbox-monitor";
 			};
 			name = Release;
 		};

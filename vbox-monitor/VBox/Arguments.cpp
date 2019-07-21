@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "Arguments.hpp"
-#include "Casts.hpp"
+#include "VBox/Arguments.hpp"
+#include "VBox/Casts.hpp"
 #include <vector>
 
 namespace VBox

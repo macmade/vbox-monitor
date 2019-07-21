@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "Process.hpp"
+#include "VBox/Process.hpp"
 #include <unistd.h>
 
 namespace VBox

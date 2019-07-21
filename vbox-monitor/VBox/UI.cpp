@@ -22,12 +22,12 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "UI.hpp"
-#include "Screen.hpp"
-#include "String.hpp"
-#include "Monitor.hpp"
-#include "Casts.hpp"
-#include "Capstone.hpp"
+#include "VBox/UI.hpp"
+#include "VBox/Screen.hpp"
+#include "VBox/String.hpp"
+#include "VBox/Monitor.hpp"
+#include "VBox/Casts.hpp"
+#include "VBox/Capstone.hpp"
 #include <ncurses.h>
 
 namespace VBox

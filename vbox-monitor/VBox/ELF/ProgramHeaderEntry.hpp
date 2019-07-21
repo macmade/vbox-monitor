@@ -29,7 +29,7 @@
 #include <memory>
 #include <cstdint>
 #include <ostream>
-#include "BinaryStream.hpp"
+#include "VBox/BinaryStream.hpp"
 
 namespace VBox
 {

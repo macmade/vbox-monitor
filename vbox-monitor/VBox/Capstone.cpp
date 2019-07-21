@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "Capstone.hpp"
+#include "VBox/Capstone.hpp"
 #include <sstream>
 #include <iomanip>
 #include <capstone.h>

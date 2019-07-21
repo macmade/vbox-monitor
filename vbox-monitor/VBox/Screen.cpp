@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "Screen.hpp"
+#include "VBox/Screen.hpp"
 #include <algorithm>
 #include <ncurses.h>
 #include <sys/ioctl.h>

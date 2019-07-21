@@ -22,8 +22,8 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#include "Registers.hpp"
-#include "String.hpp"
+#include "VBox/VM/Registers.hpp"
+#include "VBox/String.hpp"
 
 namespace VBox
 {
