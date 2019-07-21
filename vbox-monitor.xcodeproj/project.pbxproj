@@ -26,7 +26,123 @@
 		054DD9A322E33FB500C5B225 /* Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD9A122E33FB500C5B225 /* Header.cpp */; };
 		054DD9A622E3468100C5B225 /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD9A422E3468100C5B225 /* File.cpp */; };
 		054DD9A922E348C100C5B225 /* ProgramHeaderEntry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD9A722E348C100C5B225 /* ProgramHeaderEntry.cpp */; };
+		054DD9DE22E4B96500C5B225 /* libcapstone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 054DD9BF22E4B94900C5B225 /* libcapstone.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		054DD9BE22E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DCFE23BD19DDCC2D00EF8EA9;
+			remoteInfo = CapstoneStatic;
+		};
+		054DD9C022E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DCFE23CD19DDCC9500EF8EA9;
+			remoteInfo = CapstoneDynamic;
+		};
+		054DD9C222E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC474F6819DE6F3B00BCA449;
+			remoteInfo = CapstoneFramework;
+		};
+		054DD9C422E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC474E6419DDEA5F00BCA449;
+			remoteInfo = test_basic;
+		};
+		054DD9C622E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC474E8619DDEAA200BCA449;
+			remoteInfo = test_arm;
+		};
+		054DD9C822E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC474EEA19DDEAE400BCA449;
+			remoteInfo = test_arm64;
+		};
+		054DD9CA22E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC474E9119DDEAA700BCA449;
+			remoteInfo = test_detail;
+		};
+		054DD9CC22E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC5BFF4019EE544E008CA585;
+			remoteInfo = test_iter;
+		};
+		054DD9CE22E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC474E9C19DDEAAC00BCA449;
+			remoteInfo = test_mips;
+		};
+		054DD9D022E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC474EA719DDEAB000BCA449;
+			remoteInfo = test_ppc;
+		};
+		054DD9D222E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC474EB219DDEAB700BCA449;
+			remoteInfo = test_skipdata;
+		};
+		054DD9D422E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC474EBD19DDEABC00BCA449;
+			remoteInfo = test_sparc;
+		};
+		054DD9D622E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC474EC819DDEAC100BCA449;
+			remoteInfo = test_systemz;
+		};
+		054DD9D822E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC474ED319DDEAC600BCA449;
+			remoteInfo = test_x86;
+		};
+		054DD9DA22E4B94900C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC474EDE19DDEACC00BCA449;
+			remoteInfo = test_xcore;
+		};
+		054DD9DC22E4B96200C5B225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = DCFE23BC19DDCC2D00EF8EA9;
+			remoteInfo = CapstoneStatic;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		054DD8D822E0B7A900C5B225 /* CopyFiles */ = {
@@ -120,6 +236,7 @@
 		054DD9A522E3468100C5B225 /* File.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = File.hpp; sourceTree = "<group>"; };
 		054DD9A722E348C100C5B225 /* ProgramHeaderEntry.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ProgramHeaderEntry.cpp; sourceTree = "<group>"; };
 		054DD9A822E348C100C5B225 /* ProgramHeaderEntry.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProgramHeaderEntry.hpp; sourceTree = "<group>"; };
+		054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Capstone.xcodeproj; path = Submodules/capstone/xcode/Capstone.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +244,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				054DD9DE22E4B96500C5B225 /* libcapstone.a in Frameworks */,
 				054DD92222E0C2B400C5B225 /* libncurses.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -137,6 +255,7 @@
 		054DD8D122E0B7A900C5B225 = {
 			isa = PBXGroup;
 			children = (
+				054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */,
 				054DD8E522E0B90600C5B225 /* xcconfig */,
 				054DD8DC22E0B7A900C5B225 /* vbox-monitor */,
 				054DD8DB22E0B7A900C5B225 /* Products */,
@@ -340,6 +459,28 @@
 			path = ELF;
 			sourceTree = "<group>";
 		};
+		054DD9AD22E4B94900C5B225 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				054DD9BF22E4B94900C5B225 /* libcapstone.a */,
+				054DD9C122E4B94900C5B225 /* libcapstone.dylib */,
+				054DD9C322E4B94900C5B225 /* Capstone.framework */,
+				054DD9C522E4B94900C5B225 /* test */,
+				054DD9C722E4B94900C5B225 /* test_arm */,
+				054DD9C922E4B94900C5B225 /* test_arm64 */,
+				054DD9CB22E4B94900C5B225 /* test_detail */,
+				054DD9CD22E4B94900C5B225 /* test_iter */,
+				054DD9CF22E4B94900C5B225 /* test_mips */,
+				054DD9D122E4B94900C5B225 /* test_ppc */,
+				054DD9D322E4B94900C5B225 /* test_skipdata */,
+				054DD9D522E4B94900C5B225 /* test_sparc */,
+				054DD9D722E4B94900C5B225 /* test_systemz */,
+				054DD9D922E4B94900C5B225 /* test_x86 */,
+				054DD9DB22E4B94900C5B225 /* test_xcore */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -354,6 +495,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				054DD9DD22E4B96200C5B225 /* PBXTargetDependency */,
 			);
 			name = "vbox-monitor";
 			productName = "vbox-monitor";
@@ -385,12 +527,127 @@
 			mainGroup = 054DD8D122E0B7A900C5B225;
 			productRefGroup = 054DD8DB22E0B7A900C5B225 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 054DD9AD22E4B94900C5B225 /* Products */;
+					ProjectRef = 054DD9AC22E4B94900C5B225 /* Capstone.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				054DD8D922E0B7A900C5B225 /* vbox-monitor */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		054DD9BF22E4B94900C5B225 /* libcapstone.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libcapstone.a;
+			remoteRef = 054DD9BE22E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9C122E4B94900C5B225 /* libcapstone.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = libcapstone.dylib;
+			remoteRef = 054DD9C022E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9C322E4B94900C5B225 /* Capstone.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Capstone.framework;
+			remoteRef = 054DD9C222E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9C522E4B94900C5B225 /* test */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			name = test;
+			path = test_basic;
+			remoteRef = 054DD9C422E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9C722E4B94900C5B225 /* test_arm */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_arm;
+			remoteRef = 054DD9C622E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9C922E4B94900C5B225 /* test_arm64 */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_arm64;
+			remoteRef = 054DD9C822E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9CB22E4B94900C5B225 /* test_detail */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_detail;
+			remoteRef = 054DD9CA22E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9CD22E4B94900C5B225 /* test_iter */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_iter;
+			remoteRef = 054DD9CC22E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9CF22E4B94900C5B225 /* test_mips */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_mips;
+			remoteRef = 054DD9CE22E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9D122E4B94900C5B225 /* test_ppc */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_ppc;
+			remoteRef = 054DD9D022E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9D322E4B94900C5B225 /* test_skipdata */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_skipdata;
+			remoteRef = 054DD9D222E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9D522E4B94900C5B225 /* test_sparc */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_sparc;
+			remoteRef = 054DD9D422E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9D722E4B94900C5B225 /* test_systemz */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_systemz;
+			remoteRef = 054DD9D622E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9D922E4B94900C5B225 /* test_x86 */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_x86;
+			remoteRef = 054DD9D822E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		054DD9DB22E4B94900C5B225 /* test_xcore */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_xcore;
+			remoteRef = 054DD9DA22E4B94900C5B225 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		054DD8D622E0B7A900C5B225 /* Sources */ = {
@@ -419,6 +676,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		054DD9DD22E4B96200C5B225 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CapstoneStatic;
+			targetProxy = 054DD9DC22E4B96200C5B225 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		054DD8DF22E0B7A900C5B225 /* Debug */ = {
