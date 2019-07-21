@@ -51,14 +51,18 @@ namespace VBox
             void _memoryPageUp( void );
             void _memoryPageDown( void );
             
-            bool        _running;
-            std::string _vmName;
-            Screen      _screen;
-            Monitor     _monitor;
-            size_t      _memoryOffset;
-            size_t      _memoryBytesPerLine;
-            size_t      _memoryLines;
-            size_t      _totalMemory;
+            bool                            _running;
+            bool                            _paused;
+            std::string                     _vmName;
+            Screen                          _screen;
+            Monitor                         _monitor;
+            size_t                          _memoryOffset;
+            size_t                          _memoryBytesPerLine;
+            size_t                          _memoryLines;
+            size_t                          _totalMemory;
+            std::optional< VM::Registers >  _registers;
+            std::vector< VM::StackEntry >   _stack;
+            std::shared_ptr< VM::CoreDump > _dump;
     };
     
     UI::UI( const std::string & vmName ):
@@ -103,6 +107,7 @@ namespace VBox
     
     UI::IMPL::IMPL( const std::string & vmName ):
         _running(            false ),
+        _paused(             false ),
         _vmName(             vmName ),
         _monitor(            vmName ),
         _memoryOffset(       0 ),
@@ -115,6 +120,7 @@ namespace VBox
     
     UI::IMPL::IMPL( const IMPL & o ):
         _running(            false ),
+        _paused(             o._paused ),
         _vmName(             o._vmName ),
         _screen(             o._screen ),
         _monitor(            o._monitor ),
@@ -132,6 +138,13 @@ namespace VBox
         (
             [ & ]( void )
             {
+                if( this->_paused == false )
+                {
+                    this->_registers = this->_monitor.registers();
+                    this->_stack     = this->_monitor.stack();
+                    this->_dump      = this->_monitor.dump();
+                }
+                
                 this->_drawTitle();
                 this->_drawRegisters();
                 this->_drawStack();
@@ -169,18 +182,35 @@ namespace VBox
                 {
                     this->_memoryOffset = 0;
                 }
+                else if( key == 'p' )
+                {
+                    this->_paused = ( this->_paused ) ? false : true;
+                }
             }
         );
     }
     
     void UI::IMPL::_drawTitle( void )
     {
-        ::move( 0, 0 );
-        ::hline( 0, numeric_cast< int >( this->_screen.width() ) );
-        ::move( 1, 0 );
-        ::printw( "VirtualBox: %s", this->_vmName.c_str() );
-        ::move( 2, 0 );
-        ::hline( 0, numeric_cast< int >( this->_screen.width() ) );
+        ::WINDOW * win( ::newwin( 3, static_cast< int >( this->_screen.width() ), 0, 0 ) );
+        
+        {
+            ::box( win, 0, 0 );
+            ::wmove( win, 1, 2 );
+            ::wprintw( win, "VirtualBox: %s", this->_vmName.c_str() );
+            
+            if( this->_paused )
+            {
+                ::wprintw( win, " [PAUSED]" );
+            }
+            
+            ::wmove( win, 2, 1 );
+            ::whline( win, 0, 28 );
+        }
+        
+        this->_screen.refresh();
+        ::wrefresh( win );
+        ::delwin( win );
     }
     
     void UI::IMPL::_drawRegisters( void )
@@ -202,7 +232,8 @@ namespace VBox
             }
             
             {
-                std::optional< VM::Registers > regs( this->_monitor.registers() );
+                
+                std::optional< VM::Registers > regs( this->_registers );
                 
                 if( regs.has_value() )
                 {
@@ -260,7 +291,7 @@ namespace VBox
             }
             
             {
-                std::vector< VM::StackEntry > stack( this->_monitor.stack() );
+                std::vector< VM::StackEntry > stack( this->_stack );
                 int                           y( 5 );
                 
                 for( size_t i = 0; i < stack.size(); i++ )
@@ -314,8 +345,8 @@ namespace VBox
             }
             
             {
-                std::shared_ptr< VM::CoreDump > dump( this->_monitor.dump() );
-                std::optional< VM::Registers >  regs( this->_monitor.registers() );
+                std::shared_ptr< VM::CoreDump > dump( this->_dump );
+                std::optional< VM::Registers >  regs( this->_registers );
                 
                 if( dump != nullptr && dump->memorySize() > 0 && regs.has_value() )
                 {
@@ -369,7 +400,7 @@ namespace VBox
             }
             
             {
-                std::shared_ptr< VM::CoreDump > dump( this->_monitor.dump() );
+                std::shared_ptr< VM::CoreDump > dump( this->_dump );
                 
                 if( dump != nullptr && dump->memorySize() > 0 )
                 {
