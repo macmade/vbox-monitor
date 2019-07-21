@@ -713,6 +713,9 @@
 		054DD8E222E0B7A900C5B225 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				HEADER_SEARCH_PATHS = Submodules/capstone/include;
@@ -724,6 +727,9 @@
 		054DD8E322E0B7A900C5B225 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				HEADER_SEARCH_PATHS = Submodules/capstone/include;
