@@ -40,6 +40,7 @@ namespace VBox
         bool registerVM( const std::string & path );
         bool unregisterVM( const std::string & vmName );
         bool startVM( const std::string & vmName );
+        bool powerOffVM( const std::string & vmName );
         
         std::vector< VM::Info > runningVMs( void );
         

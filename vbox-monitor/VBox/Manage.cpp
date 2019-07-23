@@ -28,6 +28,7 @@
 #include <optional>
 #include <regex>
 #include <iostream>
+#include <unistd.h>
 
 namespace VBox
 {
@@ -75,6 +76,23 @@ namespace VBox
             (
                 {
                     "startvm", "--type=separate", vmName
+                }
+            );
+            
+            proc.start();
+            proc.waitUntilExit();
+            
+            return proc.terminationStatus().value_or( -1 ) == 0;
+        }
+        
+        bool powerOffVM( const std::string & vmName )
+        {
+            Process proc( "/usr/local/bin/VBoxManage" );
+            
+            proc.arguments
+            (
+                {
+                    "controlvm", vmName, "poweroff"
                 }
             );
             
@@ -284,7 +302,13 @@ namespace VBox
                     proc.start();
                     proc.waitUntilExit();
                     
-                    return std::make_shared< VM::CoreDump >( path );
+                    {
+                        std::shared_ptr< VM::CoreDump > dump( std::make_shared< VM::CoreDump >( path ) );
+                        
+                        unlink( path.c_str() );
+                        
+                        return dump;
+                    }
                 }
                 catch( ... )
                 {
