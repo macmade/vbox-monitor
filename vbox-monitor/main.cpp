@@ -77,6 +77,8 @@ int main( int argc, const char * argv[] )
     }
     
     VBox::UI( args.vmName() ).run();
+    VBox::Manage::powerOffVM( args.vmName() );
+    VBox::Manage::unregisterVM( args.vmName() );
     
     std::cout << "Virtual machine has powered-off." << std::endl;
     
@@ -91,6 +93,8 @@ void ShowHelp( void )
               << "Shortcuts:"
               << std::endl
               << "    - p: Pause/Resume"
+              << std::endl
+              << "    - m: Enter a memory address"
               << std::endl
               << "    - a: Scroll memory up (one line)"
               << std::endl

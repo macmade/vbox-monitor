@@ -24,6 +24,7 @@ Monitoring/Debug tool for VirtualBox.
     
     Shortcuts:
         - p: Pause/Resume
+        - m: Enter a memory address
         - a: Scroll memory up (one line)
         - s: Scroll memory down (one line)
         - d: Scroll memory up (one page)
