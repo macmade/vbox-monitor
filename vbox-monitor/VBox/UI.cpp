@@ -63,6 +63,7 @@ namespace VBox
             std::optional< VM::Registers >  _registers;
             std::vector< VM::StackEntry >   _stack;
             std::shared_ptr< VM::CoreDump > _dump;
+            std::optional< std::string >    _memoryAddressPrompt;
     };
     
     UI::UI( const std::string & vmName ):
@@ -171,29 +172,67 @@ namespace VBox
                     this->_monitor.stop();
                     this->_screen.stop();
                 }
-                else if( key == 'a' )
+                else if( key == 'm' )
                 {
-                    this->_memoryScrollUp();
+                    if( this->_memoryAddressPrompt.has_value() )
+                    {
+                        this->_memoryAddressPrompt = {};
+                    }
+                    else
+                    {
+                        this->_memoryAddressPrompt = "";
+                    }
                 }
-                else if( key == 's' )
+                else if( ( key == 10 || key == 13 ) && this->_memoryAddressPrompt.has_value() )
                 {
-                    this->_memoryScrollDown();
+                    std::string prompt( this->_memoryAddressPrompt.value() );
+                    
+                    if( prompt.length() > 0 )
+                    {
+                        this->_memoryOffset = String::fromHex< size_t >( prompt );
+                    }
+                    
+                    this->_memoryAddressPrompt = {};
                 }
-                else if( key == 'd' )
+                else if( key == 127 && this->_memoryAddressPrompt.has_value() )
                 {
-                    this->_memoryPageUp();
+                    std::string prompt( this->_memoryAddressPrompt.value() );
+                    
+                    if( prompt.length() > 0 )
+                    {
+                        this->_memoryAddressPrompt = prompt.substr( 0, prompt.length() - 1 );
+                    }
                 }
-                else if( key == 'f' )
+                else
                 {
-                    this->_memoryPageDown();
-                }
-                else if( key == 'g' )
-                {
-                    this->_memoryOffset = 0;
-                }
-                else if( key == 'p' )
-                {
-                    this->_paused = ( this->_paused ) ? false : true;
+                    if( this->_memoryAddressPrompt.has_value() && key >= 0 && key < 128 && isprint( key ) )
+                    {
+                        this->_memoryAddressPrompt = this->_memoryAddressPrompt.value() + numeric_cast< char >( key );
+                    }
+                    else if( key == 'a' )
+                    {
+                        this->_memoryScrollUp();
+                    }
+                    else if( key == 's' )
+                    {
+                        this->_memoryScrollDown();
+                    }
+                    else if( key == 'd' )
+                    {
+                        this->_memoryPageUp();
+                    }
+                    else if( key == 'f' )
+                    {
+                        this->_memoryPageDown();
+                    }
+                    else if( key == 'g' )
+                    {
+                        this->_memoryOffset = 0;
+                    }
+                    else if( key == 'p' )
+                    {
+                        this->_paused = ( this->_paused ) ? false : true;
+                    }
                 }
             }
         );
@@ -408,6 +447,14 @@ namespace VBox
                 ::whline( win, 0, numeric_cast< int >( this->_screen.width() ) - 2 );
             }
             
+            if( this->_memoryAddressPrompt.has_value() )
+            {
+                ::wmove( win, 3, 2 );
+                ::wprintw( win, "Enter a memory address:" );
+                ::wmove( win, 4, 2 );
+                ::wprintw( win, this->_memoryAddressPrompt.value().c_str() );
+            }
+            else
             {
                 std::shared_ptr< VM::CoreDump > dump( this->_dump );
                 
