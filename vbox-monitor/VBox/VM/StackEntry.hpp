@@ -67,8 +67,6 @@ namespace VBox
                 
                 friend void swap( StackEntry & o1, StackEntry & o2 );
                 
-                friend std::ostream & operator <<( std::ostream & os, const StackEntry & o );
-                
             private:
                 
                 class IMPL;

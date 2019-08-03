@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		053B4B2C22F64575002C6AB9 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 053B4B1A22F64575002C6AB9 /* Window.cpp */; };
+		053B4B2D22F64575002C6AB9 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 053B4B2A22F64575002C6AB9 /* Color.cpp */; };
 		054DD8DE22E0B7A900C5B225 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD8DD22E0B7A900C5B225 /* main.cpp */; };
 		054DD91A22E0B9A800C5B225 /* Arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD91822E0B9A800C5B225 /* Arguments.cpp */; };
 		054DD91F22E0C23B00C5B225 /* Screen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054DD91D22E0C23B00C5B225 /* Screen.cpp */; };
@@ -159,6 +161,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		053B4B1A22F64575002C6AB9 /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
+		053B4B2922F64575002C6AB9 /* Color.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Color.hpp; sourceTree = "<group>"; };
+		053B4B2A22F64575002C6AB9 /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
+		053B4B2B22F64575002C6AB9 /* Window.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Window.hpp; sourceTree = "<group>"; };
 		054DD8DA22E0B7A900C5B225 /* vbox-monitor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "vbox-monitor"; sourceTree = BUILT_PRODUCTS_DIR; };
 		054DD8DD22E0B7A900C5B225 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		054DD8E622E0B90600C5B225 /* Release - ccache.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Release - ccache.xcconfig"; sourceTree = "<group>"; };
@@ -406,6 +412,18 @@
 			children = (
 				054DD91822E0B9A800C5B225 /* Arguments.cpp */,
 				054DD91922E0B9A800C5B225 /* Arguments.hpp */,
+				054DD96E22E33C5900C5B225 /* BinaryDataStream.cpp */,
+				054DD96922E33C5900C5B225 /* BinaryDataStream.hpp */,
+				054DD96A22E33C5900C5B225 /* BinaryFileStream.cpp */,
+				054DD96B22E33C5900C5B225 /* BinaryFileStream.hpp */,
+				054DD96C22E33C5900C5B225 /* BinaryStream.cpp */,
+				054DD96D22E33C5900C5B225 /* BinaryStream.hpp */,
+				054DD9DF22E4BAE500C5B225 /* Capstone.cpp */,
+				054DD9E022E4BAE500C5B225 /* Capstone.hpp */,
+				054DD99F22E33CE300C5B225 /* Casts.hpp */,
+				053B4B2A22F64575002C6AB9 /* Color.cpp */,
+				053B4B2922F64575002C6AB9 /* Color.hpp */,
+				054DD9A022E33FA200C5B225 /* ELF */,
 				054DD93322E21C7000C5B225 /* Manage.cpp */,
 				054DD93422E21C7000C5B225 /* Manage.hpp */,
 				054DD92622E0F0EC00C5B225 /* Monitor.cpp */,
@@ -418,17 +436,9 @@
 				054DD93722E2242800C5B225 /* String.hpp */,
 				054DD93922E22F9A00C5B225 /* UI.cpp */,
 				054DD93A22E22F9A00C5B225 /* UI.hpp */,
-				054DD9DF22E4BAE500C5B225 /* Capstone.cpp */,
-				054DD9E022E4BAE500C5B225 /* Capstone.hpp */,
-				054DD96E22E33C5900C5B225 /* BinaryDataStream.cpp */,
-				054DD96922E33C5900C5B225 /* BinaryDataStream.hpp */,
-				054DD96A22E33C5900C5B225 /* BinaryFileStream.cpp */,
-				054DD96B22E33C5900C5B225 /* BinaryFileStream.hpp */,
-				054DD96C22E33C5900C5B225 /* BinaryStream.cpp */,
-				054DD96D22E33C5900C5B225 /* BinaryStream.hpp */,
-				054DD99F22E33CE300C5B225 /* Casts.hpp */,
-				054DD9A022E33FA200C5B225 /* ELF */,
 				054DD92922E0F32F00C5B225 /* VM */,
+				053B4B1A22F64575002C6AB9 /* Window.cpp */,
+				053B4B2B22F64575002C6AB9 /* Window.hpp */,
 			);
 			path = VBox;
 			sourceTree = "<group>";
@@ -444,16 +454,16 @@
 		054DD92922E0F32F00C5B225 /* VM */ = {
 			isa = PBXGroup;
 			children = (
-				054DD92A22E0F33B00C5B225 /* Registers.cpp */,
-				054DD92B22E0F33B00C5B225 /* Registers.hpp */,
-				054DD93C22E2596F00C5B225 /* StackEntry.cpp */,
-				054DD93D22E2596F00C5B225 /* StackEntry.hpp */,
-				054DD93F22E25C3700C5B225 /* SegmentAddress.cpp */,
-				054DD94022E25C3700C5B225 /* SegmentAddress.hpp */,
 				054DD96322E338D800C5B225 /* CoreDump.cpp */,
 				054DD96422E338D800C5B225 /* CoreDump.hpp */,
 				054DD9F722E4DDFA00C5B225 /* Info.cpp */,
 				054DD9F822E4DDFA00C5B225 /* Info.hpp */,
+				054DD92A22E0F33B00C5B225 /* Registers.cpp */,
+				054DD92B22E0F33B00C5B225 /* Registers.hpp */,
+				054DD93F22E25C3700C5B225 /* SegmentAddress.cpp */,
+				054DD94022E25C3700C5B225 /* SegmentAddress.hpp */,
+				054DD93C22E2596F00C5B225 /* StackEntry.cpp */,
+				054DD93D22E2596F00C5B225 /* StackEntry.hpp */,
 			);
 			path = VM;
 			sourceTree = "<group>";
@@ -461,10 +471,10 @@
 		054DD9A022E33FA200C5B225 /* ELF */ = {
 			isa = PBXGroup;
 			children = (
-				054DD9A122E33FB500C5B225 /* Header.cpp */,
-				054DD9A222E33FB500C5B225 /* Header.hpp */,
 				054DD9A422E3468100C5B225 /* File.cpp */,
 				054DD9A522E3468100C5B225 /* File.hpp */,
+				054DD9A122E33FB500C5B225 /* Header.cpp */,
+				054DD9A222E33FB500C5B225 /* Header.hpp */,
 				054DD9A722E348C100C5B225 /* ProgramHeaderEntry.cpp */,
 				054DD9A822E348C100C5B225 /* ProgramHeaderEntry.hpp */,
 			);
@@ -671,8 +681,10 @@
 				054DD91A22E0B9A800C5B225 /* Arguments.cpp in Sources */,
 				054DD96F22E33C5900C5B225 /* BinaryFileStream.cpp in Sources */,
 				054DD9A322E33FB500C5B225 /* Header.cpp in Sources */,
+				053B4B2D22F64575002C6AB9 /* Color.cpp in Sources */,
 				054DD93822E2242800C5B225 /* String.cpp in Sources */,
 				054DD93522E21C7000C5B225 /* Manage.cpp in Sources */,
+				053B4B2C22F64575002C6AB9 /* Window.cpp in Sources */,
 				054DD8DE22E0B7A900C5B225 /* main.cpp in Sources */,
 				054DD91F22E0C23B00C5B225 /* Screen.cpp in Sources */,
 				054DD9F922E4DDFA00C5B225 /* Info.cpp in Sources */,

@@ -22,19 +22,45 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#ifndef VBOX_CAPSTONE_HPP
-#define VBOX_CAPSTONE_HPP
+#ifndef VBOX_WINDOW_HPP
+#define VBOX_WINDOW_HPP
 
-#include <cstdint>
+#include <memory>
+#include <algorithm>
+#include <cstdlib>
 #include <string>
-#include <vector>
+#include "VBox/Color.hpp"
 
 namespace VBox
 {
-    namespace Capstone
+    class Window
     {
-        std::vector< std::pair< std::string, std::string > > disassemble( const std::vector< uint8_t > & data, uint64_t org );
-    }
+        public:
+            
+            Window( size_t x, size_t y, size_t width, size_t height );
+            Window( const Window & o );
+            Window( Window && o ) noexcept;
+            ~Window( void );
+            
+            Window & operator =( Window o );
+            
+            void refresh( void );
+            void move( size_t x, size_t y );
+            void print( const std::string & s );
+            void print( const char * format, ... );
+            void print( const Color & color, const std::string & s );
+            void print( const Color & color, const char * format, ... );
+            void box( void );
+            void addHorizontalLine( size_t width );
+            void addVerticalLine( size_t height );
+            
+            friend void swap( Window & o1, Window & o2 );
+            
+        private:
+            
+            class IMPL;
+            std::unique_ptr< IMPL > impl;
+    };
 }
 
-#endif /* VBOX_CAPSTONE_HPP */
+#endif /* VBOX_WINDOW_HPP */

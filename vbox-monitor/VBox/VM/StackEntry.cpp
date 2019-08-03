@@ -155,22 +155,6 @@ namespace VBox
             swap( o1.impl, o2.impl );
         }
         
-        std::ostream & operator <<( std::ostream & os, const StackEntry & o )
-        {
-            os << "{" << std::endl
-               << "    SS:BP:      " << o.impl->_bp                    << std::endl
-               << "    Ret SS:BP:  " << o.impl->_retBP                 << std::endl
-               << "    Ret CS:EIP: " << o.impl->_retIP                 << std::endl
-               << "    Arg 0:      " << String::toHex( o.impl->_arg0 ) << std::endl
-               << "    Arg 1:      " << String::toHex( o.impl->_arg1 ) << std::endl
-               << "    Arg 2:      " << String::toHex( o.impl->_arg2 ) << std::endl
-               << "    Arg 3:      " << String::toHex( o.impl->_arg3 ) << std::endl
-               << "    CS:EIP:     " << o.impl->_ip                    << std::endl
-               << "}";
-            
-            return os;
-        }
-        
         StackEntry::IMPL::IMPL( void ):
             _arg0( 0 ),
             _arg1( 0 ),

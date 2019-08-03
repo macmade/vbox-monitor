@@ -28,6 +28,7 @@
 #include <cstdlib>
 #include <functional>
 #include <memory>
+#include "VBox/Color.hpp"
 
 namespace VBox
 {
@@ -35,20 +36,23 @@ namespace VBox
     {
         public:
             
-            Screen( void );
-            Screen( const Screen & o );
-            Screen( Screen && o ) noexcept;
-            ~Screen( void );
+            static Screen & shared( void );
             
-            Screen & operator =( Screen o );
+            Screen( const Screen & o )      = delete;
+            Screen( Screen && o ) noexcept  = delete;
+            Screen & operator =( Screen o ) = delete;
             
             std::size_t width( void )  const;
             std::size_t height( void ) const;
             
             bool supportsColors( void ) const;
+            void disableColors( void )  const;
             bool isRunning( void )      const;
             void clear( void )          const;
             void refresh( void )        const;
+            
+            void print( const std::string & s );
+            void print( const Color & color, const std::string & s );
             
             void start( void );
             void stop( void );
@@ -57,9 +61,9 @@ namespace VBox
             void onKeyPress( const std::function< void( int key ) > & f );
             void onUpdate( const std::function<   void( void ) > & f );
             
-            friend void swap( Screen & o1, Screen & o2 );
-            
         private:
+            
+            Screen( void );
             
             class IMPL;
             

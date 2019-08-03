@@ -22,19 +22,45 @@
  * THE SOFTWARE.
  ******************************************************************************/
 
-#ifndef VBOX_CAPSTONE_HPP
-#define VBOX_CAPSTONE_HPP
+#ifndef VBOX_COLOR_HPP
+#define VBOX_COLOR_HPP
 
-#include <cstdint>
-#include <string>
-#include <vector>
+#include <memory>
+#include <algorithm>
 
 namespace VBox
 {
-    namespace Capstone
+    class Color
     {
-        std::vector< std::pair< std::string, std::string > > disassemble( const std::vector< uint8_t > & data, uint64_t org );
-    }
+        public:
+            
+            static Color clear( void );
+            static Color black( void );
+            static Color red( void );
+            static Color green( void );
+            static Color yellow( void );
+            static Color blue( void );
+            static Color magenta( void );
+            static Color cyan( void );
+            static Color white( void );
+            
+            Color( const Color & o );
+            Color( Color && o ) noexcept;
+            ~Color( void );
+            
+            Color & operator =( Color o );
+            
+            int index( void ) const;
+            
+            friend void swap( Color & o1, Color & o2 );
+            
+        private:
+            
+            explicit Color( int index );
+            
+            class IMPL;
+            std::unique_ptr< IMPL > impl;
+    };
 }
 
-#endif /* VBOX_CAPSTONE_HPP */
+#endif /* VBOX_COLOR_HPP */

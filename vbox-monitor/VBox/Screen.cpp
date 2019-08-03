@@ -32,6 +32,7 @@
 #include <vector>
 #include <poll.h>
 #include <condition_variable>
+#include <mutex>
 
 namespace VBox
 {
@@ -40,17 +41,28 @@ namespace VBox
         public:
             
             IMPL( void );
-            IMPL( const IMPL & o );
+            ~IMPL( void );
             
             std::vector< std::function< void( void ) > > _onResize;
             std::vector< std::function< void( int ) > >  _onKeyPress;
             std::vector< std::function< void( void ) > > _onUpdate;
             
-            std::size_t  _width;
-            std::size_t  _height;
-            bool         _colors;
-            bool         _running;
+            std::size_t          _width;
+            std::size_t          _height;
+            bool                 _colors;
+            bool                 _running;
+            std::recursive_mutex _rmtx;
     };
+    
+    Screen & Screen::shared( void )
+    {
+        static Screen       * screen( nullptr );
+        static std::once_flag once;
+        
+        std::call_once( once, [ & ]{ screen = new Screen(); } );
+        
+        return *( screen );
+    }
     
     Screen::Screen( void ):
         impl( std::make_unique< IMPL >() )
@@ -64,6 +76,17 @@ namespace VBox
             this->impl->_colors = true;
             
             ::start_color();
+            ::use_default_colors();
+            
+            ::init_pair( 1, -1,  -1 );
+            ::init_pair( 2, COLOR_BLACK,   -1 );
+            ::init_pair( 3, COLOR_RED,     -1 );
+            ::init_pair( 4, COLOR_GREEN,   -1 );
+            ::init_pair( 5, COLOR_YELLOW,  -1 );
+            ::init_pair( 6, COLOR_BLUE,    -1 );
+            ::init_pair( 7, COLOR_MAGENTA, -1 );
+            ::init_pair( 8, COLOR_CYAN,    -1 );
+            ::init_pair( 9, COLOR_WHITE,   -1 );
         }
         
         this->clear();
@@ -78,106 +101,144 @@ namespace VBox
         this->impl->_height = s.ws_row;
     }
     
-    Screen::Screen( const Screen & o ):
-        impl( std::make_unique< IMPL >( *( o.impl ) ) )
-    {}
-    
-    Screen::Screen( Screen && o ) noexcept:
-        impl( std::move( o.impl ) )
-    {}
-    
-    Screen::~Screen( void )
-    {
-        ::clrtoeol();
-        refresh();
-        ::endwin();
-    }
-    
-    Screen & Screen::operator =( Screen o )
-    {
-        swap( *( this ), o );
-        
-        return *( this );
-    }
-    
     std::size_t Screen::width( void ) const
     {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
         return this->impl->_width;
     }
     
     std::size_t Screen::height( void ) const
     {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
         return this->impl->_height;
     }
     
     bool Screen::supportsColors( void ) const
     {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
         return this->impl->_colors;
+    }
+    
+    void Screen::disableColors( void ) const
+    {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
+        this->impl->_colors = false;
     }
     
     bool Screen::isRunning( void ) const
     {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
         return this->impl->_running;
     }
     
     void Screen::clear( void ) const
     {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
         ::clear();
     }
     
     void Screen::refresh( void ) const
     {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
         ::refresh();
+    }
+    
+    void Screen::print( const std::string & s )
+    {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
+        ::printw( s.c_str() );
+    }
+    
+    void Screen::print( const Color & color, const std::string & s )
+    {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+    
+        if( this->supportsColors() )
+        {
+            ::attrset( COLOR_PAIR( color.index() ) );
+        }
+        
+        ::printw( s.c_str() );
+
+        if( this->supportsColors() )
+        {
+            ::attrset( COLOR_PAIR( Color::clear().index() ) );
+        }
     }
     
     void Screen::start( void )
     {
-        if( this->impl->_running )
         {
-            return;
+            std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+            
+            if( this->impl->_running )
+            {
+                return;
+            }
+            
+            this->impl->_running = true;
         }
-        
-        this->impl->_running = true;
         
         while( this->impl->_running )
         {
-            struct winsize s;
+            struct winsize                               s;
+            std::vector< std::function< void( void ) > > onResize;
+            std::vector< std::function< void( int ) > >  onKeyPress;
+            std::vector< std::function< void( void ) > > onUpdate;
+            int                                          key( 0 );
             
             ::ioctl( STDOUT_FILENO, TIOCGWINSZ, &s );
             
-            if( s.ws_col != this->impl->_width || s.ws_row != this->impl->_height )
             {
-                this->impl->_width  = s.ws_col;
-                this->impl->_height = s.ws_row;
+                std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
                 
-                for( const auto & f: this->impl->_onResize )
+                onKeyPress = this->impl->_onKeyPress;
+                onUpdate   = this->impl->_onUpdate;
+                
+                if( s.ws_col != this->impl->_width || s.ws_row != this->impl->_height )
                 {
-                    f();
-                }
-            }
-            
-            {
-                static struct pollfd p;
-                int                  c;
-                
-                memset( &p, 0, sizeof( p ) );
-                
-                p.fd      = 0;
-                p.events  = POLLIN;
-                p.revents = 0;
-                
-                if( poll( &p, 1, 0 ) > 0 )
-                {
-                    c = getc( stdin );
+                    this->impl->_width  = s.ws_col;
+                    this->impl->_height = s.ws_row;
                     
-                    for( const auto & f: this->impl->_onKeyPress )
+                    onResize = this->impl->_onResize;
+                }
+                
+                {
+                    static struct pollfd p;
+                    
+                    memset( &p, 0, sizeof( p ) );
+                    
+                    p.fd      = 0;
+                    p.events  = POLLIN;
+                    p.revents = 0;
+                    
+                    if( poll( &p, 1, 0 ) > 0 )
                     {
-                        f( c );
+                        key        = getc( stdin );
+                        onKeyPress = this->impl->_onKeyPress;
                     }
                 }
             }
             
-            for( const auto & f: this->impl->_onUpdate )
+            for( const auto & f: onResize )
+            {
+                f();
+            }
+            
+            for( const auto & f: onKeyPress )
+            {
+                f( key );
+            }
+            
+            for( const auto & f: onUpdate )
             {
                 f();
             }
@@ -191,29 +252,30 @@ namespace VBox
     
     void Screen::stop( void )
     {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
         this->impl->_running = false;
     }
     
     void Screen::onResize( const std::function< void( void ) > & f )
     {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
         this->impl->_onResize.push_back( f );
     }
     
     void Screen::onKeyPress( const std::function< void( int key ) > & f )
     {
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+        
         this->impl->_onKeyPress.push_back( f );
     }
     
     void Screen::onUpdate( const std::function< void( void ) > & f )
     {
-        this->impl->_onUpdate.push_back( f );
-    }
-    
-    void swap( Screen & o1, Screen & o2 )
-    {
-        using std::swap;
+        std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
         
-        swap( o1.impl,  o2.impl );
+        this->impl->_onUpdate.push_back( f );
     }
     
     Screen::IMPL::IMPL( void ):
@@ -223,10 +285,10 @@ namespace VBox
         _running( false )
     {}
     
-    Screen::IMPL::IMPL( const IMPL & o ):
-        _width( o._width ),
-        _height( o._height ),
-        _colors( o._colors ),
-        _running( o._running )
-    {}
+    Screen::IMPL::~IMPL( void )
+    {
+        ::clrtoeol();
+        ::refresh();
+        ::endwin();
+    }
 }

@@ -24,6 +24,7 @@
 
 #include "VBox/UI.hpp"
 #include "VBox/Screen.hpp"
+#include "VBox/Window.hpp"
 #include "VBox/String.hpp"
 #include "VBox/Monitor.hpp"
 #include "VBox/Casts.hpp"
@@ -54,7 +55,6 @@ namespace VBox
             bool                            _running;
             bool                            _paused;
             std::string                     _vmName;
-            Screen                          _screen;
             Monitor                         _monitor;
             size_t                          _memoryOffset;
             size_t                          _memoryBytesPerLine;
@@ -96,7 +96,7 @@ namespace VBox
         }
         
         this->impl->_monitor.start();
-        this->impl->_screen.start();
+        Screen::shared().start();
     }
     
     void swap( UI & o1, UI & o2 )
@@ -123,7 +123,6 @@ namespace VBox
         _running(            false ),
         _paused(             o._paused ),
         _vmName(             o._vmName ),
-        _screen(             o._screen ),
         _monitor(            o._monitor ),
         _memoryOffset(       o._memoryOffset ),
         _memoryBytesPerLine( o._memoryBytesPerLine ),
@@ -138,7 +137,7 @@ namespace VBox
     
     void UI::IMPL::_setup( void )
     {
-        this->_screen.onUpdate
+        Screen::shared().onUpdate
         (
             [ & ]( void )
             {
@@ -158,19 +157,19 @@ namespace VBox
                 if( this->_monitor.live() == false )
                 {
                     this->_monitor.stop();
-                    this->_screen.stop();
+                    Screen::shared().stop();
                 }
             }
         );
         
-        this->_screen.onKeyPress
+        Screen::shared().onKeyPress
         (
             [ & ]( int key )
             {
                 if( key == 'q' )
                 {
                     this->_monitor.stop();
-                    this->_screen.stop();
+                    Screen::shared().stop();
                 }
                 else if( key == 'm' )
                 {
@@ -240,43 +239,40 @@ namespace VBox
     
     void UI::IMPL::_drawTitle( void )
     {
-        ::WINDOW * win( ::newwin( 3, static_cast< int >( this->_screen.width() ), 0, 0 ) );
+        Window win( 0, 0, Screen::shared().width(), 3 );
         
         {
-            ::box( win, 0, 0 );
-            ::wmove( win, 1, 2 );
-            ::wprintw( win, "VirtualBox: %s", this->_vmName.c_str() );
+            win.box();
+            win.move( 2, 1 );
+            win.print( "VirtualBox: ");
+            win.print( this->_vmName );
             
             if( this->_paused )
             {
-                ::wprintw( win, " [PAUSED]" );
+                win.print( Color::red(), " [PAUSED]" );
             }
-            
-            ::wmove( win, 2, 1 );
-            ::whline( win, 0, 28 );
         }
         
-        this->_screen.refresh();
-        ::wrefresh( win );
-        ::delwin( win );
+        Screen::shared().refresh();
+        win.refresh();
     }
     
     void UI::IMPL::_drawRegisters( void )
     {
-        if( this->_screen.width() < 30 || this->_screen.height() < 25 )
+        if( Screen::shared().width() < 30 || Screen::shared().height() < 25 )
         {
             return;
         }
         
         {
-            ::WINDOW * win( ::newwin( 22, 30, 3, 0 ) );
+            Window win( 0, 3, 30, 22 );
             
             {
-                ::box( win, 0, 0 );
-                ::wmove( win, 1, 2 );
-                ::wprintw( win, "CPU Registers:" );
-                ::wmove( win, 2, 1 );
-                ::whline( win, 0, 28 );
+                win.box();
+                win.move( 2, 1 );
+                win.print( Color::blue(), "CPU Registers:" );
+                win.move( 1, 2 );
+                win.addHorizontalLine( 28 );
             }
             
             {
@@ -285,7 +281,7 @@ namespace VBox
                 
                 if( regs.has_value() )
                 {
-                    int y( 3 );
+                    size_t y( 3 );
                     
                     for( const auto & p: regs.value().all() )
                     {
@@ -296,51 +292,63 @@ namespace VBox
                             reg = " " + reg;
                         }
                         
-                        reg += ": ";
-                        reg += String::toHex( p.second );
-                        
-                        ::wmove( win, y, 2 );
-                        ::wprintw( win, reg.c_str() );
+                        win.move( 2, y );
+                        win.print( Color::cyan(), reg );
+                        win.print( ": " );
+                        win.print( Color::yellow(), String::toHex( p.second ) );
                         
                         y++;
                     }
                 }
             }
             
-            this->_screen.refresh();
-            ::wrefresh( win );
-            ::delwin( win );
+            Screen::shared().refresh();
+            win.refresh();
         }
     }
     
     void UI::IMPL::_drawStack( void )
     {
-        if( this->_screen.width() < 180 || this->_screen.height() < 25 )
+        if( Screen::shared().width() < 180 || Screen::shared().height() < 25 )
         {
             return;
         }
         
         {
-            ::WINDOW * win( ::newwin( 22, 150, 3, 30 ) );
+            Window win( 30, 3, 150, 22 );
             
             {
-                ::box( win, 0, 0 );
-                ::wmove( win, 1, 2 );
-                ::wprintw( win, "Stack:" );
-                ::wmove( win, 2, 1 );
-                ::whline( win, 0, 148 );
+                win.box();
+                win.move( 2, 1 );
+                win.print( Color::blue(), "Stack:" );
+                win.move( 1, 2 );
+                win.addHorizontalLine( 148 );
             }
             
             {
-                ::wmove( win, 3, 2 );
-                ::wprintw( win, "SS:BP:                | Ret SS:BP:            | Ret CS:EIP:           | Arg 0:     | Arg 1:     | Arg 2:     | Arg 3:     | CS:EIP:" );
-                ::wmove( win, 4, 1 );
-                ::whline( win, 0, 148 );
+                win.move( 2, 3 );
+                win.print( Color::blue(), "SS:BP:                " );
+                win.print( "| " );
+                win.print( Color::blue(), "Ret SS:BP:            " );
+                win.print( "| " );
+                win.print( Color::blue(), "Ret CS:EIP:           " );
+                win.print( "| " );
+                win.print( Color::blue(), "Arg 0:     " );
+                win.print( "| " );
+                win.print( Color::blue(), "Arg 1:     " );
+                win.print( "| " );
+                win.print( Color::blue(), "Arg 2:     " );
+                win.print( "| " );
+                win.print( Color::blue(), "Arg 3:     " );
+                win.print( "| " );
+                win.print( Color::blue(), "CS:EIP:" );
+                win.move( 1, 4 );
+                win.addHorizontalLine( 148 );
             }
             
             {
                 std::vector< VM::StackEntry > stack( this->_stack );
-                int                           y( 5 );
+                size_t                        y( 5 );
                 
                 for( size_t i = 0; i < stack.size(); i++ )
                 {
@@ -349,47 +357,61 @@ namespace VBox
                         break;
                     }
                     
-                    ::wmove( win, y, 2 );
-                    ::wprintw
-                    (
-                        win,
-                        "%s | %s | %s | %s | %s | %s | %s | %s",
-                        stack[ i ].bp().string().c_str(),
-                        stack[ i ].retBP().string().c_str(),
-                        stack[ i ].retIP().string().c_str(),
-                        String::toHex( stack[ i ].arg0() ).c_str(),
-                        String::toHex( stack[ i ].arg1() ).c_str(),
-                        String::toHex( stack[ i ].arg2() ).c_str(),
-                        String::toHex( stack[ i ].arg3() ).c_str(),
-                        stack[ i ].ip().string().c_str()
-                    );
+                    win.move( 2, y );
+                    
+                    win.print( Color::cyan(), String::toHex( stack[ i ].bp().segment() ) );
+                    win.print( ":" );
+                    win.print( Color::yellow(), String::toHex( stack[ i ].bp().address() ) );
+                    win.print( " | " );
+                    
+                    win.print( Color::cyan(), String::toHex( stack[ i ].retBP().segment() ) );
+                    win.print( ":" );
+                    win.print( Color::yellow(), String::toHex( stack[ i ].retBP().address() ) );
+                    win.print( " | " );
+                    
+                    win.print( Color::cyan(), String::toHex( stack[ i ].retIP().segment() ) );
+                    win.print( ":" );
+                    win.print( Color::yellow(), String::toHex( stack[ i ].retIP().address() ) );
+                    win.print( " | " );
+                    
+                    win.print( Color::yellow(), String::toHex( stack[ i ].arg0() ) );
+                    win.print( " | " );
+                    win.print( Color::yellow(), String::toHex( stack[ i ].arg1() ) );
+                    win.print( " | " );
+                    win.print( Color::yellow(), String::toHex( stack[ i ].arg2() ) );
+                    win.print( " | " );
+                    win.print( Color::yellow(), String::toHex( stack[ i ].arg3() ) );
+                    win.print( " | " );
+                    
+                    win.print( Color::cyan(), String::toHex( stack[ i ].ip().segment() ) );
+                    win.print( ":" );
+                    win.print( Color::yellow(), String::toHex( stack[ i ].ip().address() ) );
                     
                     y++;
                 }
             }
             
-            this->_screen.refresh();
-            ::wrefresh( win );
-            ::delwin( win );
+            Screen::shared().refresh();
+            win.refresh();
         }
     }
     
     void UI::IMPL::_drawDisassembly( void )
     {
-        if( this->_screen.width() < 220 || this->_screen.height() < 25 )
+        if( Screen::shared().width() < 220 || Screen::shared().height() < 25 )
         {
             return;
         }
         
         {
-            ::WINDOW * win( ::newwin( 22, numeric_cast< int >( this->_screen.width() ) - 180, 3, 180 ) );
+            Window win( 180, 3, Screen::shared().width() - 180, 22 );
             
             {
-                ::box( win, 0, 0 );
-                ::wmove( win, 1, 2 );
-                ::wprintw( win, "Disassembly:" );
-                ::wmove( win, 2, 1 );
-                ::whline( win, 0, numeric_cast< int >( this->_screen.width() ) - 182 );
+                win.box();
+                win.move( 2, 1 );
+                win.print( Color::blue(), "Disassembly:" );
+                win.move( 1, 2 );
+                win.addHorizontalLine( Screen::shared().width() - 182 );
             }
             
             {
@@ -402,57 +424,53 @@ namespace VBox
                     
                     if( code.size() > 0 )
                     {
-                        int y( 2 );
+                        size_t y( 2 );
                         
-                        for( auto s: Capstone::disassemble( code, regs.value().rip() ) )
+                        for( const auto & p: Capstone::disassemble( code, regs.value().rip() ) )
                         {
                             if( y > 19 )
                             {
                                 break;
                             }
                             
-                            if( s.length() > this->_screen.width() - 184 )
-                            {
-                                s = s.substr( 0, this->_screen.width() - 184 );
-                            }
-                            
-                            ::wmove( win, ++y, 2 );
-                            ::wprintw( win, s.c_str() );
+                            win.move( 2, ++y );
+                            win.print( Color::cyan(), p.first );
+                            win.print( ": " );
+                            win.print( Color::yellow(), p.second );
                         }
                     }
                 }
             }
             
-            this->_screen.refresh();
-            ::wrefresh( win );
-            ::delwin( win );
+            Screen::shared().refresh();
+            win.refresh();
         }
     }
     
     void UI::IMPL::_drawMemory( void )
     {
-        if( this->_screen.width() < 30 || this->_screen.height() < 35 )
+        if( Screen::shared().width() < 30 || Screen::shared().height() < 35 )
         {
             return;
         }
         
         {
-            ::WINDOW * win( ::newwin( numeric_cast< int >( this->_screen.height() ) - 25, numeric_cast< int >( this->_screen.width() ), 25, 0 ) );
+            Window win( 0, 25, Screen::shared().width(), Screen::shared().height() - 25 );
             
             {
-                ::box( win, 0, 0 );
-                ::wmove( win, 1, 2 );
-                ::wprintw( win, "Memory:" );
-                ::wmove( win, 2, 1 );
-                ::whline( win, 0, numeric_cast< int >( this->_screen.width() ) - 2 );
+                win.box();
+                win.move( 2, 1 );
+                win.print( Color::blue(), "Memory:" );
+                win.move( 1, 2 );
+                win.addHorizontalLine( Screen::shared().width() - 2 );
             }
             
             if( this->_memoryAddressPrompt.has_value() )
             {
-                ::wmove( win, 3, 2 );
-                ::wprintw( win, "Enter a memory address:" );
-                ::wmove( win, 4, 2 );
-                ::wprintw( win, this->_memoryAddressPrompt.value().c_str() );
+                win.move( 2, 3 );
+                win.print( Color::cyan(), "Enter a memory address:" );
+                win.move( 2, 4 );
+                win.print( Color::yellow(), this->_memoryAddressPrompt.value() );
             }
             else
             {
@@ -460,9 +478,9 @@ namespace VBox
                 
                 if( dump != nullptr && dump->memorySize() > 0 )
                 {
-                    int    y( 2 );
-                    size_t cols(  this->_screen.width()  - 4 );
-                    size_t lines( this->_screen.height() - 29 );
+                    size_t y( 2 );
+                    size_t cols(  Screen::shared().width()  - 4 );
+                    size_t lines( Screen::shared().height() - 29 );
                     
                     this->_totalMemory        = dump->memorySize();
                     this->_memoryBytesPerLine = ( cols / 4 ) - 5;
@@ -477,19 +495,19 @@ namespace VBox
                         {
                             if( i % this->_memoryBytesPerLine == 0 )
                             {
-                                ::wmove( win, ++y, 2 );
-                                ::wprintw( win, "%016X: ", offset );
+                                win.move( 2, ++y );
+                                win.print( Color::yellow(), "%016X: ", offset );
                                 
                                 offset += this->_memoryBytesPerLine;
                             }
                             
-                            ::wprintw( win, "%02X ", numeric_cast< int >( mem[ i ] ) );
+                            win.print( Color::cyan(), "%02X ", numeric_cast< int >( mem[ i ] ) );
                         }
                         
                         y = 2;
                         
-                        ::wmove( win, y + 1, numeric_cast< int >( this->_memoryBytesPerLine * 3 ) + 4 + 16 );
-                        ::wvline( win, 0, numeric_cast< int >( lines ) );
+                        win.move( ( this->_memoryBytesPerLine * 3 ) + 4 + 16, y + 1 );
+                        win.addVerticalLine( lines );
                         
                         for( size_t i = 0; i < mem.size(); i++ )
                         {
@@ -497,23 +515,24 @@ namespace VBox
                             
                             if( i % this->_memoryBytesPerLine == 0 )
                             {
-                                ::wmove( win, ++y, numeric_cast< int >( this->_memoryBytesPerLine * 3 ) + 4 + 18 );
+                                win.move( ( this->_memoryBytesPerLine * 3 ) + 4 + 18, ++y );
                             }
                             
                             if( isprint( c ) == false || isspace( c ) )
                             {
-                                c = '.';
+                                win.print( Color::blue(), "." );
                             }
-                            
-                            ::wprintw( win, "%c", c );
+                            else
+                            {
+                                win.print( "%c", c );
+                            }
                         }
                     }
                 }
             }
             
-            this->_screen.refresh();
-            ::wrefresh( win );
-            ::delwin( win );
+            Screen::shared().refresh();
+            win.refresh();
         }
     }
     

@@ -51,11 +51,7 @@ namespace VBox
                 void segment( uint32_t value );
                 void address( uint32_t value );
                 
-                std::string string( void ) const;
-                
                 friend void swap( SegmentAddress & o1, SegmentAddress & o2 );
-                
-                friend std::ostream & operator <<( std::ostream & os, const SegmentAddress & o );
                 
             private:
                 
